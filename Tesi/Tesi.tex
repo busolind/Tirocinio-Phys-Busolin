@@ -1,0 +1,81 @@
+% scopiazzato dal template di Matteo Longeri (grazie!)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[12pt,a4paper]{report}
+% o article, book, ...
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% packages...
+\usepackage[utf8]{inputenc}
+\usepackage[english,italian]{babel}
+\usepackage[hyphens]{url}
+
+% Per generare il file PDF aderente alle specifiche PDF/A-1b. Verificarne poi la validità.
+%\usepackage[a-1b]{pdfx}
+
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+
+% Per inserire testo a caso in attesa di realizzare i capitoli
+\usepackage{lipsum}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% Frontespizio
+\begin{titlepage}
+\begin{center}
+\includegraphics[width=\textwidth]{Logo.jpg}\\
+{\large{\bf Corso di Laurea ...}}
+\end{center}
+\vspace{12mm}
+\begin{center}
+{\huge{\bf TITOLO}}\\
+\vspace{4mm}
+{\huge{\bf TITOLO}}\\
+\vspace{4mm}
+{\huge{\bf TITOLO}}\\
+\end{center}
+\vspace{12mm}
+\begin{flushleft}
+{\large{\bf Relatore:}}
+{\large{...}}\\
+\vspace{4mm}
+{\large{\bf Correlatore:}}
+{\large{...}}\\
+\end{flushleft}
+\vspace{12mm}
+\begin{flushright}
+{\large{\bf Tesi di Laurea di:}}
+{\large{CANDIDATO}}\\
+{\large{\bf Matr. xxxxxxx}}\\
+\end{flushright}
+\vspace{4mm}
+\begin{center}
+{\large{\bf Anno Accademico xxxxxxxx}}
+\end{center}
+\end{titlepage}
+
+
+\tableofcontents
+
+
+% o sections (dipende dal documentclass)
+\chapter{Cap1}
+
+TCP/IP over Avian Carriers\cite{waitzman1990standard}
+
+\chapter{Cap2}
+\chapter{Cap3}
+\chapter{Cap4}
+
+
+\bibliographystyle{plain}
+\bibliography{Biblio}
+%\addcontentsline{toc}{chapter}{Bibliografia}
+
+\end{document}
