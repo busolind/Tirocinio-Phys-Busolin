@@ -1,0 +1,68 @@
+{
+    "Code": "3484627",
+    "Description": "Via Celoria (Istituto Besta)",
+    "Location": {
+        "X": 9.2299307542796925,
+        "Y": 45.477207152645
+    },
+    "CustomerCode": "12493",
+    "Municipality": "Milano",
+    "Address": "Via Celoria (Istituto Besta)",
+    "Telephone": "",
+    "Fax": "",
+    "SiteUrl": "",
+    "Email": "",
+    "Category": {
+        "CategoryId": "20",
+        "CategoryName": "Fermate mezzi di superficie",
+        "HasTimeTables": true,
+        "Icons": null
+    },
+    "Details": {},
+    "Dynamic_First_Level": {},
+    "Lines": [
+        {
+            "Line": {
+                "LineId": "93",
+                "OperatorCode": "",
+                "LineCode": "93",
+                "LineDescription": "Lambrate - Viale Omero",
+                "TransportMode": 0,
+                "Suburban": false,
+                "OtherRoutesAvailable": false,
+                "Radiobus": false,
+                "RadiobusCapolinea": false
+            },
+            "Direction": "0",
+            "BookletUrl": "https://orari.atm.it/93_12493.pdf",
+            "BookletUrl2": "93",
+            "WaitMessage": "9 min",
+            "JourneyPatternId": "93|0",
+            "TrafficBulletins": [],
+            "Links": [
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/12493/timetable/line/93/dir/0",
+                    "Title": null
+                },
+                {
+                    "Rel": "journeypattern",
+                    "Href": "tpl/journeyPatterns/93|0",
+                    "Title": null
+                }
+            ]
+        }
+    ],
+    "Links": [
+        {
+            "Rel": "self",
+            "Href": "geodata/pois3484627",
+            "Title": null
+        },
+        {
+            "Rel": "linesummary",
+            "Href": "tpl/stops/12493/linesummary",
+            "Title": null
+        }
+    ]
+}
