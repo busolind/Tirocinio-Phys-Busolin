@@ -22,6 +22,6 @@ Idee dati usabili
 
 - Traffico stradale in un certo percorso
 - Avvenimenti CITTADINI in generale https://dati.comune.milano.it (non ha dati dinamici, magari la regione sì)
-- Pensilina ATM https://github.com/kristian-keller/Pensilina-ATM (Può essere utile per ricavare dati sui minuti rimanenti per l'arrivo di un mezzo
+- Pensilina ATM https://github.com/kristian-keller/Pensilina-ATM (Può essere utile per ricavare dati sui minuti rimanenti per l'arrivo di un mezzo)
 - Aspetto metereologico, tipo umidità
 - Dati finanziari
