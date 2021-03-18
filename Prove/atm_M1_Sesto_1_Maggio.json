@@ -1,0 +1,85 @@
+{
+    "Code": "167631",
+    "Description": "Sesto 1° Maggio F.S. M1",
+    "Location": {
+        "X": 9.239648524044954,
+        "Y": 45.542139272228489
+    },
+    "CustomerCode": "-88",
+    "Municipality": "Sesto San Giovanni",
+    "Address": "P.za 1° Maggio",
+    "Telephone": "",
+    "Fax": "",
+    "SiteUrl": "",
+    "Email": "",
+    "Category": {
+        "CategoryId": "19",
+        "CategoryName": "Metro",
+        "HasTimeTables": true,
+        "Icons": null
+    },
+    "Details": {
+        "EXTRAINFO1": {
+            "Info": "<img src=\"http://www.atm.it/SiteCollectionImages/DAE.jpg\"> Defibrillatore",
+            "DataType": 0
+        },
+        "EXTRAINFO2": {
+            "Info": "<img src=\"http://www.atm.it/SiteCollectionImages/accessibilita.jpg\"> Stazione accessibile",
+            "DataType": 0
+        },
+        "<img src=\"http://www.atm.it/SiteCollectionImages/ascensore.jpg\">&nbsp;": {
+            "Info": "Ascensore P.za Primo Maggio fronte stazione ferroviaria",
+            "DataType": 0
+        },
+        "<img src=\"http://www.atm.it/SiteCollectionImages/montascale.jpg\">&nbsp;": {
+            "Info": "",
+            "DataType": 0
+        }
+    },
+    "Dynamic_First_Level": {},
+    "Lines": [
+        {
+            "Line": {
+                "LineId": "-1",
+                "OperatorCode": "",
+                "LineCode": "-1",
+                "LineDescription": "Sesto FS - Rho Fiera Milano/Bisceglie",
+                "TransportMode": 0,
+                "Suburban": false,
+                "OtherRoutesAvailable": false,
+                "Radiobus": false,
+                "RadiobusCapolinea": false
+            },
+            "Direction": "0",
+            "BookletUrl": "https://orari.atm.it/M1_547.pdf",
+            "BookletUrl2": "M1",
+            "WaitMessage": null,
+            "JourneyPatternId": "-1|0",
+            "TrafficBulletins": [],
+            "Links": [
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-88/timetable/line/-1/dir/0",
+                    "Title": null
+                },
+                {
+                    "Rel": "journeypattern",
+                    "Href": "tpl/journeyPatterns/-1|0",
+                    "Title": null
+                }
+            ]
+        }
+    ],
+    "Links": [
+        {
+            "Rel": "self",
+            "Href": "geodata/pois167631",
+            "Title": null
+        },
+        {
+            "Rel": "linesummary",
+            "Href": "tpl/stops/-88/linesummary",
+            "Title": null
+        }
+    ]
+}

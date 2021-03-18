@@ -1,0 +1,1698 @@
+{
+    "Id": "-1|0",
+    "Code": "-1",
+    "Direction": "0",
+    "Line": {
+        "OperatorCode": "",
+        "LineCode": "-1",
+        "LineDescription": "Linea 1 (rossa) Sesto FS - Rho Fiera Milano/Bisceglie",
+        "Suburban": false,
+        "TransportMode": 0,
+        "OtherRoutesAvailable": true,
+        "Links": []
+    },
+    "Stops": [
+        {
+            "OperatorCode": "",
+            "Code": "-41",
+            "Description": "AMENDOLA",
+            "Location": {
+                "X": 9.1509535862896527,
+                "Y": 45.473747354884949
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-41",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-41/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-41/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-36",
+            "Description": "BANDE NERE",
+            "Location": {
+                "X": 9.1370559360923558,
+                "Y": 45.4616942833401
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-36",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-36/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-36/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-33",
+            "Description": "BISCEGLIE",
+            "Location": {
+                "X": 9.1130607628915428,
+                "Y": 45.455698750025441
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-33",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-33/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-33/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-47",
+            "Description": "BONOLA",
+            "Location": {
+                "X": 9.1109299277675166,
+                "Y": 45.497394272800619
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-47",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-47/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-47/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-40",
+            "Description": "BUONARROTI",
+            "Location": {
+                "X": 9.1553454000944416,
+                "Y": 45.470384026362
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-40",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-40/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-40/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-51",
+            "Description": "CADORNA FN Triennale M1",
+            "Location": {
+                "X": 9.17593475729466,
+                "Y": 45.468013861987323
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-51",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-51/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-51/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-52",
+            "Description": "CAIROLI Castello",
+            "Location": {
+                "X": 9.1823826493561427,
+                "Y": 45.468165770265244
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-52",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-52/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-52/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-50",
+            "Description": "CONCILIAZIONE",
+            "Location": {
+                "X": 9.1664415718970886,
+                "Y": 45.46761403438596
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-50",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-50/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-50/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-67",
+            "Description": "CORDUSIO",
+            "Location": {
+                "X": 9.1864163643625076,
+                "Y": 45.465521910249763
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-67",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-67/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-67/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-38",
+            "Description": "DE ANGELI",
+            "Location": {
+                "X": 9.1496422216584925,
+                "Y": 45.466494126496357
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-38",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-38/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-38/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-72",
+            "Description": "DUOMO M1",
+            "Location": {
+                "X": 9.1905065059134472,
+                "Y": 45.464552034504869
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-72",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-72/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-72/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-37",
+            "Description": "GAMBARA",
+            "Location": {
+                "X": 9.14267935674558,
+                "Y": 45.464927827551854
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-37",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-37/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-37/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-61",
+            "Description": "GORLA",
+            "Location": {
+                "X": 9.2229069294075767,
+                "Y": 45.506501814700663
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-61",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-61/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-61/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-34",
+            "Description": "INGANNI",
+            "Location": {
+                "X": 9.1225672368540121,
+                "Y": 45.457426177547283
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-34",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-34/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-34/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-44",
+            "Description": "LAMPUGNANO",
+            "Location": {
+                "X": 9.1268960117616782,
+                "Y": 45.488484518787658
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-44",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-44/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-44/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-56",
+            "Description": "LIMA",
+            "Location": {
+                "X": 9.2109426792568119,
+                "Y": 45.480376202838066
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-56",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-56/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-56/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-57",
+            "Description": "LORETO M1",
+            "Location": {
+                "X": 9.2166463311929583,
+                "Y": 45.486261289488112
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-57",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-57/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-57/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-42",
+            "Description": "LOTTO Fieramilanocity",
+            "Location": {
+                "X": 9.1430370330095716,
+                "Y": 45.479905343335574
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-42",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-42/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-42/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-48",
+            "Description": "MOLINO DORINO",
+            "Location": {
+                "X": 9.09400960581576,
+                "Y": 45.505150426183938
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-48",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-48/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-48/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-55",
+            "Description": "P.TA VENEZIA",
+            "Location": {
+                "X": 9.2054205071264,
+                "Y": 45.474814541517624
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-55",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-55/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-55/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-49",
+            "Description": "PAGANO",
+            "Location": {
+                "X": 9.16077679953071,
+                "Y": 45.468405251322892
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-49",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-49/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-49/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-54",
+            "Description": "PALESTRO",
+            "Location": {
+                "X": 9.2021081247034129,
+                "Y": 45.471589027025949
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-54",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-54/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-54/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-58",
+            "Description": "PASTEUR",
+            "Location": {
+                "X": 9.217994283925723,
+                "Y": 45.490696294391419
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-58",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-58/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-58/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-101",
+            "Description": "PERO",
+            "Location": {
+                "X": 9.0858095898920279,
+                "Y": 45.508667319004211
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-101",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-101/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-101/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-62",
+            "Description": "PRECOTTO",
+            "Location": {
+                "X": 9.2246586359189013,
+                "Y": 45.512421121197086
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-62",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-62/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-62/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-35",
+            "Description": "PRIMATICCIO",
+            "Location": {
+                "X": 9.1296066859280387,
+                "Y": 45.459569694427444
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-35",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-35/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-35/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-43",
+            "Description": "QT8",
+            "Location": {
+                "X": 9.1374482237848369,
+                "Y": 45.486267025864748
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-43",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-43/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-43/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-102",
+            "Description": "RHO FIERA",
+            "Location": {
+                "X": 9.0869780987548658,
+                "Y": 45.519287749453909
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-102",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-102/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-102/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-59",
+            "Description": "ROVERETO",
+            "Location": {
+                "X": 9.219639789431568,
+                "Y": 45.495895805428113
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-59",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-59/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-59/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-53",
+            "Description": "S. BABILA",
+            "Location": {
+                "X": 9.1974976374542585,
+                "Y": 45.466520422908935
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-53",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-53/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-53/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-46",
+            "Description": "S. LEONARDO",
+            "Location": {
+                "X": 9.10168339261689,
+                "Y": 45.501408383829542
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-46",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-46/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-46/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-88",
+            "Description": "SESTO 1° MAGGIO F.S.",
+            "Location": {
+                "X": 9.2396357148936126,
+                "Y": 45.542139299099816
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-88",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-88/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-88/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-64",
+            "Description": "SESTO MARELLI",
+            "Location": {
+                "X": 9.2278769031224268,
+                "Y": 45.523135066980196
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-64",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-64/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-64/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-89",
+            "Description": "SESTO RONDO'",
+            "Location": {
+                "X": 9.23064648944888,
+                "Y": 45.5334447600643
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-89",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-89/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-89/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-60",
+            "Description": "TURRO",
+            "Location": {
+                "X": 9.2210032279372154,
+                "Y": 45.500897809126229
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-60",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-60/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-60/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-45",
+            "Description": "URUGUAY",
+            "Location": {
+                "X": 9.1202276622798433,
+                "Y": 45.494000435620933
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-45",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-45/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-45/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-63",
+            "Description": "VILLA S. GIOVANNI",
+            "Location": {
+                "X": 9.2261386240903622,
+                "Y": 45.517539834281678
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-63",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-63/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-63/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        },
+        {
+            "OperatorCode": "",
+            "Code": "-39",
+            "Description": "WAGNER",
+            "Location": {
+                "X": 9.1557099517785883,
+                "Y": 45.468043221932518
+            },
+            "PointType": 1,
+            "OtherLines": [],
+            "StopType": "normal",
+            "Links": [
+                {
+                    "Rel": "poi",
+                    "Href": "geodata/pois/stops/-39",
+                    "Title": null
+                },
+                {
+                    "Rel": "linesummary",
+                    "Href": "tpl/stops/-39/linesummary",
+                    "Title": null
+                },
+                {
+                    "Rel": "timetable",
+                    "Href": "tpl/stops/-39/timetable/line/-1/dir/0",
+                    "Title": null
+                }
+            ]
+        }
+    ],
+    "Geometry": {
+        "Segments": [
+            {
+                "RGB": "#FF0000",
+                "Points": [
+                    {
+                        "X": 9.2396357,
+                        "Y": 45.5421393
+                    },
+                    {
+                        "X": 9.2362707,
+                        "Y": 45.540004
+                    },
+                    {
+                        "X": 9.2335579,
+                        "Y": 45.5375343
+                    },
+                    {
+                        "X": 9.2306465,
+                        "Y": 45.5334448
+                    },
+                    {
+                        "X": 9.229099,
+                        "Y": 45.5276872
+                    },
+                    {
+                        "X": 9.2278769,
+                        "Y": 45.5231351
+                    },
+                    {
+                        "X": 9.2267613999999991,
+                        "Y": 45.5195908
+                    },
+                    {
+                        "X": 9.2261386,
+                        "Y": 45.5175398
+                    },
+                    {
+                        "X": 9.2256715,
+                        "Y": 45.5159836
+                    },
+                    {
+                        "X": 9.2246586,
+                        "Y": 45.5124211
+                    },
+                    {
+                        "X": 9.2244387,
+                        "Y": 45.5118455
+                    },
+                    {
+                        "X": 9.2231935,
+                        "Y": 45.5077524
+                    },
+                    {
+                        "X": 9.2229069,
+                        "Y": 45.5065018
+                    },
+                    {
+                        "X": 9.2216897,
+                        "Y": 45.5029577
+                    },
+                    {
+                        "X": 9.2210032,
+                        "Y": 45.5008978
+                    },
+                    {
+                        "X": 9.220418,
+                        "Y": 45.4985406
+                    },
+                    {
+                        "X": 9.2196398,
+                        "Y": 45.4958958
+                    },
+                    {
+                        "X": 9.2181111,
+                        "Y": 45.4911191
+                    },
+                    {
+                        "X": 9.2179943,
+                        "Y": 45.4906963
+                    },
+                    {
+                        "X": 9.2170349,
+                        "Y": 45.4874667
+                    },
+                    {
+                        "X": 9.2168918,
+                        "Y": 45.4868729
+                    },
+                    {
+                        "X": 9.2166463,
+                        "Y": 45.4862613
+                    },
+                    {
+                        "X": 9.2163506,
+                        "Y": 45.4859018
+                    },
+                    {
+                        "X": 9.2144109,
+                        "Y": 45.4839342
+                    },
+                    {
+                        "X": 9.2138201,
+                        "Y": 45.4833592
+                    },
+                    {
+                        "X": 9.2109427,
+                        "Y": 45.4803762
+                    },
+                    {
+                        "X": 9.2082844,
+                        "Y": 45.4777437
+                    },
+                    {
+                        "X": 9.2065894,
+                        "Y": 45.4760816
+                    },
+                    {
+                        "X": 9.2054205,
+                        "Y": 45.4748145
+                    },
+                    {
+                        "X": 9.2027756,
+                        "Y": 45.4722179
+                    },
+                    {
+                        "X": 9.2021081,
+                        "Y": 45.471589
+                    },
+                    {
+                        "X": 9.2010685,
+                        "Y": 45.4706277
+                    },
+                    {
+                        "X": 9.2003114,
+                        "Y": 45.469999
+                    },
+                    {
+                        "X": 9.1992327,
+                        "Y": 45.4688397
+                    },
+                    {
+                        "X": 9.1982181,
+                        "Y": 45.4676803
+                    },
+                    {
+                        "X": 9.1979604,
+                        "Y": 45.4671587
+                    },
+                    {
+                        "X": 9.1974976,
+                        "Y": 45.4665204
+                    },
+                    {
+                        "X": 9.1971636,
+                        "Y": 45.4661159
+                    },
+                    {
+                        "X": 9.1965999,
+                        "Y": 45.4658559
+                    },
+                    {
+                        "X": 9.1960747,
+                        "Y": 45.4656588
+                    },
+                    {
+                        "X": 9.1940004,
+                        "Y": 45.4650682
+                    },
+                    {
+                        "X": 9.1930274,
+                        "Y": 45.4648358
+                    },
+                    {
+                        "X": 9.1920033,
+                        "Y": 45.4646035
+                    },
+                    {
+                        "X": 9.1905065,
+                        "Y": 45.464552
+                    },
+                    {
+                        "X": 9.1893042,
+                        "Y": 45.464599
+                    },
+                    {
+                        "X": 9.1890228,
+                        "Y": 45.4645995
+                    },
+                    {
+                        "X": 9.1887032,
+                        "Y": 45.464654
+                    },
+                    {
+                        "X": 9.1885117,
+                        "Y": 45.4647534
+                    },
+                    {
+                        "X": 9.1882306,
+                        "Y": 45.4648708
+                    },
+                    {
+                        "X": 9.1875664,
+                        "Y": 45.465151
+                    },
+                    {
+                        "X": 9.1866847,
+                        "Y": 45.4654405
+                    },
+                    {
+                        "X": 9.1864164,
+                        "Y": 45.4655219
+                    },
+                    {
+                        "X": 9.1849342,
+                        "Y": 45.4660374
+                    },
+                    {
+                        "X": 9.1847051,
+                        "Y": 45.4663888
+                    },
+                    {
+                        "X": 9.1838884,
+                        "Y": 45.4670202
+                    },
+                    {
+                        "X": 9.1826889,
+                        "Y": 45.4679402
+                    },
+                    {
+                        "X": 9.1823826,
+                        "Y": 45.4681658
+                    },
+                    {
+                        "X": 9.1809151,
+                        "Y": 45.4693022
+                    },
+                    {
+                        "X": 9.1793934,
+                        "Y": 45.4694847
+                    },
+                    {
+                        "X": 9.1781003,
+                        "Y": 45.4691627
+                    },
+                    {
+                        "X": 9.1768829,
+                        "Y": 45.4684985
+                    },
+                    {
+                        "X": 9.1766646,
+                        "Y": 45.4682288
+                    },
+                    {
+                        "X": 9.1766129,
+                        "Y": 45.4680578
+                    },
+                    {
+                        "X": 9.176216,
+                        "Y": 45.4679504
+                    },
+                    {
+                        "X": 9.1759348,
+                        "Y": 45.4680139
+                    },
+                    {
+                        "X": 9.1749748,
+                        "Y": 45.4678533
+                    },
+                    {
+                        "X": 9.17367,
+                        "Y": 45.4678463
+                    },
+                    {
+                        "X": 9.1716995,
+                        "Y": 45.4677143
+                    },
+                    {
+                        "X": 9.169691,
+                        "Y": 45.4676633
+                    },
+                    {
+                        "X": 9.1686929,
+                        "Y": 45.4675657
+                    },
+                    {
+                        "X": 9.1669658,
+                        "Y": 45.4675323
+                    },
+                    {
+                        "X": 9.1664416,
+                        "Y": 45.467614
+                    },
+                    {
+                        "X": 9.1652775,
+                        "Y": 45.4676427
+                    },
+                    {
+                        "X": 9.1642556,
+                        "Y": 45.4681483
+                    },
+                    {
+                        "X": 9.1607768,
+                        "Y": 45.4684052
+                    },
+                    {
+                        "X": 9.1586793,
+                        "Y": 45.4685792
+                    },
+                    {
+                        "X": 9.1576433,
+                        "Y": 45.4686436
+                    },
+                    {
+                        "X": 9.156939,
+                        "Y": 45.4683926
+                    },
+                    {
+                        "X": 9.15571,
+                        "Y": 45.4680432
+                    },
+                    {
+                        "X": 9.1507935,
+                        "Y": 45.4665016
+                    },
+                    {
+                        "X": 9.1496422,
+                        "Y": 45.4664941
+                    },
+                    {
+                        "X": 9.148491,
+                        "Y": 45.4665226
+                    },
+                    {
+                        "X": 9.146379,
+                        "Y": 45.4660033
+                    },
+                    {
+                        "X": 9.1433323,
+                        "Y": 45.465134
+                    },
+                    {
+                        "X": 9.1426794,
+                        "Y": 45.4649278
+                    },
+                    {
+                        "X": 9.1422183,
+                        "Y": 45.4647034
+                    },
+                    {
+                        "X": 9.1377223,
+                        "Y": 45.4622065
+                    },
+                    {
+                        "X": 9.1370559,
+                        "Y": 45.4616943
+                    },
+                    {
+                        "X": 9.1359037,
+                        "Y": 45.4612546
+                    },
+                    {
+                        "X": 9.1296067,
+                        "Y": 45.4595697
+                    },
+                    {
+                        "X": 9.1296323,
+                        "Y": 45.4595787
+                    },
+                    {
+                        "X": 9.1225288,
+                        "Y": 45.4573992
+                    },
+                    {
+                        "X": 9.1225672,
+                        "Y": 45.4574262
+                    },
+                    {
+                        "X": 9.1186901,
+                        "Y": 45.4565842
+                    },
+                    {
+                        "X": 9.1130608,
+                        "Y": 45.4556987
+                    }
+                ]
+            },
+            {
+                "RGB": "#FF0000",
+                "Points": [
+                    {
+                        "X": 9.1576433,
+                        "Y": 45.4686436
+                    },
+                    {
+                        "X": 9.1573114,
+                        "Y": 45.4688961
+                    },
+                    {
+                        "X": 9.1553454,
+                        "Y": 45.470384
+                    },
+                    {
+                        "X": 9.1553454,
+                        "Y": 45.470366
+                    },
+                    {
+                        "X": 9.1509281,
+                        "Y": 45.4737924
+                    },
+                    {
+                        "X": 9.1509536,
+                        "Y": 45.4737474
+                    },
+                    {
+                        "X": 9.148949,
+                        "Y": 45.4752892
+                    },
+                    {
+                        "X": 9.1458078,
+                        "Y": 45.4776515
+                    },
+                    {
+                        "X": 9.1439434,
+                        "Y": 45.4790671
+                    },
+                    {
+                        "X": 9.1437263,
+                        "Y": 45.4792294
+                    },
+                    {
+                        "X": 9.143037,
+                        "Y": 45.4799053
+                    },
+                    {
+                        "X": 9.1391567,
+                        "Y": 45.4837086
+                    },
+                    {
+                        "X": 9.1386736,
+                        "Y": 45.4850054
+                    },
+                    {
+                        "X": 9.1374482,
+                        "Y": 45.486267
+                    },
+                    {
+                        "X": 9.1361309,
+                        "Y": 45.4865566
+                    },
+                    {
+                        "X": 9.1343012,
+                        "Y": 45.4866488
+                    },
+                    {
+                        "X": 9.1303611,
+                        "Y": 45.4872024
+                    },
+                    {
+                        "X": 9.1289798,
+                        "Y": 45.4875371
+                    },
+                    {
+                        "X": 9.1278033,
+                        "Y": 45.4879164
+                    },
+                    {
+                        "X": 9.126896,
+                        "Y": 45.4884845
+                    },
+                    {
+                        "X": 9.1264369,
+                        "Y": 45.4892051
+                    },
+                    {
+                        "X": 9.1243316,
+                        "Y": 45.4920158
+                    },
+                    {
+                        "X": 9.1237699,
+                        "Y": 45.4926915
+                    },
+                    {
+                        "X": 9.1224912,
+                        "Y": 45.4931969
+                    },
+                    {
+                        "X": 9.121238,
+                        "Y": 45.4936483
+                    },
+                    {
+                        "X": 9.1202277,
+                        "Y": 45.4940004
+                    },
+                    {
+                        "X": 9.1202404,
+                        "Y": 45.4939914
+                    },
+                    {
+                        "X": 9.1109299,
+                        "Y": 45.4973943
+                    },
+                    {
+                        "X": 9.1059027,
+                        "Y": 45.4989022
+                    },
+                    {
+                        "X": 9.1039716,
+                        "Y": 45.4997681
+                    },
+                    {
+                        "X": 9.1016834,
+                        "Y": 45.5014084
+                    },
+                    {
+                        "X": 9.0976683,
+                        "Y": 45.5037972
+                    },
+                    {
+                        "X": 9.0940096,
+                        "Y": 45.5051504
+                    }
+                ]
+            },
+            {
+                "RGB": "#FF0000",
+                "Points": [
+                    {
+                        "X": 9.0940096,
+                        "Y": 45.5051504
+                    },
+                    {
+                        "X": 9.0896462,
+                        "Y": 45.5062071
+                    },
+                    {
+                        "X": 9.0858096,
+                        "Y": 45.5086673
+                    },
+                    {
+                        "X": 9.0852144,
+                        "Y": 45.5129703
+                    },
+                    {
+                        "X": 9.0861544,
+                        "Y": 45.516543
+                    },
+                    {
+                        "X": 9.0869781,
+                        "Y": 45.5192877
+                    }
+                ]
+            }
+        ],
+        "BoundingBox_NE": {
+            "X": 9.2525284,
+            "Y": 45.5493304
+        },
+        "BoundingBox_SW": {
+            "X": 9.0722781,
+            "Y": 45.4485129
+        }
+    },
+    "Links": [
+        {
+            "Rel": "self",
+            "Href": "tpl/journeyPatterns/-1|0",
+            "Title": null
+        },
+        {
+            "Rel": "geom",
+            "Href": "tpl/journeyPatterns/-1|0/geometry",
+            "Title": null
+        },
+        {
+            "Rel": "stops",
+            "Href": "tpl/journeyPatterns/-1|0/stops",
+            "Title": null
+        }
+    ]
+}
