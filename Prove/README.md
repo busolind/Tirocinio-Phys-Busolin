@@ -14,3 +14,5 @@ URL API: https://giromilano.atm.it/proxy.ashx \
 Body della richiesta POST: {url: tpPortal/geodata/pois/stops/-88}
 
 Risultato: [atm_M1_Sesto_1_Maggio.json](atm_M1_Sesto_1_Maggio.json) [stesso concetto dell'autobus]
+
+Questo è sfociato in un [progetto personale](https://github.com/busolind/Pensilina-ATM-IoT/blob/main/README.md). Di non enorme utilità ai fini del progetto generale ma è servito ad approfondire le richieste alle API, specialmente con HTTPS che su ESP8266 non è triviale
