@@ -16,3 +16,8 @@ Body della richiesta POST: {url: tpPortal/geodata/pois/stops/-88}
 Risultato: [atm_M1_Sesto_1_Maggio.json](atm_M1_Sesto_1_Maggio.json) [stesso concetto dell'autobus]
 
 Questo è sfociato in un [progetto personale](https://github.com/busolind/Pensilina-ATM-IoT/blob/main/README.md). Di non enorme utilità ai fini del progetto generale ma è servito ad approfondire le richieste alle API, specialmente con HTTPS che su ESP8266 non è triviale
+
+Conclusioni:
+- Bisogna stare molto attenti alle scarse risorse dell'ESP, infatti con le risposte da vari kilobyte delle API ATM (esempio estremo) l'unico modo per ottenere qualcosa di funzionante è stato usare gli stream e impostare un filtro su ArduinoJson. Questo mi porta al prossimo punto:
+- Nell'ottica di fornire "da remoto" all'ESP link ad API e campi interessanti, bisogna capire come impostare un filtro basato su informazioni esterne e non "hardcodato", così come generalizzare l'esecuzione delle richieste
+- Offrire un'interfaccia web "on board" potrebbe non essere possibile sempre per il motivo delle scarse risorse
