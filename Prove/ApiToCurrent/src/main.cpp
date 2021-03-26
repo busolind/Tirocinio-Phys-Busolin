@@ -6,6 +6,8 @@
 const char *ssid = "IOT_TEST";
 const char *password = "IOT_TEST";
 
+#define LED_PIN D3
+
 //Come prova faccio una richiesta a http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100
 
 int min_num = 0;
@@ -18,6 +20,7 @@ WiFiClient client;
 HTTPClient http;
 
 unsigned long last_action = 0;
+int out_pwm;
 
 void setup_wifi() {
   delay(10);
@@ -73,11 +76,18 @@ void http_request(void (*callback)(String)) {
 
 void http_callback(String res) {
   Serial.println(res);
+
+  StaticJsonDocument<50> doc;
+  deserializeJson(doc, res);
+
+  out_pwm = map(doc[0].as<int>(), min_num, max_num, 0, PWMRANGE);
+  Serial.println("Mappato a : " + String(out_pwm));
 }
 
 void setup() {
   Serial.begin(115200);
   setup_wifi();
+  pinMode(LED_PIN, OUTPUT);
 }
 
 void loop() {
@@ -87,6 +97,7 @@ void loop() {
     if (WiFi.status() == WL_CONNECTED) {
       http_request(http_callback);
     }
+    analogWrite(LED_PIN, out_pwm);
     Serial.print("Free heap: ");
     Serial.println(ESP.getFreeHeap());
   }
