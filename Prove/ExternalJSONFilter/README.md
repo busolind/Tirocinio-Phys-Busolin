@@ -1,5 +1,5 @@
 Estensione di APIToCurrent in cui cerco di renderlo più generico. L'obiettivo primario sarebbe quello di ricevere dall'esterno URL della risorsa da interrogare e campo a cui si è interessati, senza doverlo hardcodare.
-Al momento sono anche al lavoro sulla questione HTTPS visto che alcune API vogliono quello, ma al momento la compatibilità HTTPS esclude HTTP. Bisogna quindi capire quale protocollo va utilizzato dall'URI e istanziare il client WiFi corretto (WiFiClient per HTTPS e BearSSL::WiFiClientSecure per HTTPS)
+Al momento sono anche al lavoro sulla questione HTTPS visto che alcune API vogliono quello, ma nell'implementazione attuale la compatibilità HTTPS esclude HTTP. Bisogna quindi capire quale protocollo va utilizzato dall'URI e istanziare il client WiFi corretto (WiFiClient per HTTPS e BearSSL::WiFiClientSecure per HTTPS)
 
 Esempio di output:
 
