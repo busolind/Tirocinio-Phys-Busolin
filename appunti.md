@@ -25,7 +25,3 @@ Idee dati usabili
 - Pensilina ATM https://github.com/kristian-keller/Pensilina-ATM (Può essere utile per ricavare dati sui minuti rimanenti per l'arrivo di un mezzo)
 - Aspetto metereologico, tipo umidità
 - Dati finanziari
-
-In [ApiToCurrent](Prove/ApiToCurrent) ho provato a far dipendere un output fisico dal risultato di una richiesta.
-
-La prova successiva riguarderà l'utilizzo di un JSON per creare il filtro, senza hardcodarlo, e trovare un modo comunque per selezionare "da fuori" il campo del JSON a cui si è interessati
