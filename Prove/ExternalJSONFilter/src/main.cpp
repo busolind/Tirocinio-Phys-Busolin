@@ -9,16 +9,17 @@ const char *password = "IOT_TEST";
 
 #define LED_PIN D3
 
-//Come prova faccio una richiesta a http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100
-
 int min_num = 0;
-int max_num = 100;
+int max_num = 80000;
 //Costante PWMRANGE
 
-String apiUrl = "http://www.randomnumberapi.com/api/v1.0/random?min=" + String(min_num) + "&max=" + String(max_num);
+//Come prova faccio una richiesta a http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100
+//String apiUrl = "http://www.randomnumberapi.com/api/v1.0/random?min=" + String(min_num) + "&max=" + String(max_num);
+String apiUrl = "https://api.blockchain.com/v3/exchange/tickers/BTC-USD";
 
-WiFiClient client;
-HTTPClient http;
+//Provo a creare un filtro a partire da un input esterno
+//String filterJSON = "[true]";
+String filterJSON = "{last_trade_price: true}"; //PER API BLOCKCHAIN
 
 unsigned long last_action = 0;
 int out_pwm;
@@ -47,11 +48,17 @@ void setup_wifi() {
 }
 
 void http_request(void (*callback)(Stream &)) {
+  BearSSL::WiFiClientSecure client;
+  client.setInsecure();
+
+  HTTPClient http;
+
   Serial.print("[HTTP] begin...\n");
   if (http.begin(client, apiUrl)) { // HTTP
 
     //Serial.print("[HTTP] GET...\n");
     // start connection and send HTTP header
+    //http.addHeader("Content-Type", "application/json");
     int httpCode = http.GET();
 
     // httpCode will be negative on error
@@ -61,9 +68,9 @@ void http_request(void (*callback)(Stream &)) {
 
       // file found at server
       if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
-        WiFiClient stream = http.getStream();
-        //Serial.println(payload);
-        callback(stream);
+        //Serial.println(http.getString());
+        //WiFiClient stream = http.getStream();
+        callback(client);
       }
     } else {
       Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
@@ -76,13 +83,23 @@ void http_request(void (*callback)(Stream &)) {
 }
 
 void http_callback(Stream &stream) {
-  //Serial.println(res);
   LoggingStream ls(stream, Serial);
 
-  StaticJsonDocument<50> doc;
-  deserializeJson(doc, ls);
+  StaticJsonDocument<50> filter;
+  deserializeJson(filter, filterJSON);
 
-  out_pwm = map(doc[0].as<int>(), min_num, max_num, 0, PWMRANGE);
+  //Necessario perché utilizzando lo stream del client WiFi sicuro la prima linea contiene la lunghezza dello stream in HEX (almeno così sembra)
+  while (char(ls.peek()) != '{') {
+    ls.read();
+  }
+  StaticJsonDocument<50> doc;
+  deserializeJson(doc, ls, DeserializationOption::Filter(filter));
+
+  Serial.println();
+  Serial.println("Documento filtrato:");
+  serializeJson(doc, Serial);
+
+  out_pwm = map(doc["last_trade_price"].as<float>(), min_num, max_num, 0, PWMRANGE);
 
   Serial.println();
   Serial.println("Mappato a : " + String(out_pwm));
