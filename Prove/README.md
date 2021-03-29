@@ -1,3 +1,5 @@
+## Esperimenti ATM
+
 Nel file [atm_viaCeloriaIstitutoBesta.json](atm_viaCeloriaIstitutoBesta.json) si trova il risultato della prova di una chiamata all'API di ATM giromilano che ho trovato
 nella repo della pensilina ATM. Non sono sicuro che questa cosa rispetti i TOS, come menzionato anche nell'altra repo.\
 La prova è stata fatta sulla fermata "Via Celoria (Istituto Besta)" della linea 93 in direzione Viale Omero, numero 12493 - [Street View](https://www.google.com/maps/@45.4771774,9.2299794,3a,24.9y,275.32h,85.92t/data=!3m6!1e1!3m4!1srrvyfBm-6PV-0ohOH_GFiA!2e0!7i16384!8i8192)
@@ -22,7 +24,7 @@ Conclusioni:
 - Nell'ottica di fornire "da remoto" all'ESP link ad API e campi interessanti, bisogna capire come impostare un filtro basato su informazioni esterne e non "hardcodato", così come generalizzare l'esecuzione delle richieste
 - Offrire un'interfaccia web "on board" potrebbe non essere possibile sempre per il motivo delle scarse risorse
 
----
+## Dalle API al mondo fisico
 
 In [ApiToCurrent](ApiToCurrent) ho provato a far dipendere un output fisico dal risultato di una richiesta.
 
