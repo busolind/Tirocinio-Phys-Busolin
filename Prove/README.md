@@ -30,4 +30,4 @@ In [ApiToCurrent](ApiToCurrent) ho provato a far dipendere un output fisico dal 
 
 La prova successiva riguarderà l'utilizzo di un JSON per creare il filtro, senza hardcodarlo, e trovare un modo comunque per selezionare "da fuori" il campo del JSON a cui si è interessati
 
-In [ExternalJSONFilter](ExternalJSONFilter) Cerco di generalizzare il concetto di prendere una risorsa e rappresentarla. Più appiunti nel README dedicato
+In [ExternalJSONFilter](ExternalJSONFilter) Cerco di generalizzare l'azione di prendere una risorsa e rappresentarla. Più appiunti nel README dedicato
