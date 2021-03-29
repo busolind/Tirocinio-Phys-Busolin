@@ -2,6 +2,7 @@
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
+#include <StreamUtils.h>
 
 const char *ssid = "IOT_TEST";
 const char *password = "IOT_TEST";
@@ -45,11 +46,11 @@ void setup_wifi() {
   Serial.println(WiFi.localIP());
 }
 
-void http_request(void (*callback)(String)) {
+void http_request(void (*callback)(Stream &)) {
   Serial.print("[HTTP] begin...\n");
   if (http.begin(client, apiUrl)) { // HTTP
 
-    Serial.print("[HTTP] GET...\n");
+    //Serial.print("[HTTP] GET...\n");
     // start connection and send HTTP header
     int httpCode = http.GET();
 
@@ -60,9 +61,9 @@ void http_request(void (*callback)(String)) {
 
       // file found at server
       if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
-        String payload = http.getString();
+        WiFiClient stream = http.getStream();
         //Serial.println(payload);
-        callback(payload);
+        callback(stream);
       }
     } else {
       Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
@@ -74,13 +75,16 @@ void http_request(void (*callback)(String)) {
   }
 }
 
-void http_callback(String res) {
-  Serial.println(res);
+void http_callback(Stream &stream) {
+  //Serial.println(res);
+  LoggingStream ls(stream, Serial);
 
   StaticJsonDocument<50> doc;
-  deserializeJson(doc, res);
+  deserializeJson(doc, ls);
 
   out_pwm = map(doc[0].as<int>(), min_num, max_num, 0, PWMRANGE);
+
+  Serial.println();
   Serial.println("Mappato a : " + String(out_pwm));
 }
 
