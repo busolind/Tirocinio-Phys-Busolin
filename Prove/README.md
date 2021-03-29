@@ -21,3 +21,11 @@ Conclusioni:
 - Bisogna stare molto attenti alle scarse risorse dell'ESP, infatti con le risposte da vari kilobyte delle API ATM (esempio estremo) l'unico modo per ottenere qualcosa di funzionante è stato usare gli stream e impostare un filtro su ArduinoJson. Questo mi porta al prossimo punto:
 - Nell'ottica di fornire "da remoto" all'ESP link ad API e campi interessanti, bisogna capire come impostare un filtro basato su informazioni esterne e non "hardcodato", così come generalizzare l'esecuzione delle richieste
 - Offrire un'interfaccia web "on board" potrebbe non essere possibile sempre per il motivo delle scarse risorse
+
+---
+
+In [ApiToCurrent](ApiToCurrent) ho provato a far dipendere un output fisico dal risultato di una richiesta.
+
+La prova successiva riguarderà l'utilizzo di un JSON per creare il filtro, senza hardcodarlo, e trovare un modo comunque per selezionare "da fuori" il campo del JSON a cui si è interessati
+
+In [ExternalJSONFilter](ExternalJSONFilter) Cerco di generalizzare il concetto di prendere una risorsa e rappresentarla. Più appiunti nel README dedicato
