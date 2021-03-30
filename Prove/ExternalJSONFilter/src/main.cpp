@@ -9,17 +9,20 @@ const char *password = "IOT_TEST";
 
 #define LED_PIN D3
 
-int min_num = 0;
-int max_num = 80000;
+float min_num = 15;
+float max_num = 30;
 //Costante PWMRANGE
 
 //Come prova faccio una richiesta a http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100
 //String apiUrl = "http://www.randomnumberapi.com/api/v1.0/random?min=" + String(min_num) + "&max=" + String(max_num);
-String apiUrl = "https://api.blockchain.com/v3/exchange/tickers/BTC-USD";
+//String apiUrl = "https://api.blockchain.com/v3/exchange/tickers/BTC-USD";
+String apiUrl = "https://api.ratesapi.io/api/latest";
 
 //Provo a creare un filtro a partire da un input esterno
 //String filterJSON = "[true]";
-String filterJSON = "{last_trade_price: true}"; //PER API BLOCKCHAIN
+//String filterJSON = "{last_trade_price: true}"; //PER API BLOCKCHAIN
+String filterJSON = "{rates: {MXN: true}}"; //PER API RATES
+String path = "rates/MXN";
 
 unsigned long last_action = 0;
 int out_pwm;
@@ -98,8 +101,13 @@ void http_callback(Stream &stream) {
   Serial.println();
   Serial.println("Documento filtrato:");
   serializeJson(doc, Serial);
+  float value = doc["rates"]["MXN"].as<float>();
 
-  out_pwm = map(doc["last_trade_price"].as<float>(), min_num, max_num, 0, PWMRANGE);
+  Serial.println();
+  Serial.println("Valore estratto: " + String(value));
+
+  //out_pwm = map(value, min_num, max_num, 0, PWMRANGE);
+  out_pwm = (value - min_num) * (PWMRANGE - 0) / (max_num - min_num) + 0;
 
   Serial.println();
   Serial.println("Mappato a : " + String(out_pwm));
