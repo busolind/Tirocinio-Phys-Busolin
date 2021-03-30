@@ -19,15 +19,18 @@ float max_num = 150;
 //String apiUrl = "http://www.randomnumberapi.com/api/v1.0/random?min=" + String(min_num) + "&max=" + String(max_num);
 //String apiUrl = "https://api.blockchain.com/v3/exchange/tickers/BTC-USD";
 //String apiUrl = "https://api.ratesapi.io/api/latest";
-String apiUrl = "https://api.zippopotam.us/us/90210"; //Beverly Hills (scelta perché ha un mix di oggetti e array)
+//String apiUrl = "https://api.zippopotam.us/us/90210"; //Beverly Hills (scelta perché ha un mix di oggetti e array)
+String apiUrl = "https://csrng.net/csrng/csrng.php?min=" + String(int(min_num)) + "&max=" + String(int(max_num));
 
 //Provo a creare un filtro a partire da un input esterno
 //String filterJSON = "[true]";
 //String filterJSON = "{last_trade_price: true}"; //PER API BLOCKCHAIN
-String filterJSON = "{\"places\": [{\"latitude\": true}]}";
+//String filterJSON = "{\"places\": [{\"latitude\": true}]}";
 //String filterJSON = "{rates: {MXN: true}}"; //PER API RATES
+String filterJSON = "[{random: true}]";
 //String path = "last_trade_price";
-String path = "places/0/latitude";
+//String path = "places/0/latitude";
+String path = "0/random";
 
 unsigned long last_action = 0;
 int out_pwm;
@@ -96,10 +99,19 @@ void http_callback(Stream &stream) {
   StaticJsonDocument<200> filter;
   deserializeJson(filter, filterJSON);
 
+  Serial.println();
+  Serial.println("Filter:");
+  serializeJson(filter, Serial);
+  Serial.println();
+
   //Necessario perché utilizzando lo stream del client WiFi sicuro la prima linea contiene la lunghezza dello stream in HEX (almeno così sembra)
-  while (char(ls.peek()) != '{') {
+  Serial.println("--- Inizio parte esclusa da JSON ---");
+  while (char(ls.peek()) != '{' && char(ls.peek()) != '[') {
     ls.read();
   }
+  Serial.println("---  Fine parte esclusa da JSON  ---");
+  Serial.println();
+
   StaticJsonDocument<1000> doc;
   deserializeJson(doc, ls, DeserializationOption::Filter(filter));
   //deserializeJson(doc, ls);
@@ -128,7 +140,7 @@ void http_callback(Stream &stream) {
       }
       p++;
     }
-    
+
     if (object) {
       jv = jv[token];
     } else {
