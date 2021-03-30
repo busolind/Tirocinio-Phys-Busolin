@@ -101,7 +101,33 @@ void http_callback(Stream &stream) {
   Serial.println();
   Serial.println("Documento filtrato:");
   serializeJson(doc, Serial);
+
+  //INIZIO CANTIERE TEST PARSING PATH, per ora solo con oggetti dentro oggetti
+  JsonVariant jv = doc.as<JsonVariant>();
+
+  int path_buf_len = 50;
+  char path_buf[path_buf_len];
+  char *token;
+
+  path.toCharArray(path_buf, path_buf_len);
+  token = strtok(path_buf, "/");
+  Serial.println();
+  while (token != NULL) {
+    jv = jv[token];
+    Serial.println("Token: " + String(token));
+    token = strtok(NULL, "/");
+  }
+
+  float value = jv.as<float>();
+  //FINE CANTIERE
+
+  /*
+  JsonVariant jv = doc.as<JsonVariant>();
+  jv = jv["rates"];
+  serializeJson(jv, Serial);
+
   float value = doc["rates"]["MXN"].as<float>();
+  */
 
   Serial.println();
   Serial.println("Valore estratto: " + String(value));
