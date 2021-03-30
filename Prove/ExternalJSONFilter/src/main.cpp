@@ -9,20 +9,25 @@ const char *password = "IOT_TEST";
 
 #define LED_PIN D3
 
-float min_num = 15;
-float max_num = 30;
+//Possibilmente successivamente impostati "da fuori"
+
+float min_num = 0;
+float max_num = 150;
 //Costante PWMRANGE
 
 //Come prova faccio una richiesta a http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100
 //String apiUrl = "http://www.randomnumberapi.com/api/v1.0/random?min=" + String(min_num) + "&max=" + String(max_num);
 //String apiUrl = "https://api.blockchain.com/v3/exchange/tickers/BTC-USD";
-String apiUrl = "https://api.ratesapi.io/api/latest";
+//String apiUrl = "https://api.ratesapi.io/api/latest";
+String apiUrl = "https://api.zippopotam.us/us/90210"; //Beverly Hills (scelta perché ha un mix di oggetti e array)
 
 //Provo a creare un filtro a partire da un input esterno
 //String filterJSON = "[true]";
 //String filterJSON = "{last_trade_price: true}"; //PER API BLOCKCHAIN
-String filterJSON = "{rates: {MXN: true}}"; //PER API RATES
-String path = "rates/MXN";
+String filterJSON = "{\"places\": [{\"latitude\": true}]}";
+//String filterJSON = "{rates: {MXN: true}}"; //PER API RATES
+//String path = "last_trade_price";
+String path = "places/0/latitude";
 
 unsigned long last_action = 0;
 int out_pwm;
@@ -88,21 +93,22 @@ void http_request(void (*callback)(Stream &)) {
 void http_callback(Stream &stream) {
   LoggingStream ls(stream, Serial);
 
-  StaticJsonDocument<50> filter;
+  StaticJsonDocument<200> filter;
   deserializeJson(filter, filterJSON);
 
   //Necessario perché utilizzando lo stream del client WiFi sicuro la prima linea contiene la lunghezza dello stream in HEX (almeno così sembra)
   while (char(ls.peek()) != '{') {
     ls.read();
   }
-  StaticJsonDocument<50> doc;
+  StaticJsonDocument<1000> doc;
   deserializeJson(doc, ls, DeserializationOption::Filter(filter));
+  //deserializeJson(doc, ls);
 
   Serial.println();
   Serial.println("Documento filtrato:");
   serializeJson(doc, Serial);
 
-  //INIZIO CANTIERE TEST PARSING PATH, per ora solo con oggetti dentro oggetti
+  //INIZIO CANTIERE TEST PARSING PATH
   JsonVariant jv = doc.as<JsonVariant>();
 
   int path_buf_len = 50;
@@ -113,8 +119,23 @@ void http_callback(Stream &stream) {
   token = strtok(path_buf, "/");
   Serial.println();
   while (token != NULL) {
-    jv = jv[token];
-    Serial.println("Token: " + String(token));
+    //controlla se è numero o no
+    bool object = false;
+    char *p = token;
+    while (*p != 0) {
+      if (!isDigit(*p)) {
+        object = true;
+      }
+      p++;
+    }
+    
+    if (object) {
+      jv = jv[token];
+    } else {
+      jv = jv[atoi(token)];
+    }
+    Serial.print("Token: " + String(token) + " ");
+    Serial.println(object ? "[OBJ]" : "[ARRAY]");
     token = strtok(NULL, "/");
   }
 
