@@ -29,3 +29,4 @@ Ho anche implementato un AsyncWebServer che per ora contiene solo un form che co
 ToDo:
 - Cambiare il nome a ``interval_min`` e ``interval_max`` per non confondersi con l'intervallo di tempo
 - Aggiungere configurazione per l'intervallo di tempo tra una richiesta e l'altra
+- Salvare configurazione su file per mantenere modifiche dopo riavvio
