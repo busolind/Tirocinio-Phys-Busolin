@@ -144,7 +144,7 @@ void stream_callback(Stream &stream) {
   Serial.println("---  Fine parte esclusa da JSON  ---");
   Serial.println();
 
-  StaticJsonDocument<1000> doc;
+  DynamicJsonDocument doc(2000);
   deserializeJson(doc, ls, DeserializationOption::Filter(filter));
   //deserializeJson(doc, ls);
 
