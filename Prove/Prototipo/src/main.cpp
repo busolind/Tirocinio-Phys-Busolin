@@ -6,9 +6,8 @@
 #include <PubSubClientTools.h>
 #include <StreamUtils.h>
 #include <TaskScheduler.h>
+#include <WiFiManager.h>
 
-const char *ssid = "IOT_TEST";
-const char *password = "IOT_TEST";
 const char *mqtt_server = "192.168.178.5";
 
 #define LED_PIN D3
@@ -57,18 +56,18 @@ PubSubClient mqtt_client(mqtt_server, 1883, espClient);
 PubSubClientTools mqtt_tools(mqtt_client);
 
 void setup_wifi() {
-  delay(10);
-  // We start by connecting to a WiFi network
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
+  WiFiManager wm;
 
   WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+    if (!wm.autoConnect("AutoConnectAP")) {
+      Serial.println("Failed to connect");
+      // ESP.restart();
+    } else {
+      //if you get here you have connected to the WiFi
+      Serial.println("connected...yeey :)");
+    }
   }
 
   randomSeed(micros());
