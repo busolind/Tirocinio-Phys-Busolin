@@ -1,13 +1,16 @@
+#include "ESPAsyncTCP.h"
+#include "ESPAsyncWebServer.h"
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
+#include <ESPAsyncWiFiManager.h>
 #include <PubSubClient.h>
 #include <PubSubClientTools.h>
 #include <StreamUtils.h>
 #include <TaskScheduler.h>
-#include <WiFiManager.h>
 
+const char *hostName = "esp-async";
 const char *mqtt_server = "192.168.178.5";
 
 #define LED_PIN D3
@@ -55,13 +58,98 @@ WiFiClient espClient;
 PubSubClient mqtt_client(mqtt_server, 1883, espClient);
 PubSubClientTools mqtt_tools(mqtt_client);
 
-void setup_wifi() {
-  WiFiManager wm;
+AsyncWebServer server(80);
+DNSServer dns;
 
+const char index_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE HTML><html><head>
+  <title>ESP Input Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head><body>
+  <form action="/post" method="POST">
+    Settings JSON: <input type="text" name="setFromJSON">
+    <input type="submit" value="Submit">
+  </form>
+</body></html>)rawliteral";
+
+void notFound(AsyncWebServerRequest *request) {
+  request->send(404, "text/plain", "Not found");
+}
+
+void setFromJSON(String json) {
+  /*
+  ESEMPI:
+  {
+    apiUrl: "http://www.randomnumberapi.com/api/v1.0/random?min=0&max=10000",
+    filterJSON: [true],
+    path: "0",
+    interval_min: 0,
+    interval_max: 10000
+  }
+
+
+  {
+    apiUrl: "https://api.blockchain.com/v3/exchange/tickers/BTC-USD",
+    filterJSON: {last_trade_price: true},
+    path: "last_trade_price",
+    interval_min: 57000,
+    interval_max: 59000
+  }
+
+  (completamente inutile ma è una prova)
+  {
+    apiUrl: "https://api.zippopotam.us/us/90210",
+    filterJSON: {"places": [{"latitude": true}]},
+    path: "places/0/latitude",
+    interval_min: 34.01,
+    interval_max: 34.11
+  }
+*/
+
+  DynamicJsonDocument doc(2000);
+  deserializeJson(doc, json);
+
+  apiUrl = doc["apiUrl"].as<String>();
+  filterJSON = doc["filterJSON"].as<String>();
+  path = doc["path"].as<String>();
+  interval_min = doc["interval_min"].as<float>();
+  interval_max = doc["interval_max"].as<float>();
+}
+
+void setup_ws() {
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send_P(200, "text/html", index_html);
+  });
+
+  server.on("/post", HTTP_POST, [](AsyncWebServerRequest *request) {
+    String inputMessage;
+    String inputParam;
+
+    // POST setFromJSON value on <ESP_IP>/post
+    if (request->hasParam("setFromJSON", true)) {
+      inputMessage = request->getParam("setFromJSON", true)->value();
+      inputParam = "setFromJSON";
+      setFromJSON(inputMessage);
+    } else {
+      inputMessage = "No message sent";
+      inputParam = "none";
+    }
+    Serial.println(inputMessage);
+    request->send(200, "text/html", "HTTP POST request sent to your ESP on input field (" + inputParam + ") with value: " + inputMessage + "<br><a href=\"/\">Return to Home Page</a>");
+  });
+
+  server.onNotFound(notFound);
+  server.begin();
+}
+
+void setup_wifi() {
+  AsyncWiFiManager wifiManager(&server, &dns);
+
+  //WiFi.mode(WIFI_AP_STA);
   WiFi.mode(WIFI_STA);
 
   while (WiFi.status() != WL_CONNECTED) {
-    if (!wm.autoConnect("AutoConnectAP")) {
+    if (!wifiManager.autoConnect("AutoConnectAP")) {
       Serial.println("Failed to connect");
       // ESP.restart();
     } else {
@@ -76,6 +164,8 @@ void setup_wifi() {
   Serial.println("WiFi connected");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+
+  //WiFi.softAP(hostName);
 }
 
 void http_request(void (*callback)(Stream &)) {
@@ -265,44 +355,8 @@ void mqtt_callback_setIntervalMax(String topic, String message) {
 }
 
 void mqtt_callback_setFromJSON(String topic, String message) {
-  /*
-  ESEMPI:
-  {
-    apiUrl: "http://www.randomnumberapi.com/api/v1.0/random?min=0&max=10000",
-    filterJSON: [true],
-    path: "0",
-    interval_min: 0,
-    interval_max: 10000
-  }
-
-
-  {
-    apiUrl: "https://api.blockchain.com/v3/exchange/tickers/BTC-USD",
-    filterJSON: {last_trade_price: true},
-    path: "last_trade_price",
-    interval_min: 57000,
-    interval_max: 59000
-  }
-
-  (completamente inutile ma è una prova)
-  {
-    apiUrl: "https://api.zippopotam.us/us/90210",
-    filterJSON: {"places": [{"latitude": true}]},
-    path: "places/0/latitude",
-    interval_min: 34.01,
-    interval_max: 34.11
-  }
-*/
   Serial.println("Message arrived [" + topic + "]:\n" + message + "\n");
-
-  DynamicJsonDocument doc(2000);
-  deserializeJson(doc, message);
-
-  apiUrl = doc["apiUrl"].as<String>();
-  filterJSON = doc["filterJSON"].as<String>();
-  path = doc["path"].as<String>();
-  interval_min = doc["interval_min"].as<float>();
-  interval_max = doc["interval_max"].as<float>();
+  setFromJSON(message);
 }
 
 void mqtt_reconnect() {
@@ -327,6 +381,7 @@ Task mqtt_reconnect_task(MQTT_RECONNECT_DELAY *TASK_MILLISECOND, TASK_FOREVER, m
 void setup() {
   Serial.begin(115200);
   setup_wifi();
+  setup_ws();
   pinMode(LED_PIN, OUTPUT);
 
   ts.addTask(mqtt_reconnect_task);
