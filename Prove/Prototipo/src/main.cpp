@@ -3,11 +3,14 @@
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
 #include <StreamUtils.h>
+#include <TaskScheduler.h>
 
 const char *ssid = "IOT_TEST";
 const char *password = "IOT_TEST";
 
 #define LED_PIN D3
+
+#define REQUEST_DELAY_MS 5000
 
 //Possibilmente successivamente impostati "da fuori"
 
@@ -34,8 +37,9 @@ String filterJSON = "[{random: true}]"; //https_random
 //String path = "places/0/latitude"; //Beverly Hills
 String path = "0/random"; //https_random
 
-unsigned long last_action = 0;
 int out_pwm;
+
+Scheduler ts;
 
 void setup_wifi() {
   delay(10);
@@ -204,25 +208,33 @@ void stream_callback(Stream &stream) {
   Serial.println("Mappato a : " + String(out_pwm));
 }
 
+void request_task_callback() {
+  if (apiUrl.startsWith("https://")) {
+    https_request(stream_callback);
+  } else {
+    http_request(stream_callback);
+  }
+
+  analogWrite(LED_PIN, out_pwm);
+  Serial.print("Free heap: ");
+  Serial.println(ESP.getFreeHeap());
+}
+Task request_task(REQUEST_DELAY_MS *TASK_MILLISECOND, TASK_FOREVER, request_task_callback);
+
 void setup() {
   Serial.begin(115200);
   setup_wifi();
   pinMode(LED_PIN, OUTPUT);
+
+  ts.addTask(request_task);
 }
 
 void loop() {
-  unsigned long now = millis();
-  if (now - last_action > 5000) {
-    last_action = now;
-    if (WiFi.status() == WL_CONNECTED) {
-      if (apiUrl.startsWith("https://")) {
-        https_request(stream_callback);
-      } else {
-        http_request(stream_callback);
-      }
-    }
-    analogWrite(LED_PIN, out_pwm);
-    Serial.print("Free heap: ");
-    Serial.println(ESP.getFreeHeap());
+  if (WiFi.status() == WL_CONNECTED) {
+    request_task.enableIfNot();
+  } else {
+    request_task.disable();
   }
+
+  ts.execute();
 }
