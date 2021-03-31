@@ -65,9 +65,18 @@ const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE HTML><html><head>
   <title>ESP Input Form</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head><body>
+  </head><body style="text-align: center;">
   <form action="/post" method="POST">
-    Settings JSON: <input type="text" name="setFromJSON">
+    Settings JSON:<br>
+    <textarea rows="20" cols="120" name="setFromJSON">
+{
+  apiUrl: "https://api.blockchain.com/v3/exchange/tickers/BTC-USD",
+  filterJSON: {last_trade_price: true},
+  path: "last_trade_price",
+  interval_min: 57000,
+  interval_max: 59000
+}
+    </textarea><br>
     <input type="submit" value="Submit">
   </form>
 </body></html>)rawliteral";
