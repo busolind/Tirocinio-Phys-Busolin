@@ -2,21 +2,30 @@
 #include <ArduinoJson.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
+#include <PubSubClient.h>
+#include <PubSubClientTools.h>
 #include <StreamUtils.h>
 #include <TaskScheduler.h>
 
 const char *ssid = "IOT_TEST";
 const char *password = "IOT_TEST";
+const char *mqtt_server = "192.168.178.5";
 
 #define LED_PIN D3
 
-#define REQUEST_DELAY_MS 5000
+#define REQUEST_DELAY_MS 10000
+#define MQTT_RECONNECT_DELAY 5000
 
 //Possibilmente successivamente impostati "da fuori"
 
 float min_num = 0;
 float max_num = 80000;
 //Costante PWMRANGE
+
+String root_topic = "Phys";
+String sub_to_apiurl = root_topic + "/setApiUrl";
+String sub_to_filterJSON = root_topic + "/setFilterJson";
+String sub_to_path = root_topic + "/setPath";
 
 //Come prova faccio una richiesta a http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100
 //String apiUrl = "http://www.randomnumberapi.com/api/v1.0/random?min=" + String(int(min_num)) + "&max=" + String(int(max_num)); //http_random
@@ -40,6 +49,9 @@ String path = "0/random"; //https_random
 int out_pwm;
 
 Scheduler ts;
+WiFiClient espClient;
+PubSubClient mqtt_client(mqtt_server, 1883, espClient);
+PubSubClientTools mqtt_tools(mqtt_client);
 
 void setup_wifi() {
   delay(10);
@@ -68,7 +80,8 @@ void http_request(void (*callback)(Stream &)) {
   WiFiClient client;
   HTTPClient http;
 
-  Serial.print("[HTTP] begin...\n");
+  Serial.print("[HTTP] begin... ");
+  Serial.println("URL: " + apiUrl);
   if (http.begin(client, apiUrl)) { // HTTP
 
     //Serial.print("[HTTP] GET...\n");
@@ -102,7 +115,8 @@ void https_request(void (*callback)(Stream &)) {
 
   HTTPClient http;
 
-  Serial.print("[HTTPS] begin...\n");
+  Serial.print("[HTTPS] begin... ");
+  Serial.println("URL: " + apiUrl);
   if (http.begin(client, apiUrl)) { // HTTP
 
     //Serial.print("[HTTP] GET...\n");
@@ -221,20 +235,60 @@ void request_task_callback() {
 }
 Task request_task(REQUEST_DELAY_MS *TASK_MILLISECOND, TASK_FOREVER, request_task_callback);
 
+void mqtt_callback_setApiUrl(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]: " + message);
+  apiUrl = message;
+}
+
+void mqtt_callback_setFilterJson(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]: " + message);
+  filterJSON = message;
+}
+
+void mqtt_callback_setPath(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]: " + message);
+  path = message;
+}
+
+void mqtt_reconnect() {
+  Serial.print("Attempting MQTT connection...");
+  String clientId = "ESP8266Client-" + String(random(0xffff), HEX);
+  // Attempt to connect
+  if (mqtt_client.connect(clientId.c_str())) {
+    Serial.println("connected");
+    mqtt_tools.subscribe(sub_to_apiurl, mqtt_callback_setApiUrl);
+    mqtt_tools.subscribe(sub_to_filterJSON, mqtt_callback_setFilterJson);
+    mqtt_tools.subscribe(sub_to_path, mqtt_callback_setPath);
+  } else {
+    Serial.print("failed, rc=");
+    Serial.println(mqtt_client.state());
+  }
+}
+Task mqtt_reconnect_task(MQTT_RECONNECT_DELAY *TASK_MILLISECOND, TASK_FOREVER, mqtt_reconnect);
+
 void setup() {
   Serial.begin(115200);
   setup_wifi();
   pinMode(LED_PIN, OUTPUT);
 
+  ts.addTask(mqtt_reconnect_task);
   ts.addTask(request_task);
 }
 
 void loop() {
+  if (!mqtt_client.connected()) {
+    mqtt_reconnect_task.enableIfNot();
+  } else {
+    mqtt_reconnect_task.disable();
+  }
+
   if (WiFi.status() == WL_CONNECTED) {
     request_task.enableIfNot();
   } else {
     request_task.disable();
   }
+
+  mqtt_client.loop();
 
   ts.execute();
 }
