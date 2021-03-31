@@ -18,21 +18,24 @@ const char *mqtt_server = "192.168.178.5";
 
 //Possibilmente successivamente impostati "da fuori"
 
-float min_num = 0;
-float max_num = 80000;
+float interval_min = 0;
+float interval_max = 80000;
 //Costante PWMRANGE
 
 String root_topic = "Phys";
 String sub_to_apiurl = root_topic + "/setApiUrl";
 String sub_to_filterJSON = root_topic + "/setFilterJson";
 String sub_to_path = root_topic + "/setPath";
+String sub_to_interval_min = root_topic + "/setIntervalMin";
+String sub_to_interval_max = root_topic + "/setIntervalMax";
+String sub_to_setFromJSON = root_topic + "/setFromJSON";
 
 //Come prova faccio una richiesta a http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100
-//String apiUrl = "http://www.randomnumberapi.com/api/v1.0/random?min=" + String(int(min_num)) + "&max=" + String(int(max_num)); //http_random
+//String apiUrl = "http://www.randomnumberapi.com/api/v1.0/random?min=" + String(int(interval_min)) + "&max=" + String(int(interval_max)); //http_random
 //String apiUrl = "https://api.blockchain.com/v3/exchange/tickers/BTC-USD";
 //String apiUrl = "https://api.ratesapi.io/api/latest";
 //String apiUrl = "https://api.zippopotam.us/us/90210"; //Beverly Hills (scelta perché ha un mix di oggetti e array)
-String apiUrl = "https://csrng.net/csrng/csrng.php?min=" + String(int(min_num)) + "&max=" + String(int(max_num)); //https_random
+String apiUrl = "https://csrng.net/csrng/csrng.php?min=" + String(int(interval_min)) + "&max=" + String(int(interval_max)); //https_random
 
 //Provo a creare un filtro a partire da un input esterno
 //String filterJSON = "[true]"; //http_random
@@ -150,7 +153,7 @@ void stream_callback(Stream &stream) {
   deserializeJson(filter, filterJSON);
 
   Serial.println();
-  Serial.println("Filter:");
+  Serial.print("Filter: ");
   serializeJson(filter, Serial);
   Serial.println();
 
@@ -214,9 +217,11 @@ void stream_callback(Stream &stream) {
 
   Serial.println();
   Serial.println("Valore estratto: " + String(value));
+  Serial.println("Minimo: " + String(interval_min));
+  Serial.println("Massimo: " + String(interval_max));
 
-  //out_pwm = map(value, min_num, max_num, 0, PWMRANGE);
-  out_pwm = (value - min_num) * (PWMRANGE - 0) / (max_num - min_num) + 0;
+  //out_pwm = map(value, interval_min, interval_max, 0, PWMRANGE);
+  out_pwm = (value - interval_min) * (PWMRANGE - 0) / (interval_max - interval_min) + 0;
 
   Serial.println();
   Serial.println("Mappato a : " + String(out_pwm));
@@ -250,6 +255,57 @@ void mqtt_callback_setPath(String topic, String message) {
   path = message;
 }
 
+void mqtt_callback_setIntervalMin(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]: " + message);
+  interval_min = message.toFloat();
+}
+
+void mqtt_callback_setIntervalMax(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]: " + message);
+  interval_max = message.toFloat();
+}
+
+void mqtt_callback_setFromJSON(String topic, String message) {
+  /*
+  ESEMPI:
+  {
+    apiUrl: "http://www.randomnumberapi.com/api/v1.0/random?min=0&max=10000",
+    filterJSON: [true],
+    path: "0",
+    interval_min: 0,
+    interval_max: 10000
+  }
+
+
+  {
+    apiUrl: "https://api.blockchain.com/v3/exchange/tickers/BTC-USD",
+    filterJSON: {last_trade_price: true},
+    path: "last_trade_price",
+    interval_min: 57000,
+    interval_max: 59000
+  }
+
+  (completamente inutile ma è una prova)
+  {
+    apiUrl: "https://api.zippopotam.us/us/90210",
+    filterJSON: {"places": [{"latitude": true}]},
+    path: "places/0/latitude",
+    interval_min: 34.01,
+    interval_max: 34.11
+  }
+*/
+  Serial.println("Message arrived [" + topic + "]:\n" + message + "\n");
+
+  DynamicJsonDocument doc(2000);
+  deserializeJson(doc, message);
+
+  apiUrl = doc["apiUrl"].as<String>();
+  filterJSON = doc["filterJSON"].as<String>();
+  path = doc["path"].as<String>();
+  interval_min = doc["interval_min"].as<float>();
+  interval_max = doc["interval_max"].as<float>();
+}
+
 void mqtt_reconnect() {
   Serial.print("Attempting MQTT connection...");
   String clientId = "ESP8266Client-" + String(random(0xffff), HEX);
@@ -259,6 +315,9 @@ void mqtt_reconnect() {
     mqtt_tools.subscribe(sub_to_apiurl, mqtt_callback_setApiUrl);
     mqtt_tools.subscribe(sub_to_filterJSON, mqtt_callback_setFilterJson);
     mqtt_tools.subscribe(sub_to_path, mqtt_callback_setPath);
+    mqtt_tools.subscribe(sub_to_setFromJSON, mqtt_callback_setFromJSON);
+    mqtt_tools.subscribe(sub_to_interval_min, mqtt_callback_setIntervalMin);
+    mqtt_tools.subscribe(sub_to_interval_max, mqtt_callback_setIntervalMax);
   } else {
     Serial.print("failed, rc=");
     Serial.println(mqtt_client.state());
