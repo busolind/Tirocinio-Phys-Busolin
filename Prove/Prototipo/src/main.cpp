@@ -134,6 +134,7 @@ void setup_ws() {
       inputMessage = "No message sent";
       inputParam = "none";
     }
+    Serial.println("Messaggio ricevuto via POST: ");
     Serial.println(inputMessage);
     request->send(200, "text/html", "HTTP POST request sent to your ESP on input field (" + inputParam + ") with value: " + inputMessage + "<br><a href=\"/\">Return to Home Page</a>");
   });
