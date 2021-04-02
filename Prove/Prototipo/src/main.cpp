@@ -5,6 +5,8 @@
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
 #include <ESPAsyncWiFiManager.h>
+#include <FS.h>
+#include <LittleFS.h>
 #include <PubSubClient.h>
 #include <PubSubClientTools.h>
 #include <StreamUtils.h>
@@ -61,26 +63,6 @@ PubSubClientTools mqtt_tools(mqtt_client);
 AsyncWebServer server(80);
 DNSServer dns;
 
-const char index_html[] PROGMEM = R"rawliteral(
-<!DOCTYPE HTML><html><head>
-  <title>ESP Input Form</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head><body style="text-align: center;">
-  <form action="/post" method="POST">
-    Settings JSON:<br>
-    <textarea rows="20" cols="120" name="setFromJSON">
-{
-  apiUrl: "https://api.blockchain.com/v3/exchange/tickers/BTC-USD",
-  filterJSON: {last_trade_price: true},
-  path: "last_trade_price",
-  interval_min: 57000,
-  interval_max: 59000
-}
-    </textarea><br>
-    <input type="submit" value="Submit">
-  </form>
-</body></html>)rawliteral";
-
 void notFound(AsyncWebServerRequest *request) {
   request->send(404, "text/plain", "Not found");
 }
@@ -126,9 +108,7 @@ void setFromJSON(String json) {
 }
 
 void setup_ws() {
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-    request->send_P(200, "text/html", index_html);
-  });
+  server.serveStatic("/", LittleFS, "/static/").setDefaultFile("index.html");
 
   server.on("/post", HTTP_POST, [](AsyncWebServerRequest *request) {
     String inputMessage;
@@ -393,6 +373,7 @@ void setup() {
   setup_wifi();
   setup_ws();
   pinMode(LED_PIN, OUTPUT);
+  LittleFS.begin();
 
   ts.addTask(mqtt_reconnect_task);
   ts.addTask(request_task);
