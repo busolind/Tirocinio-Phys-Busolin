@@ -13,6 +13,27 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
       min_pwm: 0,
       max_pwm: 1023
     }
+###
+    {
+      apiUrl: "http://www.randomnumberapi.com/api/v1.0/random?min=0&max=10000",
+      filterJSON: [true],
+      path: "0",
+      min_value: 0,
+      max_value: 10000,
+      min_pwm: 0,
+      max_pwm: 1023
+    }
+###
+    {
+      apiUrl: "https://api.zippopotam.us/us/90210",
+      filterJSON: {"places": [{"latitude": true}]},
+      path: "places/0/latitude",
+      min_value: 34.01,
+      max_value: 34.11,
+      min_pwm: 0,
+      max_pwm: 1023
+    }
+
   
   Dove:
 - ``apiUrl`` è appunto l'URL alla risorsa (stringa)
