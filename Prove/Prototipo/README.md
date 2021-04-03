@@ -11,7 +11,8 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
       min_value: 57000,
       max_value: 59000,
       min_pwm: 0,
-      max_pwm: 1023
+      max_pwm: 1023,
+      request_interval_ms: 5000
     }
 ###
     {
@@ -21,7 +22,8 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
       min_value: 0,
       max_value: 10000,
       min_pwm: 0,
-      max_pwm: 1023
+      max_pwm: 1023,
+      request_interval_ms: 9000
     }
 ###
     {
@@ -31,7 +33,8 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
       min_value: 34.01,
       max_value: 34.11,
       min_pwm: 0,
-      max_pwm: 1023
+      max_pwm: 1023,
+      request_interval_ms: 5000
     }
 
   
@@ -43,6 +46,7 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
 - ``max_value`` indica il valore massimo (float)
 - ``min_pwm`` indica il valore minimo di uscita della PWM da mappare al valore restituito dalle API (int)
 - ``max_pwm`` indica il valore massimo \[su ESP il duty cycle massimo equivale a 1023\] (int)
+- ``request_interval_ms`` indica l'intervallo di tempo in millisecondi che trascorre tra una richiesta e l'altra alle API (int)
 
 È anche possibile settare i singoli campi via MQTT:
 - ``Phys/setApiUrl``
@@ -52,6 +56,7 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
 - ``Phys/setMaxValue``
 - ``Phys/setMinPwm``
 - ``Phys/setMaxPwm``
+- ``Phys/setRequestIntervalMs``
 
 Ho anche implementato un AsyncWebServer che per ora contiene solo un form che consente di inserire un JSON di configurazione (equivalente a quello di ``Phys/setFromJSON``).
 
@@ -59,7 +64,8 @@ Ho anche implementato un AsyncWebServer che per ora contiene solo un form che co
 
 ToDo:
 - ✓ Cambiare il nome a ``interval_min`` e ``interval_max`` per non confondersi con l'intervallo di tempo
-- Aggiungere configurazione per l'intervallo di tempo tra una richiesta e l'altra
+- ✓ Aggiungere configurazione per l'intervallo di tempo tra una richiesta e l'altra
+- ✓ Caricamento configurazione da file su flash
 - Salvare configurazione su file per mantenere modifiche dopo riavvio - [``LittleFS``](https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html)
 
 ## Esempio di output su seriale (non aggiornato alle nuove variabili)
