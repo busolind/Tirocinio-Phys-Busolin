@@ -72,7 +72,9 @@ DNSServer dns;
 void set_conf_from_json(String json);
 String conf_to_json();
 
-void load_conf_from_flash() {
+//Restituisce il file di configurazione salvato nella flash sotto forma di stringa
+String load_conf_from_flash() {
+  String conf = "";
   if (!LittleFS.exists(settings_file)) {
     Serial.println("ERRORE: file di configurazione non trovato");
   } else {
@@ -80,14 +82,14 @@ void load_conf_from_flash() {
     if (!file) {
       Serial.println("ERRORE: apertura file di configurazione non riuscita");
     } else {
-      set_conf_from_json(file.readString());
+      conf = file.readString();
       file.close();
-      Serial.println("Il file esiste, se conteneva impostazioni valide sono state caricate");
     }
   }
+  return conf;
 }
 
-void conf_to_flash() {
+void running_conf_to_flash() {
   File file = LittleFS.open(settings_file, "w");
   if (!file) {
     Serial.println("ERRORE: apertura file di configurazione non riuscita");
@@ -119,7 +121,7 @@ void setup_ws() {
         response->print("HTTP POST request sent to your ESP on input field (" + inputParam + ") with value: " + inputMessage + "<br><br>");
       }
       if (request->hasParam("saveToFlash", true)) {
-        conf_to_flash();
+        running_conf_to_flash();
         response->print("Settings saved to flash.<br>");
       }
     }
@@ -448,7 +450,7 @@ void setup() {
   LittleFS.begin();
 
   Serial.println("Avvio con configurazione hardcoded, provo a caricare da file...");
-  load_conf_from_flash();
+  set_conf_from_json(load_conf_from_flash());
   delay(3000);
 
   Serial.println(conf_to_json());
