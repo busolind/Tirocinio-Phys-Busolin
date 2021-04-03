@@ -37,6 +37,8 @@ String sub_to_min_pwm = root_topic + "/setMinPwm";
 String sub_to_max_pwm = root_topic + "/setMaxPwm";
 String sub_to_setFromJSON = root_topic + "/setFromJSON";
 
+String settings_file = "/settings.json";
+
 //Come prova faccio una richiesta a http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100
 //String apiUrl = "http://www.randomnumberapi.com/api/v1.0/random?min=" + String(int(min_value)) + "&max=" + String(int(max_value)); //http_random
 //String apiUrl = "https://api.blockchain.com/v3/exchange/tickers/BTC-USD";
@@ -71,35 +73,6 @@ void notFound(AsyncWebServerRequest *request) {
 }
 
 void setFromJSON(String json) {
-  /*
-  ESEMPI:
-  {
-    apiUrl: "http://www.randomnumberapi.com/api/v1.0/random?min=0&max=10000",
-    filterJSON: [true],
-    path: "0",
-    min_value: 0,
-    max_value: 10000
-  }
-
-
-  {
-    apiUrl: "https://api.blockchain.com/v3/exchange/tickers/BTC-USD",
-    filterJSON: {last_trade_price: true},
-    path: "last_trade_price",
-    min_value: 57000,
-    max_value: 59000
-  }
-
-  (completamente inutile ma è una prova)
-  {
-    apiUrl: "https://api.zippopotam.us/us/90210",
-    filterJSON: {"places": [{"latitude": true}]},
-    path: "places/0/latitude",
-    min_value: 34.01,
-    max_value: 34.11
-  }
-*/
-
   DynamicJsonDocument doc(2000);
   deserializeJson(doc, json);
 
@@ -123,6 +96,17 @@ void setFromJSON(String json) {
   }
   if (doc.containsKey("max_pwm")) {
     max_pwm = doc["max_pwm"].as<int>();
+  }
+}
+
+void load_conf_from_flash() {
+  if (!LittleFS.exists(settings_file)) {
+    Serial.println("ERRORE: file di configurazione non trovato");
+  } else {
+    File file = LittleFS.open(settings_file, "r");
+    setFromJSON(file.readString());
+    file.close();
+    Serial.println("Il file esiste, se conteneva impostazioni valide sono state caricate");
   }
 }
 
@@ -407,6 +391,10 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   LittleFS.begin();
 
+  Serial.println("Avvio con configurazione hardcoded, provo a caricare da file...");
+  load_conf_from_flash();
+
+  delay(500);
   ts.addTask(mqtt_reconnect_task);
   ts.addTask(request_task);
 }

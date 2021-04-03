@@ -1,0 +1,9 @@
+{
+    "apiUrl": "http://www.randomnumberapi.com/api/v1.0/random?min=0&max=10000",
+    "filterJSON": [true],
+    "path": "0",
+    "min_value": 0,
+    "max_value": 10000,
+    "min_pwm": 0,
+    "max_pwm": 1023
+  }
