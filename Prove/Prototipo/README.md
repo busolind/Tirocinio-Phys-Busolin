@@ -66,7 +66,7 @@ ToDo:
 - ✓ Cambiare il nome a ``interval_min`` e ``interval_max`` per non confondersi con l'intervallo di tempo
 - ✓ Aggiungere configurazione per l'intervallo di tempo tra una richiesta e l'altra
 - ✓ Caricamento configurazione da file su flash
-- Salvare configurazione su file per mantenere modifiche dopo riavvio - [``LittleFS``](https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html)
+- ✓ Salvare configurazione su file per mantenere modifiche dopo riavvio - [``LittleFS``](https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html)
 
 ## Esempio di output su seriale (non aggiornato alle nuove variabili)
     *WM: AutoConnect Try No.:
