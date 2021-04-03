@@ -106,21 +106,30 @@ void setup_ws() {
   server.serveStatic("/", LittleFS, "/static/").setDefaultFile("index.html");
 
   server.on("/post", HTTP_POST, [](AsyncWebServerRequest *request) {
-    String inputMessage;
-    String inputParam;
+    AsyncResponseStream *response = request->beginResponseStream("text/html");
 
     // POST setFromJSON value on <ESP_IP>/post
-    if (request->hasParam("setFromJSON", true)) {
-      inputMessage = request->getParam("setFromJSON", true)->value();
-      inputParam = "setFromJSON";
-      set_conf_from_json(inputMessage);
+    if (request->params() < 1) {
+      response->print("Nothing to do!");
     } else {
-      inputMessage = "No message sent";
-      inputParam = "none";
+      if (request->hasParam("setFromJSON", true)) {
+        String inputMessage = request->getParam("setFromJSON", true)->value();
+        String inputParam = "setFromJSON";
+
+        Serial.println("Messaggio ricevuto via POST: ");
+        Serial.println(inputMessage);
+
+        set_conf_from_json(inputMessage);
+        response->print("HTTP POST request sent to your ESP on input field (" + inputParam + ") with value: " + inputMessage + "<br><br>");
+      }
+      if (request->hasParam("saveToFlash", true)) {
+        conf_to_flash();
+        response->print("Settings saved to flash.<br>");
+      }
     }
-    Serial.println("Messaggio ricevuto via POST: ");
-    Serial.println(inputMessage);
-    request->send(200, "text/html", "HTTP POST request sent to your ESP on input field (" + inputParam + ") with value: " + inputMessage + "<br><a href=\"/\">Return to Home Page</a>");
+    response->print("<a href=\"/\">Return to Home Page</a>");
+    response->setCode(200);
+    request->send(response);
   });
 
   server.onNotFound(notFound);
@@ -409,9 +418,6 @@ void set_conf_from_json(String json) {
   if (doc.containsKey("request_interval_ms")) {
     request_task.setInterval(doc["request_interval_ms"].as<int>() * TASK_MILLISECOND);
   }
-
-  //TEMPORARY
-  conf_to_flash();
 }
 
 String conf_to_json() {
