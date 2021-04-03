@@ -8,32 +8,32 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
       apiUrl: "https://api.blockchain.com/v3/exchange/tickers/BTC-USD",
       filterJSON: {last_trade_price: true},
       path: "last_trade_price",
-      interval_min: 57000,
-      interval_max: 59000
+      min_value: 57000,
+      max_value: 59000
     }
   
   Dove:
 - ``apiUrl`` è appunto l'URL alla risorsa (stringa)
 - ``filterJSON`` è un documento JSON che contiene ``true`` come placeholder del/i campi che si vuole considerare dalla risposta (stringa/oggetto)
 - ``path`` è una stringa che contiene il "percorso" del campo che si vuole rappresentare fisicamente (campo: float, path: stringa)
-- ``interval_min`` indica il valore minimo della scala per rappresentare il valore (float)
-- ``interval_max`` indica il valore massimo (float)
+- ``min_value`` indica il valore minimo della scala per rappresentare il valore (float)
+- ``max_value`` indica il valore massimo (float)
 
 È anche possibile settare i singoli campi via MQTT:
 - ``Phys/setApiUrl``
 - ``Phys/setFilterJson``
 - ``Phys/setPath``
-- ``Phys/setIntervalMin``
-- ``Phys/setIntervalMax``
+- ``Phys/setMinValue``
+- ``Phys/setMaxValue``
 
 Ho anche implementato un AsyncWebServer che per ora contiene solo un form che consente di inserire un JSON di configurazione (equivalente a quello di ``Phys/setFromJSON``)
 
 ToDo:
-- Cambiare il nome a ``interval_min`` e ``interval_max`` per non confondersi con l'intervallo di tempo
+- ✓ Cambiare il nome a ``interval_min`` e ``interval_max`` per non confondersi con l'intervallo di tempo
 - Aggiungere configurazione per l'intervallo di tempo tra una richiesta e l'altra
 - Salvare configurazione su file per mantenere modifiche dopo riavvio - [``LittleFS``](https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html)
 
-## Esempio di output su seriale
+## Esempio di output su seriale (non aggiornato alle nuove variabili)
     *WM: AutoConnect Try No.:
     *WM: 0
     *WM: Connecting as wifi client...
