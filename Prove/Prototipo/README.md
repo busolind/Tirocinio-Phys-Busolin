@@ -58,7 +58,7 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
 - ``Phys/setMaxPwm``
 - ``Phys/setRequestIntervalMs``
 
-Ho anche implementato un AsyncWebServer che per ora contiene solo un form che consente di inserire un JSON di configurazione (equivalente a quello di ``Phys/setFromJSON``).
+Ho anche implementato un AsyncWebServer che per ora contiene un form che consente di inserire un JSON di configurazione (equivalente a quello di ``Phys/setFromJSON``) e ha un checkbox per chiedere se si vuole salvare la modifica direttamente su flash.
 
 È possibile impostare nel JSON di configurazione dal form o da MQTT solamente i campi che si vuole modificare, le altre impostazioni rimarranno invariate.
 
