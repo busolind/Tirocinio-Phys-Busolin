@@ -74,15 +74,31 @@ void notFound(AsyncWebServerRequest *request) {
 }
 
 void set_conf_from_json(String json);
+String conf_to_json();
 
 void load_conf_from_flash() {
   if (!LittleFS.exists(settings_file)) {
     Serial.println("ERRORE: file di configurazione non trovato");
   } else {
     File file = LittleFS.open(settings_file, "r");
-    set_conf_from_json(file.readString());
+    if (!file) {
+      Serial.println("ERRORE: apertura file di configurazione non riuscita");
+    } else {
+      set_conf_from_json(file.readString());
+      file.close();
+      Serial.println("Il file esiste, se conteneva impostazioni valide sono state caricate");
+    }
+  }
+}
+
+void conf_to_flash() {
+  File file = LittleFS.open(settings_file, "w");
+  if (!file) {
+    Serial.println("ERRORE: apertura file di configurazione non riuscita");
+  } else {
+    file.print(conf_to_json());
     file.close();
-    Serial.println("Il file esiste, se conteneva impostazioni valide sono state caricate");
+    Serial.println("Configurazione salvata su flash");
   }
 }
 
@@ -393,6 +409,26 @@ void set_conf_from_json(String json) {
   if (doc.containsKey("request_interval_ms")) {
     request_task.setInterval(doc["request_interval_ms"].as<int>() * TASK_MILLISECOND);
   }
+
+  //TEMPORARY
+  conf_to_flash();
+}
+
+String conf_to_json() {
+  DynamicJsonDocument doc(2000);
+
+  doc["apiUrl"] = apiUrl;
+  doc["filterJSON"] = filterJSON;
+  doc["path"] = path;
+  doc["min_value"] = min_value;
+  doc["max_value"] = max_value;
+  doc["min_pwm"] = min_pwm;
+  doc["max_pwm"] = max_pwm;
+  doc["request_interval_ms"] = request_task.getInterval();
+
+  String out;
+  serializeJson(doc, out);
+  return out;
 }
 
 void setup() {
@@ -404,8 +440,11 @@ void setup() {
 
   Serial.println("Avvio con configurazione hardcoded, provo a caricare da file...");
   load_conf_from_flash();
+  delay(3000);
 
-  delay(500);
+  Serial.println(conf_to_json());
+  delay(3000);
+
   ts.addTask(mqtt_reconnect_task);
   ts.addTask(request_task);
 }
