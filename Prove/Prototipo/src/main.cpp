@@ -143,6 +143,7 @@ void setup_wifi() {
 
   //WiFi.mode(WIFI_AP_STA);
   WiFi.mode(WIFI_STA);
+  WiFi.hostname("prototipo-phys");
 
   while (WiFi.status() != WL_CONNECTED) {
     if (!wifiManager.autoConnect("AutoConnectAP")) {
