@@ -9,7 +9,9 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
       filterJSON: {last_trade_price: true},
       path: "last_trade_price",
       min_value: 57000,
-      max_value: 59000
+      max_value: 59000,
+      min_pwm: 0,
+      max_pwm: 1023
     }
   
   Dove:
@@ -18,6 +20,8 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
 - ``path`` è una stringa che contiene il "percorso" del campo che si vuole rappresentare fisicamente (campo: float, path: stringa)
 - ``min_value`` indica il valore minimo della scala per rappresentare il valore (float)
 - ``max_value`` indica il valore massimo (float)
+- ``min_pwm`` indica il valore minimo di uscita della PWM da mappare al valore restituito dalle API (int)
+- ``max_pwm`` indica il valore massimo \[su ESP il duty cycle massimo equivale a 1023\] (int)
 
 È anche possibile settare i singoli campi via MQTT:
 - ``Phys/setApiUrl``
@@ -25,8 +29,12 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
 - ``Phys/setPath``
 - ``Phys/setMinValue``
 - ``Phys/setMaxValue``
+- ``Phys/setMinPwm``
+- ``Phys/setMaxPwm``
 
-Ho anche implementato un AsyncWebServer che per ora contiene solo un form che consente di inserire un JSON di configurazione (equivalente a quello di ``Phys/setFromJSON``)
+Ho anche implementato un AsyncWebServer che per ora contiene solo un form che consente di inserire un JSON di configurazione (equivalente a quello di ``Phys/setFromJSON``).
+
+È possibile impostare nel JSON di configurazione dal form o da MQTT solamente i campi che si vuole modificare, le altre impostazioni rimarranno invariate.
 
 ToDo:
 - ✓ Cambiare il nome a ``interval_min`` e ``interval_max`` per non confondersi con l'intervallo di tempo
