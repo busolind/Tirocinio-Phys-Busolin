@@ -58,7 +58,7 @@ Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configur
 - ``Phys/setMaxPwm``
 - ``Phys/setRequestIntervalMs``
 
-Ho anche implementato un AsyncWebServer che per ora contiene un form che consente di inserire un JSON di configurazione (equivalente a quello di ``Phys/setFromJSON``) e ha un checkbox per chiedere se si vuole salvare la modifica direttamente su flash.
+Ho anche implementato un AsyncWebServer che per ora contiene un form che consente di inserire un JSON di configurazione (equivalente a quello di ``Phys/setFromJSON``) e ha un checkbox per chiedere se si vuole salvare la modifica direttamente su flash. La text area del form si popola automaticamente con la configurazione attuale contestualmente al caricamento della pagina
 
 All'endpoint ``<esp-ip>/get/running-conf`` si può ottenere un JSON della configurazione attuale
 
@@ -71,6 +71,8 @@ ToDo:
 - ✓ Salvare configurazione su file per mantenere modifiche dopo riavvio - [``LittleFS``](https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html)
 - Aggiungere endpoint ``/get/saved-conf`` per ottenere la configurazione presente sulla flash
 - Eseguire richieste POST con parametri (es. api keys)
+- Effettuare la modifica campo per campo
+- Provare vue.js
 
 ## Esempio di output su seriale (non aggiornato)
     *WM: AutoConnect Try No.:
