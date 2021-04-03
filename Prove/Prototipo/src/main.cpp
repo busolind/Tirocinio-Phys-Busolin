@@ -134,6 +134,10 @@ void setup_ws() {
     request->send(200, "application/json", conf_to_json());
   });
 
+  server.on("/get/saved-conf", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(200, "application/json", load_conf_from_flash());
+  });
+
   server.onNotFound([](AsyncWebServerRequest *request) {
     request->send(404, "text/plain", "Not found");
   });
