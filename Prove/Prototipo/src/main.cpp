@@ -69,10 +69,6 @@ PubSubClientTools mqtt_tools(mqtt_client);
 AsyncWebServer server(80);
 DNSServer dns;
 
-void notFound(AsyncWebServerRequest *request) {
-  request->send(404, "text/plain", "Not found");
-}
-
 void set_conf_from_json(String json);
 String conf_to_json();
 
@@ -132,7 +128,13 @@ void setup_ws() {
     request->send(response);
   });
 
-  server.onNotFound(notFound);
+  server.on("/get/running-conf", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(200, "application/json", conf_to_json());
+  });
+
+  server.onNotFound([](AsyncWebServerRequest *request) {
+    request->send(404, "text/plain", "Not found");
+  });
   server.begin();
 }
 
@@ -433,7 +435,7 @@ String conf_to_json() {
   doc["request_interval_ms"] = request_task.getInterval();
 
   String out;
-  serializeJson(doc, out);
+  serializeJsonPretty(doc, out);
   return out;
 }
 
