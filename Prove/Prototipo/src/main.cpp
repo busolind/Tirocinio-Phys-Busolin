@@ -26,7 +26,6 @@ float min_value = 0;
 float max_value = 80000;
 float min_pwm = 0;
 float max_pwm = PWMRANGE;
-//Costante PWMRANGE
 
 String root_topic = "Phys";
 String sub_to_apiurl = root_topic + "/setApiUrl";
@@ -34,6 +33,8 @@ String sub_to_filterJSON = root_topic + "/setFilterJson";
 String sub_to_path = root_topic + "/setPath";
 String sub_to_min_value = root_topic + "/setMinValue";
 String sub_to_max_value = root_topic + "/setMaxValue";
+String sub_to_min_pwm = root_topic + "/setMinPwm";
+String sub_to_max_pwm = root_topic + "/setMaxPwm";
 String sub_to_setFromJSON = root_topic + "/setFromJSON";
 
 //Come prova faccio una richiesta a http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100
@@ -102,11 +103,27 @@ void setFromJSON(String json) {
   DynamicJsonDocument doc(2000);
   deserializeJson(doc, json);
 
-  apiUrl = doc["apiUrl"].as<String>();
-  filterJSON = doc["filterJSON"].as<String>();
-  path = doc["path"].as<String>();
-  min_value = doc["min_value"].as<float>();
-  max_value = doc["max_value"].as<float>();
+  if (doc.containsKey("apiUrl")) {
+    apiUrl = doc["apiUrl"].as<String>();
+  }
+  if (doc.containsKey("filterJSON")) {
+    filterJSON = doc["filterJSON"].as<String>();
+  }
+  if (doc.containsKey("path")) {
+    path = doc["path"].as<String>();
+  }
+  if (doc.containsKey("min_value")) {
+    min_value = doc["min_value"].as<float>();
+  }
+  if (doc.containsKey("max_value")) {
+    max_value = doc["max_value"].as<float>();
+  }
+  if (doc.containsKey("min_pwm")) {
+    min_pwm = doc["min_pwm"].as<int>();
+  }
+  if (doc.containsKey("max_pwm")) {
+    max_pwm = doc["max_pwm"].as<int>();
+  }
 }
 
 void setup_ws() {
@@ -346,6 +363,16 @@ void mqtt_callback_setMaxValue(String topic, String message) {
   max_value = message.toFloat();
 }
 
+void mqtt_callback_setMinPwm(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]: " + message);
+  min_pwm = message.toInt();
+}
+
+void mqtt_callback_setMaxPwm(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]: " + message);
+  max_pwm = message.toInt();
+}
+
 void mqtt_callback_setFromJSON(String topic, String message) {
   Serial.println("Message arrived [" + topic + "]:\n" + message + "\n");
   setFromJSON(message);
@@ -363,6 +390,9 @@ void mqtt_reconnect() {
     mqtt_tools.subscribe(sub_to_setFromJSON, mqtt_callback_setFromJSON);
     mqtt_tools.subscribe(sub_to_min_value, mqtt_callback_setMinValue);
     mqtt_tools.subscribe(sub_to_max_value, mqtt_callback_setMaxValue);
+    mqtt_tools.subscribe(sub_to_min_pwm, mqtt_callback_setMinPwm);
+    mqtt_tools.subscribe(sub_to_max_pwm, mqtt_callback_setMaxPwm);
+
   } else {
     Serial.print("failed, rc=");
     Serial.println(mqtt_client.state());
