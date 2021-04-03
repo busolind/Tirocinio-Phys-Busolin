@@ -71,7 +71,8 @@ ToDo:
 - ✓ Salvare configurazione su file per mantenere modifiche dopo riavvio - [``LittleFS``](https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html)
 - Aggiungere endpoint ``/get/saved-conf`` per ottenere la configurazione presente sulla flash
 - Eseguire richieste POST con parametri (es. api keys)
-- 
+- Effettuare la modifica campo per campo
+- Provare vue.js
 
 ## Esempio di output su seriale (non aggiornato)
     *WM: AutoConnect Try No.:
