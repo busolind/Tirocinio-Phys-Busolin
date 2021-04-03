@@ -35,6 +35,7 @@ String sub_to_min_value = root_topic + "/setMinValue";
 String sub_to_max_value = root_topic + "/setMaxValue";
 String sub_to_min_pwm = root_topic + "/setMinPwm";
 String sub_to_max_pwm = root_topic + "/setMaxPwm";
+String sub_to_interval_ms = root_topic + "/setRequestIntervalMs";
 String sub_to_setFromJSON = root_topic + "/setFromJSON";
 
 String settings_file = "/settings.json";
@@ -72,39 +73,14 @@ void notFound(AsyncWebServerRequest *request) {
   request->send(404, "text/plain", "Not found");
 }
 
-void setFromJSON(String json) {
-  DynamicJsonDocument doc(2000);
-  deserializeJson(doc, json);
-
-  if (doc.containsKey("apiUrl")) {
-    apiUrl = doc["apiUrl"].as<String>();
-  }
-  if (doc.containsKey("filterJSON")) {
-    filterJSON = doc["filterJSON"].as<String>();
-  }
-  if (doc.containsKey("path")) {
-    path = doc["path"].as<String>();
-  }
-  if (doc.containsKey("min_value")) {
-    min_value = doc["min_value"].as<float>();
-  }
-  if (doc.containsKey("max_value")) {
-    max_value = doc["max_value"].as<float>();
-  }
-  if (doc.containsKey("min_pwm")) {
-    min_pwm = doc["min_pwm"].as<int>();
-  }
-  if (doc.containsKey("max_pwm")) {
-    max_pwm = doc["max_pwm"].as<int>();
-  }
-}
+void set_conf_from_json(String json);
 
 void load_conf_from_flash() {
   if (!LittleFS.exists(settings_file)) {
     Serial.println("ERRORE: file di configurazione non trovato");
   } else {
     File file = LittleFS.open(settings_file, "r");
-    setFromJSON(file.readString());
+    set_conf_from_json(file.readString());
     file.close();
     Serial.println("Il file esiste, se conteneva impostazioni valide sono state caricate");
   }
@@ -121,7 +97,7 @@ void setup_ws() {
     if (request->hasParam("setFromJSON", true)) {
       inputMessage = request->getParam("setFromJSON", true)->value();
       inputParam = "setFromJSON";
-      setFromJSON(inputMessage);
+      set_conf_from_json(inputMessage);
     } else {
       inputMessage = "No message sent";
       inputParam = "none";
@@ -357,9 +333,14 @@ void mqtt_callback_setMaxPwm(String topic, String message) {
   max_pwm = message.toInt();
 }
 
+void mqtt_callback_setRequestIntervalMs(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]: " + message);
+  request_task.setInterval(message.toInt() * TASK_MILLISECOND);
+}
+
 void mqtt_callback_setFromJSON(String topic, String message) {
   Serial.println("Message arrived [" + topic + "]:\n" + message + "\n");
-  setFromJSON(message);
+  set_conf_from_json(message);
 }
 
 void mqtt_reconnect() {
@@ -376,13 +357,43 @@ void mqtt_reconnect() {
     mqtt_tools.subscribe(sub_to_max_value, mqtt_callback_setMaxValue);
     mqtt_tools.subscribe(sub_to_min_pwm, mqtt_callback_setMinPwm);
     mqtt_tools.subscribe(sub_to_max_pwm, mqtt_callback_setMaxPwm);
-
+    mqtt_tools.subscribe(sub_to_interval_ms, mqtt_callback_setRequestIntervalMs);
   } else {
     Serial.print("failed, rc=");
     Serial.println(mqtt_client.state());
   }
 }
 Task mqtt_reconnect_task(MQTT_RECONNECT_DELAY *TASK_MILLISECOND, TASK_FOREVER, mqtt_reconnect);
+
+void set_conf_from_json(String json) {
+  DynamicJsonDocument doc(2000);
+  deserializeJson(doc, json);
+
+  if (doc.containsKey("apiUrl")) {
+    apiUrl = doc["apiUrl"].as<String>();
+  }
+  if (doc.containsKey("filterJSON")) {
+    filterJSON = doc["filterJSON"].as<String>();
+  }
+  if (doc.containsKey("path")) {
+    path = doc["path"].as<String>();
+  }
+  if (doc.containsKey("min_value")) {
+    min_value = doc["min_value"].as<float>();
+  }
+  if (doc.containsKey("max_value")) {
+    max_value = doc["max_value"].as<float>();
+  }
+  if (doc.containsKey("min_pwm")) {
+    min_pwm = doc["min_pwm"].as<int>();
+  }
+  if (doc.containsKey("max_pwm")) {
+    max_pwm = doc["max_pwm"].as<int>();
+  }
+  if (doc.containsKey("request_interval_ms")) {
+    request_task.setInterval(doc["request_interval_ms"].as<int>() * TASK_MILLISECOND);
+  }
+}
 
 void setup() {
   Serial.begin(115200);
