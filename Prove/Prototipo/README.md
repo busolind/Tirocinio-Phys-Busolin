@@ -5,6 +5,18 @@ Lo sviluppo su ExternalJSONFilter stava andando ben oltre il nome della cartella
 Ora tramite MQTT (``Phys/setFromJSON``) è possibile inviare un JSON di configurazione del tipo:
 
     {
+      "apiUrl": "http://api.coindesk.com/v1/bpi/currentprice/USD.json",
+      "filterJSON": "{bpi:{USD:{rate_float:true}}}",
+      "path": "bpi/USD/rate_float",
+      "min_value": 58700,
+      "max_value": 58900,
+      "min_pwm": 0,
+      "max_pwm": 1023,
+      "request_interval_ms": 15000
+    }
+
+###
+    {
       apiUrl: "https://api.blockchain.com/v3/exchange/tickers/BTC-USD",
       filterJSON: {last_trade_price: true},
       path: "last_trade_price",
