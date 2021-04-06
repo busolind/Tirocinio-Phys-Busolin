@@ -12,7 +12,7 @@
 #include <StreamUtils.h>
 #include <TaskScheduler.h>
 
-const char *hostName = "esp-async";
+const char *hostName = "prototipo-phys";
 const char *mqtt_server = "192.168.178.5";
 
 #define LED_PIN D3
@@ -149,7 +149,7 @@ void setup_wifi() {
 
   //WiFi.mode(WIFI_AP_STA);
   WiFi.mode(WIFI_STA);
-  WiFi.hostname("prototipo-phys");
+  WiFi.hostname(hostName);
 
   while (WiFi.status() != WL_CONNECTED) {
     if (!wifiManager.autoConnect("AutoConnectAP")) {
