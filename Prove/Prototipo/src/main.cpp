@@ -12,22 +12,32 @@
 #include <StreamUtils.h>
 #include <TaskScheduler.h>
 
+// MAIN CONFIG
 const char *hostName = "prototipo-phys";
-const char *mqtt_server = "192.168.178.5";
-
 #define LED_PIN D3
 
-#define REQUEST_DELAY_MS 10000
-#define MQTT_RECONNECT_DELAY 5000
-
-//Possibilmente successivamente impostati "da fuori"
-
+// Default hardcoded values. If a config file is present on flash, its settings will be used instead.
+String apiUrl = "https://csrng.net/csrng/csrng.php?min=0&max=150"; //https_random
+String filterJSON = "[{random: true}]";                            //https_random
+String path = "0/random";                                          //https_random
 float min_value = 0;
-float max_value = 80000;
+float max_value = 150;
 float min_pwm = 0;
 float max_pwm = PWMRANGE;
+#define REQUEST_DELAY_MS 10000 //Request interval. Can be edited in config
 
-String root_topic = "Phys";
+String settings_file = "/settings.json";
+
+int out_pwm;
+
+// MQTT CONFIG
+
+const char *mqtt_server = "192.168.178.5";
+#define MQTT_RECONNECT_DELAY 30000
+
+// TOPICS
+
+String root_topic = "PrototipoPhys";
 String sub_to_apiurl = root_topic + "/setApiUrl";
 String sub_to_filterJSON = root_topic + "/setFilterJson";
 String sub_to_path = root_topic + "/setPath";
@@ -38,30 +48,6 @@ String sub_to_max_pwm = root_topic + "/setMaxPwm";
 String sub_to_interval_ms = root_topic + "/setRequestIntervalMs";
 String sub_to_setFromJSON = root_topic + "/setFromJSON";
 
-String settings_file = "/settings.json";
-
-//Come prova faccio una richiesta a http://www.randomnumberapi.com/api/v1.0/random?min=0&max=100
-//String apiUrl = "http://www.randomnumberapi.com/api/v1.0/random?min=" + String(int(min_value)) + "&max=" + String(int(max_value)); //http_random
-//String apiUrl = "https://api.blockchain.com/v3/exchange/tickers/BTC-USD";
-//String apiUrl = "https://api.ratesapi.io/api/latest";
-//String apiUrl = "https://api.zippopotam.us/us/90210"; //Beverly Hills (scelta perché ha un mix di oggetti e array)
-String apiUrl = "https://csrng.net/csrng/csrng.php?min=" + String(int(min_value)) + "&max=" + String(int(max_value)); //https_random
-
-//Provo a creare un filtro a partire da un input esterno
-//String filterJSON = "[true]"; //http_random
-//String filterJSON = "{last_trade_price: true}"; //PER API BLOCKCHAIN
-//String filterJSON = "{\"places\": [{\"latitude\": true}]}"; //Beverly Hills
-//String filterJSON = "{rates: {MXN: true}}"; //PER API RATES
-String filterJSON = "[{random: true}]"; //https_random
-
-//String path = "0"; //http_random
-//String path = "last_trade_price"; //PER API BLOCKCHAIN
-//String path = "places/0/latitude"; //Beverly Hills
-String path = "0/random"; //https_random
-
-int out_pwm;
-
-Scheduler ts;
 WiFiClient espClient;
 PubSubClient mqtt_client(mqtt_server, 1883, espClient);
 PubSubClientTools mqtt_tools(mqtt_client);
@@ -69,18 +55,20 @@ PubSubClientTools mqtt_tools(mqtt_client);
 AsyncWebServer server(80);
 DNSServer dns;
 
+Scheduler ts;
+
 void set_conf_from_json(String json);
 String conf_to_json();
 
-//Restituisce il file di configurazione salvato nella flash sotto forma di stringa
+// Returns config file from flash as a string
 String load_conf_from_flash() {
   String conf = "";
   if (!LittleFS.exists(settings_file)) {
-    Serial.println("ERRORE: file di configurazione non trovato");
+    Serial.println("ERROR: config file not found");
   } else {
     File file = LittleFS.open(settings_file, "r");
     if (!file) {
-      Serial.println("ERRORE: apertura file di configurazione non riuscita");
+      Serial.println("ERROR: could not open config file");
     } else {
       conf = file.readString();
       file.close();
@@ -89,17 +77,19 @@ String load_conf_from_flash() {
   return conf;
 }
 
+//Saves running config to flash as a json file
 void running_conf_to_flash() {
   File file = LittleFS.open(settings_file, "w");
   if (!file) {
-    Serial.println("ERRORE: apertura file di configurazione non riuscita");
+    Serial.println("ERROR: could not open config file");
   } else {
     file.print(conf_to_json());
     file.close();
-    Serial.println("Configurazione salvata su flash");
+    Serial.println("Running config saved to flash");
   }
 }
 
+// Web server setup
 void setup_ws() {
   server.serveStatic("/", LittleFS, "/static/").setDefaultFile("index.html");
 
@@ -114,7 +104,7 @@ void setup_ws() {
         String inputMessage = request->getParam("setFromJSON", true)->value();
         String inputParam = "setFromJSON";
 
-        Serial.println("Messaggio ricevuto via POST: ");
+        Serial.println("Message received via POST: ");
         Serial.println(inputMessage);
 
         set_conf_from_json(inputMessage);
@@ -144,6 +134,7 @@ void setup_ws() {
   server.begin();
 }
 
+// WiFi setup
 void setup_wifi() {
   AsyncWiFiManager wifiManager(&server, &dns);
 
@@ -171,6 +162,7 @@ void setup_wifi() {
   //WiFi.softAP(hostName);
 }
 
+// HTTP GET request. On successful request returns a stream to the callback
 void http_request(void (*callback)(Stream &)) {
   WiFiClient client;
   HTTPClient http;
@@ -204,6 +196,7 @@ void http_request(void (*callback)(Stream &)) {
   }
 }
 
+// HTTPS GET request. On successful request returns a stream to the callback
 void https_request(void (*callback)(Stream &)) {
   BearSSL::WiFiClientSecure client;
   client.setInsecure();
@@ -238,6 +231,7 @@ void https_request(void (*callback)(Stream &)) {
   }
 }
 
+// HTTP(S) callback. Takes a stream as a parameter, parses the json within it, extracts the required value as specified in config (filter + path) and maps the out_pwm value accordingly
 void stream_callback(Stream &stream) {
   LoggingStream ls(stream, Serial);
 
@@ -249,12 +243,12 @@ void stream_callback(Stream &stream) {
   serializeJson(filter, Serial);
   Serial.println();
 
-  //Necessario perché utilizzando lo stream del client WiFi sicuro la prima linea contiene la lunghezza dello stream in HEX (almeno così sembra)
-  Serial.println("--- Inizio parte esclusa da JSON ---");
+  // Necessary because the secure wifi client stream sometimes contains (apparently) the stream length in HEX before the response
+  Serial.println("--- Start of text excluded from stream ---");
   while (char(ls.peek()) != '{' && char(ls.peek()) != '[') {
     ls.read();
   }
-  Serial.println("---  Fine parte esclusa da JSON  ---");
+  Serial.println("---  End of text excluded from stream  ---");
   Serial.println();
 
   DynamicJsonDocument doc(2000);
@@ -262,7 +256,7 @@ void stream_callback(Stream &stream) {
   //deserializeJson(doc, ls);
 
   Serial.println();
-  Serial.println("Documento filtrato:");
+  Serial.println("Filtered Document:");
   serializeJson(doc, Serial);
 
   //INIZIO CANTIERE TEST PARSING PATH
@@ -308,17 +302,18 @@ void stream_callback(Stream &stream) {
   */
 
   Serial.println();
-  Serial.println("Valore estratto: " + String(value));
-  Serial.println("Minimo: " + String(min_value));
-  Serial.println("Massimo: " + String(max_value));
+  Serial.println("Extracted value: " + String(value));
+  Serial.println("Min value: " + String(min_value));
+  Serial.println("Max value: " + String(max_value));
 
   //out_pwm = map(value, min_value, max_value, min_pwm, max_pwm);
   out_pwm = (value - min_value) * (max_pwm - min_pwm) / (max_value - min_value) + min_pwm;
 
   Serial.println();
-  Serial.println("Mappato a : " + String(out_pwm));
+  Serial.println("Mapped to: " + String(out_pwm));
 }
 
+// Function called by request task. It makes the HTTP or HTTPS request and sets the PWM output according to out_pwm
 void request_task_callback() {
   if (apiUrl.startsWith("https://")) {
     https_request(stream_callback);
@@ -331,6 +326,9 @@ void request_task_callback() {
   Serial.println(ESP.getFreeHeap());
 }
 Task request_task(REQUEST_DELAY_MS *TASK_MILLISECOND, TASK_FOREVER, request_task_callback);
+
+// MQTT FUNCTIONS:
+// Callbacks:
 
 void mqtt_callback_setApiUrl(String topic, String message) {
   Serial.println("Message arrived [" + topic + "]: " + message);
@@ -377,6 +375,7 @@ void mqtt_callback_setFromJSON(String topic, String message) {
   set_conf_from_json(message);
 }
 
+// (Try to) Connect to MQTT server and subscribe
 void mqtt_reconnect() {
   Serial.print("Attempting MQTT connection...");
   String clientId = "ESP8266Client-" + String(random(0xffff), HEX);
@@ -399,6 +398,7 @@ void mqtt_reconnect() {
 }
 Task mqtt_reconnect_task(MQTT_RECONNECT_DELAY *TASK_MILLISECOND, TASK_FOREVER, mqtt_reconnect);
 
+// Takes a JSON string and sets running config accordingly (only sets specified fields, leaves the rest untouched)
 void set_conf_from_json(String json) {
   DynamicJsonDocument doc(2000);
   deserializeJson(doc, json);
@@ -429,6 +429,7 @@ void set_conf_from_json(String json) {
   }
 }
 
+// Converts running config to a JSON string
 String conf_to_json() {
   DynamicJsonDocument doc(2000);
 
@@ -453,9 +454,8 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   LittleFS.begin();
 
-  Serial.println("Avvio con configurazione hardcoded, provo a caricare da file...");
+  Serial.println("Started with hardcoded config, trying to load from file...");
   set_conf_from_json(load_conf_from_flash());
-  delay(3000);
 
   Serial.println(conf_to_json());
   delay(3000);
