@@ -1,10 +1,10 @@
 {
-    "apiUrl": "http://www.randomnumberapi.com/api/v1.0/random?min=0&max=10000",
-    "filterJSON": [true],
-    "path": "0",
-    "min_value": 0,
-    "max_value": 10000,
-    "min_pwm": 0,
-    "max_pwm": 1023,
-    "request_interval_ms": 15000
-  }
+  "apiUrl": "http://api.coindesk.com/v1/bpi/currentprice/USD.json",
+  "filterJSON": "{bpi:{USD:{rate_float:true}}}",
+  "path": "bpi/USD/rate_float",
+  "min_value": 55000,
+  "max_value": 60000,
+  "min_pwm": 0,
+  "max_pwm": 900,
+  "request_interval_ms": 15000
+}
