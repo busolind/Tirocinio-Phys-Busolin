@@ -1,7 +1,11 @@
 window.onload = () => {
+  getAll();
+};
+
+function getAll() {
   getRunningConf();
   getSavedConf();
-};
+}
 
 var runningConfJSON, savedConfJSON;
 
@@ -68,13 +72,13 @@ function sendConfigForm() {
   fd.append('setFromJSON', JSON.stringify(obj));
   if (document.getElementById('ConfFormSaveToFlash').checked == true) {
     fd.append('saveToFlash', 'on');
-    getSavedConf();
   }
 
   var xhr = new XMLHttpRequest();
   // Define what happens on successful data submission
   xhr.addEventListener('load', function (event) {
     alert('Successfully sent configuration');
+    getAll();
   });
 
   // Define what happens in case of error
