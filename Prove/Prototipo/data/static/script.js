@@ -66,6 +66,10 @@ function sendConfigForm() {
   Object.assign(obj, { request_interval_ms: document.getElementById('setRequestInterval').value });
   console.log(JSON.stringify(obj));
   fd.append('setFromJSON', JSON.stringify(obj));
+  if (document.getElementById('ConfFormSaveToFlash').checked == true) {
+    fd.append('saveToFlash', 'on');
+    getSavedConf();
+  }
 
   var xhr = new XMLHttpRequest();
   // Define what happens on successful data submission
@@ -74,7 +78,7 @@ function sendConfigForm() {
   });
 
   // Define what happens in case of error
-  xhr.addEventListener(' error', function (event) {
+  xhr.addEventListener('error', function (event) {
     alert('Oops! Something went wrong.');
   });
 
