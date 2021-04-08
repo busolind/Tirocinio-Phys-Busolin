@@ -12,23 +12,63 @@
   </head>
   <body>
     <div class="container-fluid">
-      <div class="row">
-        <div class="col mb-3">
+      <div class="row justify-content-center">
+        <div class="col-lg-3 mx-3">
+          <div class="h3">Configuration form</div>
+          <form action="/post" method="POST">
+            <div class="form-group">
+              <label for="setApiUrl"> API URL: </label>
+              <input type="text" name="setApiUrl" id="setApiUrl" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="setFilterJSON"> Filter JSON: </label>
+              <input type="text" name="setFilterJSON" id="setFilterJSON" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="setPath"> Path: </label>
+              <input type="text" name="setPath" id="setPath" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="setMinValue"> Min Value: </label>
+              <input type="number" name="setMinValue" id="setMinValue" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="setMaxValue"> Max Value: </label>
+              <input type="number" name="setMaxValue" id="setMaxValue" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="setMinPwm"> Min Pwm: </label>
+              <input type="number" name="setMinPwm" id="setMinPwm" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="setMaxPwm"> Max Pwm: </label>
+              <input type="number" name="setMaxPwm" id="setMaxPwm" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="setRequestInterval"> Interval ms: </label>
+              <input type="number" name="setRequestInterval" id="setRequestInterval" class="form-control" />
+            </div>
+            <input type="submit" value="Submit" class="btn btn-primary" />
+          </form>
+        </div>
+        <div class="col-lg-5">
+          <div class="h3">Saved configuration</div>
+          <pre id="saved-conf">Loading...</pre>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-10" style="max-width: 750px">
           <div class="h3">Input JSON configuration</div>
           <form action="/post" method="POST">
             <div class="form-group">
-              <label for="setFromJSON"> (auto-filled with running-conf) </label><br />
-              <textarea rows="20" cols="100" name="setFromJSON" id="json_input" class="form-conrol"></textarea>
+              <label for="setFromJSON"> (auto-filled with running-conf) </label>
+              <textarea rows="20" name="setFromJSON" id="json_input" class="form-control"></textarea>
             </div>
             <div class="form-group form-check">
               <label class="form-check-label"> <input class="form-check-input" type="checkbox" name="saveToFlash" /> Also save to flash? </label>
             </div>
             <input type="submit" value="Submit" class="btn btn-primary" />
           </form>
-        </div>
-        <div class="col">
-          <div class="h3">Saved configuration</div>
-          <pre id="saved-conf">Loading...</pre>
         </div>
       </div>
     </div>

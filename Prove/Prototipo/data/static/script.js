@@ -6,25 +6,49 @@ window.onload = () => {
 var runningConfJSON, savedConfJSON;
 
 function getRunningConf() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      runningConfJSON = JSON.parse(this.responseText);
-      document.getElementById('json_input').innerHTML = JSON.stringify(runningConfJSON, null, 4);
-    }
-  };
-  xhttp.open('GET', '/get/running-conf', true);
-  xhttp.send();
+  makeRequest('GET', '/get/running-conf').then((response) => {
+    runningConfJSON = JSON.parse(response);
+    document.getElementById('json_input').innerHTML = JSON.stringify(runningConfJSON, null, 4);
+
+    document.getElementById('setApiUrl').value = runningConfJSON.apiUrl;
+    document.getElementById('setFilterJSON').value = runningConfJSON.filterJSON;
+    document.getElementById('setPath').value = runningConfJSON.path;
+    document.getElementById('setMinValue').value = runningConfJSON.min_value;
+    document.getElementById('setMaxValue').value = runningConfJSON.max_value;
+    document.getElementById('setMinPwm').value = runningConfJSON.min_pwm;
+    document.getElementById('setMaxPwm').value = runningConfJSON.max_pwm;
+    document.getElementById('setRequestInterval').value = runningConfJSON.request_interval_ms;
+  });
 }
 
 function getSavedConf() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState == 4 && this.status == 200) {
-      savedConfJSON = JSON.parse(this.responseText);
-      document.getElementById('saved-conf').innerHTML = JSON.stringify(savedConfJSON, null, 4);
-    }
-  };
-  xhttp.open('GET', '/get/saved-conf', true);
-  xhttp.send();
+  makeRequest('GET', '/get/saved-conf').then((response) => {
+    savedConfJSON = JSON.parse(response);
+    document.getElementById('saved-conf').innerHTML = JSON.stringify(savedConfJSON, null, 4);
+  });
+}
+
+// From https://stackoverflow.com/a/30008115
+function makeRequest(method, url) {
+  return new Promise(function (resolve, reject) {
+    var xhr = new XMLHttpRequest();
+    xhr.open(method, url);
+    xhr.onload = function () {
+      if (this.status >= 200 && this.status < 300) {
+        resolve(xhr.response);
+      } else {
+        reject({
+          status: this.status,
+          statusText: xhr.statusText,
+        });
+      }
+    };
+    xhr.onerror = function () {
+      reject({
+        status: this.status,
+        statusText: xhr.statusText,
+      });
+    };
+    xhr.send();
+  });
 }
