@@ -52,3 +52,32 @@ function makeRequest(method, url) {
     xhr.send();
   });
 }
+
+function sendConfigForm() {
+  var fd = new FormData();
+  var obj = {};
+  Object.assign(obj, { apiUrl: document.getElementById('setApiUrl').value });
+  Object.assign(obj, { filterJSON: document.getElementById('setFilterJSON').value });
+  Object.assign(obj, { path: document.getElementById('setPath').value });
+  Object.assign(obj, { min_value: document.getElementById('setMinValue').value });
+  Object.assign(obj, { max_value: document.getElementById('setMaxValue').value });
+  Object.assign(obj, { min_pwm: document.getElementById('setMinPwm').value });
+  Object.assign(obj, { max_pwm: document.getElementById('setMaxPwm').value });
+  Object.assign(obj, { request_interval_ms: document.getElementById('setRequestInterval').value });
+  console.log(JSON.stringify(obj));
+  fd.append('setFromJSON', JSON.stringify(obj));
+
+  var xhr = new XMLHttpRequest();
+  // Define what happens on successful data submission
+  xhr.addEventListener('load', function (event) {
+    alert('Successfully sent configuration');
+  });
+
+  // Define what happens in case of error
+  xhr.addEventListener(' error', function (event) {
+    alert('Oops! Something went wrong.');
+  });
+
+  xhr.open('POST', '/post');
+  xhr.send(fd);
+}
