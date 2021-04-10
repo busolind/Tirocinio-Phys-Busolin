@@ -290,7 +290,8 @@ void stream_callback(Stream &stream) {
     token = strtok(NULL, "/");
   }
 
-  float value = jv.as<float>();
+  float value = jv.as<String>().toFloat(); //Advantage over as<float>: String::toFloat converts numbers even when the string contains characters other than digits
+                                           // e.g. "3 min" -> 3.00
   //FINE CANTIERE
 
   /*
