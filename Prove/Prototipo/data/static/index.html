@@ -11,9 +11,10 @@
     />
   </head>
   <body>
-    <div class="container-fluid">
+    <div class="container-fluid" style="max-width: 1200px">
+      <div class="display-1 mb-5 text-center">Prototipo-Phys</div>
       <div class="row justify-content-center">
-        <div class="col-lg-3 mx-3">
+        <div class="col-lg-6">
           <div class="h3">Configuration form</div>
           <small>(auto-filled with running-conf)</small>
           <form action="/post" method="POST">
@@ -60,7 +61,7 @@
             <button type="button" class="btn btn-primary" onclick="sendConfigForm();">Submit</button>
           </form>
         </div>
-        <div class="col-lg-5">
+        <div class="col-lg-6">
           <div class="h3">Saved configuration</div>
           <pre id="saved-conf">Loading...</pre>
         </div>
