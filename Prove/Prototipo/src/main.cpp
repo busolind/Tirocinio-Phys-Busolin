@@ -14,12 +14,13 @@
 
 // MAIN CONFIG
 const char *hostName = "prototipo-phys";
-#define LED_PIN D3
+#define OUT_PIN D3
 
 // Default hardcoded values. If a config file is present on flash, its settings will be used instead.
 String apiUrl = "https://csrng.net/csrng/csrng.php?min=0&max=150"; //https_random
 String filterJSON = "[{random: true}]";                            //https_random
-String path = "0/random";                                          //https_random
+String post_payload;
+String path = "0/random"; //https_random
 float min_value = 0;
 float max_value = 150;
 float min_pwm = 0;
@@ -162,72 +163,59 @@ void setup_wifi() {
   //WiFi.softAP(hostName);
 }
 
-// HTTP GET request. On successful request returns a stream to the callback
-void http_request(void (*callback)(Stream &)) {
+// HTTP(S) request. On successful request returns a stream to the callback
+void http_s_request(void (*callback)(Stream &), String post_payload = (const char *)nullptr) {
   WiFiClient client;
+  BearSSL::WiFiClientSecure ssl_client;
+  ssl_client.setInsecure();
+
   HTTPClient http;
 
-  Serial.print("[HTTP] begin... ");
-  Serial.println("URL: " + apiUrl);
-  if (http.begin(client, apiUrl)) { // HTTP
+  bool use_https = apiUrl.startsWith("https://");
 
-    //Serial.print("[HTTP] GET...\n");
-    // start connection and send HTTP header
-    //http.addHeader("Content-Type", "application/json");
-    int httpCode = http.GET();
-
-    // httpCode will be negative on error
-    if (httpCode > 0) {
-      // HTTP header has been send and Server response header has been handled
-      Serial.printf("[HTTP] GET... code: %d\n", httpCode);
-
-      // file found at server
-      if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
-        WiFiClient stream = http.getStream();
-        callback(stream);
-      }
-    } else {
-      Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
-    }
-
-    http.end();
+  bool begin;
+  if (use_https) {
+    begin = http.begin(ssl_client, apiUrl);
+    Serial.print("[HTTPS] ");
   } else {
-    Serial.printf("[HTTP] Unable to connect\n");
+    begin = http.begin(client, apiUrl);
+    Serial.print("[HTTP] ");
   }
-}
 
-// HTTPS GET request. On successful request returns a stream to the callback
-void https_request(void (*callback)(Stream &)) {
-  BearSSL::WiFiClientSecure client;
-  client.setInsecure();
-
-  HTTPClient http;
-
-  Serial.print("[HTTPS] begin... ");
+  Serial.print("begin... ");
   Serial.println("URL: " + apiUrl);
-  if (http.begin(client, apiUrl)) { // HTTP
-
-    //Serial.print("[HTTP] GET...\n");
+  if (begin) {
     // start connection and send HTTP header
-    //http.addHeader("Content-Type", "application/json");
-    int httpCode = http.GET();
+    int httpCode;
+    if (post_payload == nullptr || post_payload == "" || post_payload == NULL) {
+      httpCode = http.GET();
+      Serial.print("GET... ");
+    } else {
+      http.addHeader("Content-Type", "application/x-www-form-urlencoded"); //TEMPORARY
+      httpCode = http.POST(post_payload);
+      Serial.print("POST... ");
+    }
 
     // httpCode will be negative on error
     if (httpCode > 0) {
       // HTTP header has been send and Server response header has been handled
-      Serial.printf("[HTTPS] GET... code: %d\n", httpCode);
+      Serial.printf("code: %d\n", httpCode);
 
       // file found at server
-      if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
-        callback(client);
+      if (httpCode == HTTP_CODE_OK) {
+        if (use_https) {
+          callback(ssl_client);
+        } else {
+          callback(http.getStream());
+        }
       }
     } else {
-      Serial.printf("[HTTPS] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
+      Serial.printf("failed, error: %s\n", http.errorToString(httpCode).c_str());
     }
 
     http.end();
   } else {
-    Serial.printf("[HTTPS] Unable to connect\n");
+    Serial.printf("ERROR: Unable to connect\n");
   }
 }
 
@@ -316,13 +304,9 @@ void stream_callback(Stream &stream) {
 
 // Function called by request task. It makes the HTTP or HTTPS request and sets the PWM output according to out_pwm
 void request_task_callback() {
-  if (apiUrl.startsWith("https://")) {
-    https_request(stream_callback);
-  } else {
-    http_request(stream_callback);
-  }
+  http_s_request(stream_callback, post_payload);
 
-  analogWrite(LED_PIN, out_pwm);
+  analogWrite(OUT_PIN, out_pwm);
   Serial.print("Free heap: ");
   Serial.println(ESP.getFreeHeap());
 }
@@ -410,6 +394,12 @@ void set_conf_from_json(String json) {
   if (doc.containsKey("filterJSON")) {
     filterJSON = doc["filterJSON"].as<String>();
   }
+  JsonVariant post_payload_variant = doc["post_payload"];
+  if (!post_payload_variant.isNull()) {
+    post_payload = post_payload_variant.as<String>();
+  } else {
+    post_payload = (const char *)nullptr;
+  }
   if (doc.containsKey("path")) {
     path = doc["path"].as<String>();
   }
@@ -436,6 +426,7 @@ String conf_to_json() {
 
   doc["apiUrl"] = apiUrl;
   doc["filterJSON"] = filterJSON;
+  doc["post_payload"] = post_payload;
   doc["path"] = path;
   doc["min_value"] = min_value;
   doc["max_value"] = max_value;
@@ -452,7 +443,7 @@ void setup() {
   Serial.begin(115200);
   setup_wifi();
   setup_ws();
-  pinMode(LED_PIN, OUTPUT);
+  pinMode(OUT_PIN, OUTPUT);
   LittleFS.begin();
 
   Serial.println("Started with hardcoded config, trying to load from file...");
