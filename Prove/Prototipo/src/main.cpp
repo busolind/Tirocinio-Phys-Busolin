@@ -245,7 +245,7 @@ void stream_callback(Stream &stream) {
 
   // Necessary because the secure wifi client stream sometimes contains (apparently) the stream length in HEX before the response
   Serial.println("--- Start of text excluded from stream ---");
-  while (char(ls.peek()) != '{' && char(ls.peek()) != '[') {
+  while (ls.available() && char(ls.peek()) != '{' && char(ls.peek()) != '[') {
     ls.read();
   }
   Serial.println("---  End of text excluded from stream  ---");
