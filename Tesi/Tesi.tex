@@ -17,6 +17,45 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 
+\usepackage{underscore} % !!!
+%\usepackage{bera}% optional: just to have a nice mono-spaced font
+\usepackage{listings}
+\usepackage{xcolor}
+
+\colorlet{punct}{red!60!black}
+\definecolor{background}{HTML}{EEEEEE}
+\definecolor{delim}{RGB}{20,105,176}
+\colorlet{numb}{magenta!60!black}
+
+\lstdefinelanguage{json}{
+    basicstyle=\normalfont\ttfamily,
+    numbers=left,
+    numberstyle=\scriptsize,
+    stepnumber=1,
+    numbersep=8pt,
+    showstringspaces=false,
+    breaklines=true,
+    frame=lines,
+    backgroundcolor=\color{background},
+    literate=
+     *{0}{{{\color{numb}0}}}{1}
+      {1}{{{\color{numb}1}}}{1}
+      {2}{{{\color{numb}2}}}{1}
+      {3}{{{\color{numb}3}}}{1}
+      {4}{{{\color{numb}4}}}{1}
+      {5}{{{\color{numb}5}}}{1}
+      {6}{{{\color{numb}6}}}{1}
+      {7}{{{\color{numb}7}}}{1}
+      {8}{{{\color{numb}8}}}{1}
+      {9}{{{\color{numb}9}}}{1}
+      {:}{{{\color{punct}{:}}}}{1}
+      {,}{{{\color{punct}{,}}}}{1}
+      {\{}{{{\color{delim}{\{}}}}{1}
+      {\}}{{{\color{delim}{\}}}}}{1}
+      {[}{{{\color{delim}{[}}}}{1}
+      {]}{{{\color{delim}{]}}}}{1},
+}
+
 
 % Per inserire testo a caso in attesa di realizzare i capitoli
 \usepackage{lipsum}
@@ -80,9 +119,9 @@ TCP/IP over Avian Carriers\cite{waitzman1990standard}
 
 \chapter{Funzionamento}
 \section{Attori coinvolti}
-Prima di parlare del funzionamento dell'oggetto è il caso di soffermarsi su chi interagisce con esso
+Prima di parlare del funzionamento dell'oggetto è il caso di soffermarsi su chi interagisce con esso:
 \subsection*{Sviluppatore}
-È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e modificare funzionalità del programma
+È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e  modificare funzionalità del programma
 e apportare modifiche dirette ai file di configurazione.
 \subsection*{Utente esperto}
 Conosce le API ed è in grado di comprendere il formato dei dati che restituiscono. Gli è sufficiente un'interfaccia anche spartana
@@ -92,10 +131,71 @@ Non conosce le API né il formato JSON: ha bisogno di un prodotto già pronto ch
 deve essere particolarmente intuitiva, ad esempio una piccola interfaccia web per scegliere la rete WiFi e inserirne la password
 al primo avvio. La sorgente dei dati deve essere preconfigurata e se ne viene resa disponibile più di una la scelta deve essere molto
 semplice, possibilmente tramite interazione fisica con il dispositivo.
+
+
 \section{Modalità API}
+Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo configurabili di richieste HTTP o HTTPS ad API REST
+e sulla conversione del risultato in una tensione di uscita. La configurazione è salvata nella memoria flash del microcontrollore
+in formato JSON, esempio:
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "apiUrl": "http://api.coindesk.com/v1/bpi/currentprice/USD.json",
+  "filterJSON": "{bpi:{USD:{rate_float:true}}}",
+  "path": "bpi/USD/rate_float",
+  "min_value": 58700,
+  "max_value": 58900,
+  "min_pwm": 0,
+  "max_pwm": 1023,
+  "request_interval_ms": 15000
+}
+\end{lstlisting}
+
+
+\noindent Dove:
+\begin{itemize}
+  \item \texttt{apiUrl} è l'URL alla risorsa (stringa)
+  \item \texttt{post_payload} in caso di richiesta POST contiene la stringa da inviare nel body
+  \item \texttt{filterJSON} è un documento JSON che contiene \texttt{true} come placeholder del/i campi che si vuole considerare dalla risposta (stringa/oggetto)
+  \item \texttt{path} è una stringa che contiene il "percorso" del campo che si vuole rappresentare fisicamente (campo: float, path: stringa)
+  \item \texttt{min_value} indica il valore minimo della scala per rappresentare il valore (float)
+  \item \texttt{max_value} indica il valore massimo (float)
+  \item \texttt{min_pwm} indica il valore minimo di uscita della PWM da mappare al valore restituito dalle API (int)
+  \item \texttt{max_pwm} indica il valore massimo [su ESP il duty cycle massimo equivale a 1023] (int)
+  \item \texttt{request_interval_ms} indica l'intervallo di tempo in millisecondi che trascorre tra una richiesta e l'altra alle API (int)
+\end{itemize}
+
+La configurazione può essere alterata tramite una pagina web accessibile all'indirizzo IP nella rete locale del microcontrollore.
+
+\vspace{4mm}
+{[SCREENSHOT PAGINA WEB]}
+
+\vspace{4mm}
+I form sono precompilati con la configurazione in esecuzione (\emph{running-conf}) ed è presente una sezione che riporta la configurazione
+salvata nella flash (\emph{saved-conf}).\\
+È possibile inoltre inviare un JSON di configurazione tramite MQTT al topic \texttt{Phys/setFromJSON}. I campi possono essere modificati
+singolarmente ai topic:
+\begin{itemize}
+  \item \texttt{Phys/setApiUrl}
+        % ToDo: setPostPayload
+  \item \texttt{Phys/setFilterJson}
+  \item \texttt{Phys/setPath}
+  \item \texttt{Phys/setMinValue}
+  \item \texttt{Phys/setMaxValue}
+  \item \texttt{Phys/setMinPwm}
+  \item \texttt{Phys/setMaxPwm}
+  \item \texttt{Phys/setRequestIntervalMs}
+\end{itemize}
+
+Le modificheS non sono automaticamente salvate nella memoria flash ma ciò deve essere richiesto esplicitamente. Nei form di configurazione
+è presente una checkbox da spuntare in caso si voglia che questo avvenga.
+
 
 \section{Modalità MQTT}
-ToDo
+Non ancora implementata, ma l'idea è che consenta di visualizzare un valore ricevuto direttamente tramite sottoscrizione a un topic MQTT
+invece che andarlo a reperire tramite richieste HTTP(S).
+
+
 \chapter{Cap3}
 \chapter{Conclusioni}
 
