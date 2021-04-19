@@ -75,13 +75,29 @@
 %					\subparagraph
 
 % o sections (dipende dal documentclass)
-\chapter{Cap1}
-
+\chapter{Introduzione}
 TCP/IP over Avian Carriers\cite{waitzman1990standard}
 
-\chapter{Cap2}
+\chapter{Funzionamento}
+\section{Attori coinvolti}
+Prima di parlare del funzionamento dell'oggetto è il caso di soffermarsi su chi interagisce con esso
+\subsection*{Sviluppatore}
+È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e modificare funzionalità del programma
+e apportare modifiche dirette ai file di configurazione.
+\subsection*{Utente esperto}
+Conosce le API ed è in grado di comprendere il formato dei dati che restituiscono. Gli è sufficiente un'interfaccia anche spartana
+per selezionare la sorgente dei dati e il campo specifico che vuole rappresentato.
+\subsection*{Utente inesperto}
+Non conosce le API né il formato JSON: ha bisogno di un prodotto già pronto che richieda la minima configurazione possibile e questa
+deve essere particolarmente intuitiva, ad esempio una piccola interfaccia web per scegliere la rete WiFi e inserirne la password
+al primo avvio. La sorgente dei dati deve essere preconfigurata e se ne viene resa disponibile più di una la scelta deve essere molto
+semplice, possibilmente tramite interazione fisica con il dispositivo.
+\section{Modalità API}
+
+\section{Modalità MQTT}
+ToDo
 \chapter{Cap3}
-\chapter{Cap4}
+\chapter{Conclusioni}
 
 
 \bibliographystyle{plain}
