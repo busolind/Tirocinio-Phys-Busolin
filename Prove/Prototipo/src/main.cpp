@@ -270,7 +270,8 @@ void http_s_request(void (*callback)(Stream &), String post_payload = (const cha
 
 // HTTP(S) callback. Takes a stream as a parameter, parses the json within it, extracts the required value as specified in config (filter + path) and maps the out_pwm value accordingly
 void stream_callback(Stream &stream) {
-  LoggingStream ls(stream, Serial);
+  //LoggingStream ls(stream, Serial);
+  ReadBufferingStream rbs(stream, 64);
 
   StaticJsonDocument<200> filter;
   deserializeJson(filter, filterJSON);
@@ -282,14 +283,14 @@ void stream_callback(Stream &stream) {
 
   // Necessary because the secure wifi client stream sometimes contains (apparently) the stream length in HEX before the response
   Serial.println("--- Start of text excluded from stream ---");
-  while (ls.available() && char(ls.peek()) != '{' && char(ls.peek()) != '[') {
-    ls.read();
+  while (rbs.available() && char(rbs.peek()) != '{' && char(rbs.peek()) != '[') {
+    Serial.print(char(rbs.read()));
   }
   Serial.println("---  End of text excluded from stream  ---");
   Serial.println();
 
   DynamicJsonDocument doc(2000);
-  deserializeJson(doc, ls, DeserializationOption::Filter(filter));
+  deserializeJson(doc, rbs, DeserializationOption::Filter(filter));
   //deserializeJson(doc, ls);
 
   Serial.println();
@@ -358,6 +359,9 @@ void request_task_callback() {
   analogWrite(OUT_PIN, out_pwm);
   Serial.print("Free heap: ");
   Serial.println(ESP.getFreeHeap());
+
+  Serial.print("Millis: ");
+  Serial.println(millis());
 }
 Task request_task(REQUEST_DELAY_MS *TASK_MILLISECOND, TASK_FOREVER, request_task_callback);
 
