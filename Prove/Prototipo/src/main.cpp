@@ -15,7 +15,7 @@
 
 // MAIN CONFIG
 const char *hostName = "prototipo-phys";
-#define OUT_PIN D3
+#define OUT_PIN D2
 
 // Default hardcoded values. If a config file is present on flash, its settings will be used instead.
 String apiUrl = "https://csrng.net/csrng/csrng.php?min=0&max=150"; //https_random
