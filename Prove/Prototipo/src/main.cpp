@@ -1,5 +1,7 @@
 #include "ESPAsyncTCP.h"
 #include "ESPAsyncWebServer.h"
+#include "conf.h"
+#include "mqtt.h"
 #include <Arduino.h>
 #include <ArduinoJson.h>
 #include <ArduinoOTA.h>
@@ -37,19 +39,6 @@ int out_pwm;
 const char *mqtt_server = "192.168.178.5";
 #define MQTT_RECONNECT_DELAY 30000
 
-// TOPICS
-
-String root_topic = "PrototipoPhys";
-String sub_to_apiurl = root_topic + "/setApiUrl";
-String sub_to_filterJSON = root_topic + "/setFilterJson";
-String sub_to_path = root_topic + "/setPath";
-String sub_to_min_value = root_topic + "/setMinValue";
-String sub_to_max_value = root_topic + "/setMaxValue";
-String sub_to_min_pwm = root_topic + "/setMinPwm";
-String sub_to_max_pwm = root_topic + "/setMaxPwm";
-String sub_to_interval_ms = root_topic + "/setRequestIntervalMs";
-String sub_to_setFromJSON = root_topic + "/setFromJSON";
-
 WiFiClient espClient;
 PubSubClient mqtt_client(mqtt_server, 1883, espClient);
 PubSubClientTools mqtt_tools(mqtt_client);
@@ -58,38 +47,6 @@ AsyncWebServer server(80);
 DNSServer dns;
 
 Scheduler ts;
-
-void set_conf_from_json(String json);
-String conf_to_json();
-
-// Returns config file from flash as a string
-String load_conf_from_flash() {
-  String conf = "";
-  if (!LittleFS.exists(settings_file)) {
-    Serial.println("ERROR: config file not found");
-  } else {
-    File file = LittleFS.open(settings_file, "r");
-    if (!file) {
-      Serial.println("ERROR: could not open config file");
-    } else {
-      conf = file.readString();
-      file.close();
-    }
-  }
-  return conf;
-}
-
-//Saves running config to flash as a json file
-void running_conf_to_flash() {
-  File file = LittleFS.open(settings_file, "w");
-  if (!file) {
-    Serial.println("ERROR: could not open config file");
-  } else {
-    file.print(conf_to_json());
-    file.close();
-    Serial.println("Running config saved to flash");
-  }
-}
 
 // Web server setup
 void setup_ws() {
@@ -365,132 +322,7 @@ void request_task_callback() {
 }
 Task request_task(REQUEST_DELAY_MS *TASK_MILLISECOND, TASK_FOREVER, request_task_callback);
 
-// MQTT FUNCTIONS:
-// Callbacks:
-
-void mqtt_callback_setApiUrl(String topic, String message) {
-  Serial.println("Message arrived [" + topic + "]: " + message);
-  apiUrl = message;
-}
-
-void mqtt_callback_setFilterJson(String topic, String message) {
-  Serial.println("Message arrived [" + topic + "]: " + message);
-  filterJSON = message;
-}
-
-void mqtt_callback_setPath(String topic, String message) {
-  Serial.println("Message arrived [" + topic + "]: " + message);
-  path = message;
-}
-
-void mqtt_callback_setMinValue(String topic, String message) {
-  Serial.println("Message arrived [" + topic + "]: " + message);
-  min_value = message.toFloat();
-}
-
-void mqtt_callback_setMaxValue(String topic, String message) {
-  Serial.println("Message arrived [" + topic + "]: " + message);
-  max_value = message.toFloat();
-}
-
-void mqtt_callback_setMinPwm(String topic, String message) {
-  Serial.println("Message arrived [" + topic + "]: " + message);
-  min_pwm = message.toInt();
-}
-
-void mqtt_callback_setMaxPwm(String topic, String message) {
-  Serial.println("Message arrived [" + topic + "]: " + message);
-  max_pwm = message.toInt();
-}
-
-void mqtt_callback_setRequestIntervalMs(String topic, String message) {
-  Serial.println("Message arrived [" + topic + "]: " + message);
-  request_task.setInterval(message.toInt() * TASK_MILLISECOND);
-}
-
-void mqtt_callback_setFromJSON(String topic, String message) {
-  Serial.println("Message arrived [" + topic + "]:\n" + message + "\n");
-  set_conf_from_json(message);
-}
-
-// (Try to) Connect to MQTT server and subscribe
-void mqtt_reconnect() {
-  Serial.print("Attempting MQTT connection...");
-  String clientId = "ESP8266Client-" + String(random(0xffff), HEX);
-  // Attempt to connect
-  if (mqtt_client.connect(clientId.c_str())) {
-    Serial.println("connected");
-    mqtt_tools.subscribe(sub_to_apiurl, mqtt_callback_setApiUrl);
-    mqtt_tools.subscribe(sub_to_filterJSON, mqtt_callback_setFilterJson);
-    mqtt_tools.subscribe(sub_to_path, mqtt_callback_setPath);
-    mqtt_tools.subscribe(sub_to_setFromJSON, mqtt_callback_setFromJSON);
-    mqtt_tools.subscribe(sub_to_min_value, mqtt_callback_setMinValue);
-    mqtt_tools.subscribe(sub_to_max_value, mqtt_callback_setMaxValue);
-    mqtt_tools.subscribe(sub_to_min_pwm, mqtt_callback_setMinPwm);
-    mqtt_tools.subscribe(sub_to_max_pwm, mqtt_callback_setMaxPwm);
-    mqtt_tools.subscribe(sub_to_interval_ms, mqtt_callback_setRequestIntervalMs);
-  } else {
-    Serial.print("failed, rc=");
-    Serial.println(mqtt_client.state());
-  }
-}
 Task mqtt_reconnect_task(MQTT_RECONNECT_DELAY *TASK_MILLISECOND, TASK_FOREVER, mqtt_reconnect);
-
-// Takes a JSON string and sets running config accordingly (only sets specified fields, leaves the rest untouched)
-void set_conf_from_json(String json) {
-  DynamicJsonDocument doc(2000);
-  deserializeJson(doc, json);
-
-  if (doc.containsKey("apiUrl")) {
-    apiUrl = doc["apiUrl"].as<String>();
-  }
-  if (doc.containsKey("filterJSON")) {
-    filterJSON = doc["filterJSON"].as<String>();
-  }
-  JsonVariant post_payload_variant = doc["post_payload"];
-  if (!post_payload_variant.isNull()) {
-    post_payload = post_payload_variant.as<String>();
-  } else {
-    post_payload = (const char *)nullptr;
-  }
-  if (doc.containsKey("path")) {
-    path = doc["path"].as<String>();
-  }
-  if (doc.containsKey("min_value")) {
-    min_value = doc["min_value"].as<float>();
-  }
-  if (doc.containsKey("max_value")) {
-    max_value = doc["max_value"].as<float>();
-  }
-  if (doc.containsKey("min_pwm")) {
-    min_pwm = doc["min_pwm"].as<int>();
-  }
-  if (doc.containsKey("max_pwm")) {
-    max_pwm = doc["max_pwm"].as<int>();
-  }
-  if (doc.containsKey("request_interval_ms")) {
-    request_task.setInterval(doc["request_interval_ms"].as<int>() * TASK_MILLISECOND);
-  }
-}
-
-// Converts running config to a JSON string
-String conf_to_json() {
-  DynamicJsonDocument doc(2000);
-
-  doc["apiUrl"] = apiUrl;
-  doc["filterJSON"] = filterJSON;
-  doc["post_payload"] = post_payload;
-  doc["path"] = path;
-  doc["min_value"] = min_value;
-  doc["max_value"] = max_value;
-  doc["min_pwm"] = min_pwm;
-  doc["max_pwm"] = max_pwm;
-  doc["request_interval_ms"] = request_task.getInterval();
-
-  String out;
-  serializeJsonPretty(doc, out);
-  return out;
-}
 
 void setup() {
   Serial.begin(115200);
