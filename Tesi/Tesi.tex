@@ -118,8 +118,7 @@
 \chapter{Introduzione}
 TCP/IP over Avian Carriers\cite{waitzman1990standard}
 
-\chapter{Funzionamento}
-\section{Attori coinvolti}
+\chapter{Attori coinvolti}
 Prima di parlare del funzionamento dell'oggetto è il caso di soffermarsi su chi interagisce con esso:
 \subsection*{Sviluppatore}
 È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e  modificare funzionalità del programma
@@ -132,6 +131,8 @@ Non conosce le API né il formato JSON: ha bisogno di un prodotto già pronto ch
 deve essere particolarmente intuitiva, ad esempio una piccola interfaccia web per scegliere la rete WiFi e inserirne la password
 al primo avvio. La sorgente dei dati deve essere preconfigurata e se ne viene resa disponibile più di una la scelta deve essere molto
 semplice, possibilmente tramite interazione fisica con il dispositivo.
+
+\chapter{Funzionamento}
 
 \section{All'avvio}
 Per prima cosa contestualmente all'accensione, mediante WiFiManager, viene effettuato un tentativo di connessione all'ultima rete WiFi
@@ -146,6 +147,7 @@ o aziendali per richiedere l'autenticazione) chiede di selezionare una delle ret
 Successivamente viene tentata la connessione. Se non ha successo viene riproposto lo stesso procedimento, altrimenti viene disattivato
 l'Access Point temporaneo e il programma prosegue.
 
+\pagebreak
 \section{Modalità operative}
 
 \subsection{Modalità API}
@@ -213,7 +215,6 @@ Non ancora implementata, ma l'idea è che consenta di visualizzare un valore ric
 invece che andarlo a reperire tramite richieste HTTP(S).
 
 
-\chapter{Cap3}
 \chapter{Conclusioni}
 
 \section{Reperibilità delle API}
