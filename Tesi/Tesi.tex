@@ -18,6 +18,7 @@
 \usepackage{graphicx}
 
 \usepackage{underscore} % !!!
+\usepackage{hyperref}
 %\usepackage{bera}% optional: just to have a nice mono-spaced font
 \usepackage{listings}
 \usepackage{xcolor}
@@ -132,10 +133,25 @@ deve essere particolarmente intuitiva, ad esempio una piccola interfaccia web pe
 al primo avvio. La sorgente dei dati deve essere preconfigurata e se ne viene resa disponibile più di una la scelta deve essere molto
 semplice, possibilmente tramite interazione fisica con il dispositivo.
 
+\section{All'avvio}
+Per prima cosa contestualmente all'accensione, mediante WiFiManager, viene effettuato un tentativo di connessione all'ultima rete WiFi
+utilizzata, di cui sono state salvate le credenziali. Se non è mai stata effettuata la connessione ad alcuna rete WiFi o se
+quella salvata non è disponibile, viene attivato un Access Point che tramite Captive Portal (lo stesso che viene usato su reti pubbliche
+o aziendali per richiedere l'autenticazione) chiede di selezionare una delle reti WiFi vicine e di inserirne la password.\\
 
-\section{Modalità API}
+\vspace{4mm}
+{[SCREENSHOT]}\\
+\vspace{4mm}
+
+Successivamente viene tentata la connessione. Se non ha successo viene riproposto lo stesso procedimento, altrimenti viene disattivato
+l'Access Point temporaneo e il programma prosegue.
+
+\section{Modalità operative}
+
+\subsection{Modalità API}
 Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo configurabili di richieste HTTP o HTTPS ad API REST
-e sulla conversione del risultato in una tensione di uscita. La configurazione è salvata nella memoria flash del microcontrollore
+e sulla conversione del risultato in una tensione di uscita.
+La configurazione è salvata nella memoria flash del microcontrollore
 in formato JSON, esempio:
 
 \begin{lstlisting}[language=json,firstnumber=1]
@@ -154,18 +170,19 @@ in formato JSON, esempio:
 
 \noindent Dove:
 \begin{itemize}
-  \item \texttt{apiUrl} è l'URL alla risorsa (stringa)
+  \item \texttt{apiUrl} è l'URL della risorsa (stringa)
   \item \texttt{post_payload} in caso di richiesta POST contiene la stringa da inviare nel body
-  \item \texttt{filterJSON} è un documento JSON che contiene \texttt{true} come placeholder del/i campi che si vuole considerare dalla risposta (stringa/oggetto)
+  \item \texttt{filterJSON} è un documento JSON che contiene \texttt{true} come placeholder del campo che si vuole considerare dalla risposta (stringa/oggetto)
   \item \texttt{path} è una stringa che contiene il "percorso" del campo che si vuole rappresentare fisicamente (campo: float, path: stringa)
   \item \texttt{min_value} indica il valore minimo della scala per rappresentare il valore (float)
   \item \texttt{max_value} indica il valore massimo (float)
   \item \texttt{min_pwm} indica il valore minimo di uscita della PWM da mappare al valore restituito dalle API (int)
   \item \texttt{max_pwm} indica il valore massimo [su ESP il duty cycle massimo equivale a 1023] (int)
-  \item \texttt{request_interval_ms} indica l'intervallo di tempo in millisecondi che trascorre tra una richiesta e l'altra alle API (int)
+  \item \texttt{request_interval_ms} indica l'intervallo di tempo in millisecondi che intercorre tra le richieste alla risorsa (int)
 \end{itemize}
 
-La configurazione può essere alterata tramite una pagina web accessibile all'indirizzo IP nella rete locale del microcontrollore.
+La configurazione può essere alterata tramite una pagina web accessibile all'indirizzo IP nella rete locale del microcontrollore o il suo
+hostname.
 
 \vspace{4mm}
 {[SCREENSHOT PAGINA WEB]}
@@ -187,11 +204,11 @@ singolarmente ai topic:
   \item \texttt{Phys/setRequestIntervalMs}
 \end{itemize}
 
-Le modificheS non sono automaticamente salvate nella memoria flash ma ciò deve essere richiesto esplicitamente. Nei form di configurazione
+Le modifiche non sono automaticamente salvate nella memoria flash ma ciò deve essere richiesto esplicitamente. Nei form di configurazione
 è presente una checkbox da spuntare in caso si voglia che questo avvenga.
 
 
-\section{Modalità MQTT}
+\subsection{Modalità MQTT}
 Non ancora implementata, ma l'idea è che consenta di visualizzare un valore ricevuto direttamente tramite sottoscrizione a un topic MQTT
 invece che andarlo a reperire tramite richieste HTTP(S).
 
