@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <PubSubClient.h>
 #include <PubSubClientTools.h>
-#include <TaskSchedulerDeclarations.h> //TaskScheduler.h gives errors on multiple inclusions
+#include <TaskSchedulerDeclarations.h> //TaskScheduler.h throws errors on multiple inclusions
 
 extern String apiUrl;
 extern String filterJSON;

@@ -2,7 +2,7 @@
 #define CONF_H
 
 #include <Arduino.h>
-#include <TaskSchedulerDeclarations.h>
+#include <TaskSchedulerDeclarations.h> //TaskScheduler.h throws errors on multiple inclusions
 
 extern String apiUrl;
 extern String filterJSON;
