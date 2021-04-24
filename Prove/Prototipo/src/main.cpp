@@ -32,7 +32,11 @@ float max_pwm = PWMRANGE;
 
 String settings_file = "/settings.json";
 
-int out_pwm;
+int out_value, out_pwm;
+
+// SPECIFIC TO SCANNING MODE
+bool scanning = true;
+bool rising = true;
 
 // MQTT CONFIG
 
@@ -169,6 +173,28 @@ void setup_wifi() {
   //WiFi.softAP(hostName);
 }
 
+void write_output() {
+  if (!scanning) {
+    //out_pwm = map(value, min_value, max_value, min_pwm, max_pwm);
+    out_pwm = (out_value - min_value) * (max_pwm - min_pwm) / (max_value - min_value) + min_pwm;
+  } else {
+    if ((rising && out_pwm >= max_pwm) || (!rising && out_pwm <= min_pwm)) {
+      rising = !rising;
+    }
+    if (rising) {
+      out_pwm += max_pwm / 25;
+    } else {
+      out_pwm -= max_pwm / 25;
+    }
+  }
+  if (out_pwm < 0)
+    out_pwm = 0;
+  if (out_pwm > PWMRANGE)
+    out_pwm = PWMRANGE;
+  analogWrite(OUT_PIN, out_pwm);
+}
+Task write_output_task(100 * TASK_MILLISECOND, TASK_FOREVER, write_output);
+
 // HTTP(S) request. On successful request returns a stream to the callback
 void http_s_request(void (*callback)(Stream &), String post_payload = (const char *)nullptr) {
   WiFiClient client;
@@ -285,8 +311,16 @@ void stream_callback(Stream &stream) {
     token = strtok(NULL, "/");
   }
 
-  float value = jv.as<String>().toFloat(); //Advantage over as<float>: String::toFloat converts numbers even when the string contains characters other than digits
-                                           // e.g. "3 min" -> 3.00
+  String value_string = jv.as<String>();
+
+  if (value_string == "ricalcolo" || value_string == "*") {
+    scanning = true;
+  } else {
+    scanning = false;
+    out_value = value_string.toFloat(); //Advantage over jv.as<float>: String::toFloat converts numbers even when the string contains
+                                        //characters other than digits (e.g. "3 min" -> 3.00)
+  }
+
   //FINE CANTIERE
 
   /*
@@ -298,22 +332,13 @@ void stream_callback(Stream &stream) {
   */
 
   Serial.println();
-  Serial.println("Extracted value: " + String(value));
-  Serial.println("Min value: " + String(min_value));
-  Serial.println("Max value: " + String(max_value));
-
-  //out_pwm = map(value, min_value, max_value, min_pwm, max_pwm);
-  out_pwm = (value - min_value) * (max_pwm - min_pwm) / (max_value - min_value) + min_pwm;
-
-  Serial.println();
-  Serial.println("Mapped to: " + String(out_pwm));
+  Serial.println("Extracted value: " + String(out_value));
 }
 
 // Function called by request task. It makes the HTTP or HTTPS request and sets the PWM output according to out_pwm
 void request_task_callback() {
   http_s_request(stream_callback, post_payload);
 
-  analogWrite(OUT_PIN, out_pwm);
   Serial.print("Free heap: ");
   Serial.println(ESP.getFreeHeap());
 
@@ -340,6 +365,9 @@ void setup() {
 
   ts.addTask(mqtt_reconnect_task);
   ts.addTask(request_task);
+  ts.addTask(write_output_task);
+
+  write_output_task.enable();
 }
 
 void loop() {
