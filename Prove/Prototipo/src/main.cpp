@@ -30,9 +30,12 @@ float min_pwm = 0;
 float max_pwm = PWMRANGE;
 #define REQUEST_DELAY_MS 10000 //Request interval. Can be edited in config
 
+int current_mode = FANTOZZI_MODE;
+
 String settings_file = "/settings.json";
 
-int out_value, out_pwm;
+int out_pwm;
+float out_value;
 
 // SPECIFIC TO SCANNING MODE
 bool scanning = true;
@@ -223,7 +226,9 @@ void http_s_request(void (*callback)(Stream &), String post_payload = (const cha
       httpCode = http.GET();
       Serial.print("GET... ");
     } else {
-      http.addHeader("Content-Type", "application/x-www-form-urlencoded"); //TEMPORARY
+      if (current_mode == FANTOZZI_MODE) {
+        http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+      }
       httpCode = http.POST(post_payload);
       Serial.print("POST... ");
     }
@@ -368,6 +373,8 @@ void setup() {
   ts.addTask(write_output_task);
 
   write_output_task.enable();
+
+  mode_select(MQTT_MODE);
 }
 
 void loop() {

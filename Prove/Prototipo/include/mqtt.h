@@ -15,6 +15,10 @@ extern float max_value;
 extern float min_pwm;
 extern float max_pwm;
 
+extern int current_mode;
+extern float out_value;
+extern bool scanning;
+
 extern PubSubClient mqtt_client;
 extern PubSubClientTools mqtt_tools;
 
@@ -29,6 +33,9 @@ void mqtt_callback_setMinPwm(String topic, String message);
 void mqtt_callback_setMaxPwm(String topic, String message);
 void mqtt_callback_setRequestIntervalMs(String topic, String message);
 void mqtt_callback_setFromJSON(String topic, String message);
+
+void mqtt_callback_setValue(String topic, String message);
+void mqtt_callback_setMode(String topic, String message);
 
 // (Try to) Connect to MQTT server and subscribe
 void mqtt_reconnect();

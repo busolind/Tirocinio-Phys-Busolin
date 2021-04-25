@@ -4,6 +4,27 @@
 #include <FS.h>
 #include <LittleFS.h>
 
+void mode_select(int mode) {
+  switch (mode) {
+  case API_MODE:
+  case FANTOZZI_MODE:
+    ts.addTask(request_task);
+    request_task.enableIfNot();
+    current_mode = mode;
+
+    break;
+
+  case MQTT_MODE:
+    request_task.disable();
+    ts.deleteTask(request_task);
+    current_mode = mode;
+
+    break;
+  default:
+    Serial.println("Mode " + String(mode) + " not found");
+  }
+}
+
 String load_conf_from_flash() {
   String conf = "";
   if (!LittleFS.exists(settings_file)) {

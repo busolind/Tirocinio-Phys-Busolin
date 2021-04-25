@@ -15,6 +15,9 @@ String sub_to_max_pwm = root_topic + "/setMaxPwm";
 String sub_to_interval_ms = root_topic + "/setRequestIntervalMs";
 String sub_to_setFromJSON = root_topic + "/setFromJSON";
 
+String sub_to_setValue = root_topic + "/setValue";
+String sub_to_setMode = root_topic + "/setMode";
+
 // Callbacks:
 
 void mqtt_callback_setApiUrl(String topic, String message) {
@@ -62,6 +65,19 @@ void mqtt_callback_setFromJSON(String topic, String message) {
   set_conf_from_json(message);
 }
 
+void mqtt_callback_setValue(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]:\n" + message + "\n");
+  if (current_mode == MQTT_MODE) {
+    scanning = false;
+    out_value = message.toFloat();
+  }
+}
+
+void mqtt_callback_setMode(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]:\n" + message + "\n");
+  mode_select(message.toInt());
+}
+
 void mqtt_reconnect() {
   Serial.print("Attempting MQTT connection...");
   String clientId = "ESP8266Client-" + String(random(0xffff), HEX);
@@ -77,6 +93,9 @@ void mqtt_reconnect() {
     mqtt_tools.subscribe(sub_to_min_pwm, mqtt_callback_setMinPwm);
     mqtt_tools.subscribe(sub_to_max_pwm, mqtt_callback_setMaxPwm);
     mqtt_tools.subscribe(sub_to_interval_ms, mqtt_callback_setRequestIntervalMs);
+
+    mqtt_tools.subscribe(sub_to_setValue, mqtt_callback_setValue);
+    mqtt_tools.subscribe(sub_to_setMode, mqtt_callback_setMode);
   } else {
     Serial.print("failed, rc=");
     Serial.println(mqtt_client.state());
