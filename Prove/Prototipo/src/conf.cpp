@@ -8,7 +8,7 @@ void mode_select(int mode) {
   switch (mode) {
   case API_MODE:
   case FANTOZZI_MODE:
-    ts.addTask(request_task);
+    //ts.addTask(request_task);
     request_task.enableIfNot();
     current_mode = mode;
 
@@ -16,7 +16,7 @@ void mode_select(int mode) {
 
   case MQTT_MODE:
     request_task.disable();
-    ts.deleteTask(request_task);
+    //ts.deleteTask(request_task);
     current_mode = mode;
 
     break;
@@ -87,6 +87,9 @@ void set_conf_from_json(String json) {
   if (doc.containsKey("request_interval_ms")) {
     request_task.setInterval(doc["request_interval_ms"].as<int>() * TASK_MILLISECOND);
   }
+  if (doc.containsKey("mode")) {
+    mode_select(doc["mode"].as<int>());
+  }
 }
 
 // Converts running config to a JSON string
@@ -102,6 +105,7 @@ String conf_to_json() {
   doc["min_pwm"] = min_pwm;
   doc["max_pwm"] = max_pwm;
   doc["request_interval_ms"] = request_task.getInterval();
+  doc["mode"] = current_mode;
 
   String out;
   serializeJsonPretty(doc, out);

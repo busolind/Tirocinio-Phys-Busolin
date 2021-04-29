@@ -362,19 +362,18 @@ void setup() {
   pinMode(OUT_PIN, OUTPUT);
   LittleFS.begin();
 
+  ts.addTask(mqtt_reconnect_task);
+  ts.addTask(write_output_task);
+  ts.addTask(request_task);
+  mode_select(current_mode);
+
   Serial.println("Started with hardcoded config, trying to load from file...");
   set_conf_from_json(load_conf_from_flash());
 
   Serial.println(conf_to_json());
   delay(3000);
 
-  ts.addTask(mqtt_reconnect_task);
-  ts.addTask(request_task);
-  ts.addTask(write_output_task);
-
   write_output_task.enable();
-
-  mode_select(MQTT_MODE);
 }
 
 void loop() {
@@ -385,13 +384,9 @@ void loop() {
   }
 
   if (WiFi.status() == WL_CONNECTED) {
-    request_task.enableIfNot();
     ArduinoOTA.handle();
-  } else {
-    request_task.disable();
   }
 
   mqtt_client.loop();
-
   ts.execute();
 }
