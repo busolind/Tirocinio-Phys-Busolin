@@ -358,7 +358,7 @@ void setup() {
   Serial.begin(115200);
   setup_wifi();
   setup_ota();
-  setup_ws();
+  //setup_ws();
   pinMode(OUT_PIN, OUTPUT);
   LittleFS.begin();
 
