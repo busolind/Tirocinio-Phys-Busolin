@@ -132,7 +132,8 @@ deve essere particolarmente intuitiva, ad esempio una piccola interfaccia web pe
 al primo avvio. La sorgente dei dati deve essere preconfigurata e se ne viene resa disponibile più di una la scelta deve essere molto
 semplice, possibilmente tramite interazione fisica con il dispositivo.
 
-\chapter{Funzionamento}
+
+\chapter{Funzionamento del prototipo}
 
 \section{All'avvio}
 Per prima cosa contestualmente all'accensione, mediante WiFiManager, viene effettuato un tentativo di connessione all'ultima rete WiFi
@@ -213,6 +214,46 @@ Le modifiche non sono automaticamente salvate nella memoria flash ma ciò deve e
 \subsection{Modalità MQTT}
 Non ancora implementata, ma l'idea è che consenta di visualizzare un valore ricevuto direttamente tramite sottoscrizione a un topic MQTT
 invece che andarlo a reperire tramite richieste HTTP(S).
+
+\chapter{Realizzazione del prototipo}
+
+\section{Hardware}
+Il prototipo è molto semplice dal punto di vista hardware, consiste in un voltmetro analogico ad ago e un WeMos D1 mini basato su ESP8266.\\
+Il terminale positivo del voltmetro è connesso a un GPIO dell'ESP, mentre il terminale negativo a terra. È configurato mediante i
+commutatori in modalità corrente continua con fondo scala a 3V.
+
+\section{Software}
+La parte software del prototipo è stata realizzata utilizzando il linguaggio di programmazione di Arduino, esteso all'utilizzo con
+ESP8266 e con l'aiuto di numerose librerie.
+
+\subsection{PWM}
+Il principio di base che permette di produrre una tensione variabile da parte di un sistema digitale è la Pulse-Width Modulation.\\
+Ciò permette di controllare finemente la posizione dell'ago del voltmetro via software.
+
+\subsection{Richieste API}
+Il primo passo verso la fisicalizzazione dei dati è stato quello di ottenerli, mediante richieste ad API REST in locale o su Internet.
+Per questo è stata utilizzata la libreria \texttt{ESP8266HTTPClient}.\\
+Le richieste HTTP hanno funzionato fin da subito, per HTTPS c'è stato più da lavorare in quanto non erano eccessivamente
+documentate e tutte le soluzioni trovate online prevedevano l'utilizzo di stringhe per memorizzare intere risposte, che per via
+della limitata disponibilità di memoria dell'ESP non è sempre una soluzione funzionante.\\
+Un'alternativa fornita dalla libreria è quella di utilizzo di uno stream, per poter leggere dalla risposta un byte alla volta senza doverla memorizzare per intero, potendo ignorare le parti non necessarie. Questo meccanismo però è di facile utilizzo solo finché ci si limita a
+HTTP. Per HTTPS la funzione per estrarre lo stream della risposta, secondo la documentazione della libreria, non è supportata.
+Come soluzione è stato utilizzato come stream direttamente il WiFiClient utilizzato dalla connessione, che però non sempre presenta
+ un output "pulito" della risposta ma potrebbe essere preceduto da una linea contentente (presumibilmente) la lunghezza in byte dell
+ risposta.
+
+\subsection{JSON}
+La quasi totalità delle API mette a disposizione risposte contenenti dati in formato JSON (JavaScript Object Notation), è stata quindi
+utilizzata la libreria \texttt{ArduinoJson} per la deserializzazione e la scelta del campo da estrarre.
+
+\subsection{Map}
+Una volta ottenuto il valore da rappresentare è necessario trasformarlo in una tensione, ottenuta tramite PWM il cui duty cycle è
+proporzionale a un numero a 10 bit (0 - 1023). Per fare questo è possibile utilizzare la funzione map già presente nella libreria
+standard di Arduino. \\
+
+\vspace{4mm}
+{[Formula]}\\
+\vspace{4mm}
 
 
 \chapter{Conclusioni}
