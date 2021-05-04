@@ -244,17 +244,48 @@ Come soluzione è stato utilizzato come stream direttamente il WiFiClient utiliz
 
 \subsection{JSON}
 La quasi totalità delle API mette a disposizione risposte contenenti dati in formato JSON (JavaScript Object Notation), è stata quindi
-utilizzata la libreria \texttt{ArduinoJson} per la deserializzazione e la scelta del campo da estrarre.
+utilizzata la libreria \texttt{ArduinoJson} per la deserializzazione e la scelta del campo da estrarre.\\
+JSON è stato successivamente usato anche come formato per la serializzazione e deserializzazione delle impostazioni da salvare sulla
+memoria flash dell'ESP per permetterne la persistenza anche a seguito di perdite di tensione.
 
 \subsection{Map}
 Una volta ottenuto il valore da rappresentare è necessario trasformarlo in una tensione, ottenuta tramite PWM il cui duty cycle è
-proporzionale a un numero a 10 bit (0 - 1023). Per fare questo è possibile utilizzare la funzione map già presente nella libreria
-standard di Arduino. \\
+proporzionale a un numero a 10 bit (0 - 1023). Per fare questo è possibile utilizzare la funzione \texttt{map} già presente nella
+libreria standard di Arduino.\\ 
+Durante i test è emerso che tale funzione non si comporta particolarmente bene quando uno dei range è formato da piccoli numeri
+decimali. Si è quindi preferito inserire nel codice direttamente la formula matematica su cui si basa \texttt{map}:
+\[out = (value - fromLow) \times (toHigh - toLow) / (fromHigh - fromLow) + toLow \]
 
-\vspace{4mm}
-{[Formula]}\\
-\vspace{4mm}
+\noindent Dove:\cite{arduinomap}
+\begin{itemize}
+	\item value: Il numero da mappare.
+	\item fromLow: Il limite inferiore dell'intervallo corrente del valore
+	\item fromHigh: Il limite superiore dell'intervallo corrente del valore
+	\item toLow: Il limite inferiore dell'intervallo di destinazione del valore
+	\item toHigh: Il limite superiore dell'intervallo di destinazione del valore
+\end{itemize}
 
+\subsection{Task}
+Attività periodiche come le richieste API sono state rese dei task per mezzo della libreria \texttt{TaskScheduler}, che permette di
+impostare un intervallo di tempo tra esecuzioni ripetute di una procedura.
+
+\subsection{Configurazione via MQTT}
+Come prima modalità di modifica "a runtime" della configurazione, è stata implementata la possibilità di inviare messaggi MQTT ai
+topic precedentemente descritti
+
+\subsection{Credenziali WiFi}
+Per la connessione alla rete wireless, grazie alla libreria \texttt{WiFiManager}, l'ESP memorizzerà le ultime credenziali utilizzate
+per ritentare la connessione al riavvio. In caso le credenziali non siano valide o non ve ne siano di salvate, verrà avviato un 
+Access Point temporaneo con captive portal per richiedere delle credenziali valide.
+
+\subsection{Configurazione tramite form web}
+Un'altra forma di modifica della configurazione è stata implementata tramite un web server configurato per mezzo della libreria
+\texttt{ESPAsyncWebServer}. Inizialmente la pagina conteneva un semplice form tramite il quale era possibile inviare un intero JSON 
+di configurazione, successivamente è stata aggiunta la possibilità di impostare i singoli parametri attraverso un form precompilato
+e richieste AJAX. Un punto debole di questa soluzione è la scarsa flessibilità del web server, che gestisce richieste POST solo codificate
+come Form Data, quindi invece che poter mandare un semplice JSON nel body della richiesta come da prassi con AJAX, è stato necessario
+trasformarlo in FormData come valore associato alla chiave setFromJSON
+%%%%%% Da rivedere
 
 \chapter{Conclusioni}
 
