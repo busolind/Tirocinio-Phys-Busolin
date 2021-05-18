@@ -118,6 +118,27 @@
 \chapter{Introduzione}
 TCP/IP over Avian Carriers\cite{waitzman1990standard}
 
+\chapter{Generalizzazione degli strumenti di misura}
+In questo capitolo si tenterà di generalizzare le caratteristiche degli strumenti di misura ai fini di associarle a componenti software e tipi
+di dato.
+\section{Indicatori}
+\subsection{Strumenti ad ago}
+Sono il tipo più comune di strumenti di misura vintage. Un esempio sono i voltmetri / amperometri / multimetri analogici che si utilizzavano
+fino a pochi anni fa. Possono essere utilizzati per visualizzare grandezze lineari, facendo attenzione alla scala scelta.
+
+\section{Interazione con l'utente}
+
+\subsection{Interruttori}
+Possono essere mappati a valori booleani (true/false)
+
+\subsection{Commutatori a n posizioni}
+Possono essere mappati in un programma a tipi \texttt{enum}, utilizzabili per selezionare tra un insieme di modalità o un insieme di valori
+utilizzabili come parametro in un programma. Ad esempio un commutatore a 7 posti può essere utilizzato per selezionare un giorno della
+settimana.
+
+\chapter{Interventi fisici sugli strumenti}
+Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione.
+
 \chapter{Attori coinvolti}
 Prima di parlare del funzionamento dell'oggetto è il caso di soffermarsi su chi interagisce con esso:
 \subsection*{Sviluppatore}
@@ -238,9 +259,8 @@ documentate e tutte le soluzioni trovate online prevedevano l'utilizzo di string
 della limitata disponibilità di memoria dell'ESP non è sempre una soluzione funzionante.\\
 Un'alternativa fornita dalla libreria è quella di utilizzo di uno stream, per poter leggere dalla risposta un byte alla volta senza doverla memorizzare per intero, potendo ignorare le parti non necessarie. Questo meccanismo però è di facile utilizzo solo finché ci si limita a
 HTTP. Per HTTPS la funzione per estrarre lo stream della risposta, secondo la documentazione della libreria, non è supportata.
-Come soluzione è stato utilizzato come stream direttamente il WiFiClient utilizzato dalla connessione, che però non sempre presenta
- un output "pulito" della risposta ma potrebbe essere preceduto da una linea contentente (presumibilmente) la lunghezza in byte dell
- risposta.
+Come soluzione è stato utilizzato come stream direttamente il BearSSL::WiFiClientSecure referenziato dalla connessione, impostato in
+modalità insicura (senza la verifica della fingerprint), che però non sempre presenta un output "pulito" della risposta ma potrebbe essere preceduto da una linea contentente (presumibilmente) la lunghezza in byte della risposta.
 
 \subsection{JSON}
 La quasi totalità delle API mette a disposizione risposte contenenti dati in formato JSON (JavaScript Object Notation), è stata quindi
@@ -295,6 +315,14 @@ Nel dettaglio, sono esposti i seguenti endpoint:
               la configurazione in esecuzione nella memoria flash.
 \end{itemize}
 %%%%%% Da rivedere
+
+\subsection{OTA}
+Sono stati implementati gli aggiornamenti OTA (Over the Air), processo tramite il quale è possibile eseguire l'upload di firmware
+mediante WiFi invece che tramite porta seriale. Questo rimuove l'obbligo di utilizzo di una connessione cablata ed è molto utile
+in situazioni di difficile accesso fisico al microcontrollore.\\
+Il processo di upload usa Digest-MD5 per la verifica dell'integrità, onde evitare di rendere il dispositivo inservibile. È inoltre possibile
+migliorare la sicurezza dell'operazione mediante utilizzo di password e hash firmati. \cite{espota}
+
 
 \chapter{Conclusioni}
 
