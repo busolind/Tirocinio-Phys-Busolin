@@ -116,11 +116,18 @@
 
 % o sections (dipende dal documentclass)
 \chapter{Introduzione}
-TCP/IP over Avian Carriers\cite{waitzman1990standard}
+\section{Data Physicalization: definizione}
+Una data physicalization (in italiano: fisicalizzazione dei dati) è un artefatto fisico la cui geometria o proprietà materiali codificano dei
+dati.\\
+Gli stessi autori della precedente definizione distinguono tra data physicalization come artefatti (per i quali vale quanto scritto sopra),
+data physicalization come il processo di dare forma fisica ai dati e data physicalization come l'area di ricerca che unisce da visualizzazione
+dei dati e interfacce utenti tangibili. \cite{dataphysorg:terminology}
+
+\cite{hal:dataphys}
 
 \chapter{Generalizzazione degli strumenti di misura}
-In questo capitolo si tenterà di generalizzare le caratteristiche degli strumenti di misura ai fini di associarle a componenti software e tipi
-di dato.
+In questo capitolo si tenterà di generalizzare le caratteristiche degli strumenti di misura ai fini di associarle a componenti software e
+tipi di dato.
 \section{Indicatori}
 \subsection{Strumenti ad ago}
 Sono il tipo più comune di strumenti di misura vintage. Un esempio sono i voltmetri / amperometri / multimetri analogici che si utilizzavano
@@ -257,10 +264,12 @@ Per questo è stata utilizzata la libreria \texttt{ESP8266HTTPClient}.\\
 Le richieste HTTP hanno funzionato fin da subito, per HTTPS c'è stato più da lavorare in quanto non erano eccessivamente
 documentate e tutte le soluzioni trovate online prevedevano l'utilizzo di stringhe per memorizzare intere risposte, che per via
 della limitata disponibilità di memoria dell'ESP non è sempre una soluzione funzionante.\\
-Un'alternativa fornita dalla libreria è quella di utilizzo di uno stream, per poter leggere dalla risposta un byte alla volta senza doverla memorizzare per intero, potendo ignorare le parti non necessarie. Questo meccanismo però è di facile utilizzo solo finché ci si limita a
+Un'alternativa fornita dalla libreria è quella di utilizzo di uno stream, per poter leggere dalla risposta un byte alla volta senza doverla
+memorizzare per intero, potendo ignorare le parti non necessarie. Questo meccanismo però è di facile utilizzo solo finché ci si limita a
 HTTP. Per HTTPS la funzione per estrarre lo stream della risposta, secondo la documentazione della libreria, non è supportata.
 Come soluzione è stato utilizzato come stream direttamente il BearSSL::WiFiClientSecure referenziato dalla connessione, impostato in
-modalità insicura (senza la verifica della fingerprint), che però non sempre presenta un output "pulito" della risposta ma potrebbe essere preceduto da una linea contentente (presumibilmente) la lunghezza in byte della risposta.
+modalità insicura (senza la verifica della fingerprint), che però non sempre presenta un output "pulito" della risposta ma potrebbe essere
+preceduto da una linea contentente (presumibilmente) la lunghezza in byte della risposta.
 
 \subsection{JSON}
 La quasi totalità delle API mette a disposizione risposte contenenti dati in formato JSON (JavaScript Object Notation), è stata quindi
@@ -271,18 +280,18 @@ memoria flash dell'ESP per permetterne la persistenza anche a seguito di perdite
 \subsection{Map}
 Una volta ottenuto il valore da rappresentare è necessario trasformarlo in una tensione, ottenuta tramite PWM il cui duty cycle è
 proporzionale a un numero a 10 bit (0 - 1023). Per fare questo è possibile utilizzare la funzione \texttt{map} già presente nella
-libreria standard di Arduino.\\ 
+libreria standard di Arduino.\\
 Durante i test è emerso che tale funzione non si comporta particolarmente bene quando uno dei range è formato da piccoli numeri
 decimali. Si è quindi preferito inserire nel codice direttamente la formula matematica su cui si basa \texttt{map}:
 \[out = (value - fromLow) \times (toHigh - toLow) / (fromHigh - fromLow) + toLow \]
 
 \noindent Dove:\cite{arduinomap}
 \begin{itemize}
-	\item value: Il numero da mappare.
-	\item fromLow: Il limite inferiore dell'intervallo corrente del valore
-	\item fromHigh: Il limite superiore dell'intervallo corrente del valore
-	\item toLow: Il limite inferiore dell'intervallo di destinazione del valore
-	\item toHigh: Il limite superiore dell'intervallo di destinazione del valore
+  \item value: Il numero da mappare.
+  \item fromLow: Il limite inferiore dell'intervallo corrente del valore
+  \item fromHigh: Il limite superiore dell'intervallo corrente del valore
+  \item toLow: Il limite inferiore dell'intervallo di destinazione del valore
+  \item toHigh: Il limite superiore dell'intervallo di destinazione del valore
 \end{itemize}
 
 \subsection{Task}
@@ -295,12 +304,12 @@ topic precedentemente descritti
 
 \subsection{Credenziali WiFi}
 Per la connessione alla rete wireless, grazie alla libreria \texttt{WiFiManager}, l'ESP memorizzerà le ultime credenziali utilizzate
-per ritentare la connessione al riavvio. In caso le credenziali non siano valide o non ve ne siano di salvate, verrà avviato un 
+per ritentare la connessione al riavvio. In caso le credenziali non siano valide o non ve ne siano di salvate, verrà avviato un
 Access Point temporaneo con captive portal per richiedere delle credenziali valide.
 
 \subsection{Configurazione tramite form web}
 Un'altra forma di modifica della configurazione è stata implementata tramite un web server configurato per mezzo della libreria
-\texttt{ESPAsyncWebServer}. Inizialmente la pagina conteneva un semplice form tramite il quale era possibile inviare un intero JSON 
+\texttt{ESPAsyncWebServer}. Inizialmente la pagina conteneva un semplice form tramite il quale era possibile inviare un intero JSON
 di configurazione, successivamente è stata aggiunta la possibilità di impostare i singoli parametri attraverso un form precompilato
 e richieste AJAX. Un punto debole di questa soluzione è la scarsa flessibilità del web server, che gestisce richieste POST solo codificate
 come Form Data, quindi invece che poter mandare un semplice JSON nel body della richiesta come da prassi con AJAX, è stato necessario
@@ -311,8 +320,8 @@ Nel dettaglio, sono esposti i seguenti endpoint:
   \item /get/running-conf: Restituisce la configurazione attualmente in esecuzione in formato JSON
   \item /get/saved-conf: Restituisce il file di configurazione presente nella memoria flash
   \item /post: permette di inviare un intero JSON di configurazione (anche incompleto, vengono modificati solo i campi specificati) come
-              valore associato alla chiave setFromJSON. È inoltre possibile asssociare alla chiave saveToFlash il valore `true' per copiare
-              la configurazione in esecuzione nella memoria flash.
+        valore associato alla chiave setFromJSON. È inoltre possibile asssociare alla chiave saveToFlash il valore `true' per copiare
+        la configurazione in esecuzione nella memoria flash.
 \end{itemize}
 %%%%%% Da rivedere
 
