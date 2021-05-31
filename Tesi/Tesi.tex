@@ -128,7 +128,7 @@ dei dati e interfacce utenti tangibili.
 Lo scopo della disciplina della visualizzazione dei dati è quello di renderli più comprensibili per gli esseri umani. I display dei computer
 sono l'esempio più classico, hanno molti vantaggi grazie alla loro versatilità tra cui di fornire rappresentazioni visuali dei dati in
 maniera dettagliata e modificabile dinamicamente. Tuttavia, è emersa un'area di ricerca che pone la questione di non limitarsi a una
-matrice di pixel per visualizzazione di e interazione con i dati ma sfruttare altri tipi di interazione pià naturale per gli esseri umani, come
+matrice di pixel per visualizzazione di e interazione con i dati ma sfruttare altri tipi di interazione più naturale per gli esseri umani, come
 è stato dimostrato dalla ricerca in Tangible Computing. \cite{hal:dataphys} \\
 
 \section{Esempi di data physicalization e visualization}
@@ -137,7 +137,7 @@ Una radio vintage che riproduce musica di mood/genere correlato alle condizioni 
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\textwidth]{physiradio}
-  \caption{Physiradio}
+  \caption{Physiradio \cite{physiradio}}
   \label{fig:physiradio}
 \end{figure}
 
@@ -196,26 +196,27 @@ gli scambi di lettere presenti sulla macchina Enigma.
 
 
 \chapter{Guida alla trasformazione degli strumenti vintage}
-Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione,
+Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione.
 
 
 Il metodo più semplice per ottenere un oggetto funzionante è quello di collegare il GPIO del microcontrollore settato come output
 e GND rispettivamente al terminale positivo e negativo dello strumento di misura in modalità voltmetro. Se la tensione in uscita massima
-coincide con il fondoscala dello strumento di misura questo è sufficiente, altrimenti è necessario ridurre l'estremo superiore via software
-o utilizzare un partitore di tensione o un potenziometro. Nel caso in cui la tensione in uscita massima del microcontrollore sia inferiore
-ad ogni possibile fondoscala dello strumento di misura, questa soluzione non è attuabile. \\
- Lo svantaggio di questa soluzione è che il sistema non è contenuto in un unico oggetto ma ci sono componenti esterni.
+coincide con il fondoscala dello strumento di misura questo è sufficiente, altrimenti è necessario ridurla via software oppure
+utilizzare un partitore di tensione o un potenziometro. Nel caso in cui la tensione in uscita massima del microcontrollore sia inferiore
+ad ogni possibile fondoscala dello strumento di misura, questo metodo non è attuabile.
 
 Un metodo più invasivo ma più pulito consiste nel modificare la struttura interna dello strumento di misura, collegandosi ai capi dello
-strumento vero e proprio come se si fosse usato il selettore di modalità.
-Se non si vuole rimpiazzare la resistenza interna valgono le stesse osservazioni fatte poc'anzi sui fondoscala: se non era presente
-nessuna modalità con fondoscala adatto sarà necessario utilizzare una resistenza più piccola di quella/e già presente/i. \\ %Piccola?
+strumento interno vero e proprio bypassando selettore di modalità/fondoscala.
+Se non si vuole rimpiazzare la resistenza interna valgono le stesse osservazioni fatte poc'anzi sui fondoscala: è necessario che
+esista una modalità con fondoscala minore o uguale alla tensione di uscita massima del microcontrollore, altrimenti sarà necessario
+utilizzare una resistenza più piccola di quella/e già presente/i. \\
 Questa operazione consente di integrare (a condizione che ci sia spazio) il microcontrollore all'interno dello strumento in modo da
-ottenere un oggetto più pulito. Se si ha la facoltà di inserire una batteria diventa anche incredibilmente discreto e di più facile
-posizionamento, anche dove è scomodo portare una fonte di alimentazione.
+ottenere un sistema composto da un solo oggetto. Se si ha la facoltà di inserire una batteria diventa anche incredibilmente discreto
+e di più facile posizionamento, anche dove è scomodo portare una fonte di alimentazione.
 
-Ulteriori possibile modifiche meno banali includono l'aggiunta di elementi decorativi quali delle luci o funzionali quali bottoni o altoparlanti
-per ampliare le possibilità di utilizzo. Un'altra possibilità di modifica ove possibile è la sostituzione dell'etichetta sotto all'ago
+Ulteriori possibili modifiche meno banali includono l'aggiunta di elementi decorativi quali delle luci o funzionali quali bottoni o altoparlanti
+per ampliare le possibilità di utilizzo. Un'altra possibilità di modifica ove possibile è la sostituzione dell'etichetta sotto all'ago per adattare
+la scala rappresentata alla vera scala dei dati (a condizione che questa rimanga fissa).
 
 
 \chapter{Use case}
