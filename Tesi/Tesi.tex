@@ -142,11 +142,11 @@ Una radio vintage che riproduce musica di mood/genere correlato alle condizioni 
 \end{figure}
 
 \subsection{BiblioVisualizer}
-Visualizzazione dei dati sul prestito libri nel Consorzio Culture Socialità Biblioteche Network Operativo (CSBNO) tramite barra di LED.
+Visualizzazione dei dati sul prestito libri nel consorzio Culture Socialità Biblioteche Network Operativo (CSBNO) tramite barra di LED.
 \ref{fig:bibliovisualizer}
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.4\textwidth]{bibliovisualizer}
+  \includegraphics[width=0.5\textwidth]{bibliovisualizer}
   \caption{BiblioVisualizer}
   \label{fig:bibliovisualizer}
 \end{figure}
@@ -155,12 +155,15 @@ Visualizzazione dei dati sul prestito libri nel Consorzio Culture Socialità Bib
 %%%% Sezione IoT?
 
 \section{Obiettivo}
-L'obiettivo dell'attività svolta durante il tirocinio è quello di analizzare e sperimentare una forma di rappresentazione
+L'obiettivo dell'attività svolta durante il tirocinio è quello di analizzare e sperimentare una forma di fisicalizzazione
 dei dati mediante strumenti di misura vintage e dispositivi IoT che non richieda l'utilizzo di computer e monitor e sia di semplice fruizione
-da parte dei chi non è avvezzo alla tecnologia e può essere intimorito da complicate dashboard o semplicemente privo della voglia
-di interagire con oggetti tecnologici.
+da parte di chi non è avvezzo alla tecnologia e può essere intimorito da complicate dashboard o semplicemente privo della volontà
+di interagire con dispositivi tecnologici per l'ottenimento di certe informazioni. L'utilizzo di strumenti vintage consente infatti di ottenere
+oggetti discreti che possono far parte dell'arredamento domestico, ad esempio su una mensola, i quali invece di essere puramente
+decorativi comunicano informazioni utili.
 
 % Tecnofobia
+% Esempi dashboard?
 
 
 \chapter{Generalizzazione degli strumenti di misura}
@@ -181,11 +184,41 @@ Possono essere mappati in un programma a tipi \texttt{enum}, utilizzabili per se
 utilizzabili come parametro in un programma. Ad esempio un commutatore a 7 posti può essere utilizzato per selezionare un giorno della
 settimana.
 
+\subsection{Potenziometri}
+Consentono di variare una differenza di potenziale nel continuo quindi possono essere mappati a valori aventi intervallo arbitrario, con una precisione limitata dalla risoluzione del convertitore analogico-digitale integrato nel microcontrollore.
+
+\subsection{Connettori multipli}
+Alcuni strumenti dispongono di più ingressi per le sonde di misura, adatti a connettori a banana o non standard, e specifici alle
+diverse modalità di misura e/o i diversi fondoscala tra cui scegliere. Possono essere utilizzati come selettori a livello software in base a
+quali degli ingressi vengono ponticellati, in maniera simile alle connessioni tra utenze telefoniche nei vecchi centralini o agli spinotti per
+gli scambi di lettere presenti sulla macchina Enigma.
+
+
+
 \chapter{Guida alla trasformazione degli strumenti vintage}
-Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione.
+Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione,
+
+
+Il metodo più semplice per ottenere un oggetto funzionante è quello di collegare il GPIO del microcontrollore settato come output
+e GND rispettivamente al terminale positivo e negativo dello strumento di misura in modalità voltmetro. Se la tensione in uscita massima
+coincide con il fondoscala dello strumento di misura questo è sufficiente, altrimenti è necessario ridurre l'estremo superiore via software
+o utilizzare un partitore di tensione o un potenziometro. Nel caso in cui la tensione in uscita massima del microcontrollore sia inferiore
+ad ogni possibile fondoscala dello strumento di misura, questa soluzione non è attuabile. \\
+ Lo svantaggio di questa soluzione è che il sistema non è contenuto in un unico oggetto ma ci sono componenti esterni.
+
+Un metodo più invasivo ma più pulito consiste nel modificare la struttura interna dello strumento di misura, collegandosi ai capi dello
+strumento vero e proprio come se si fosse usato il selettore di modalità.
+Se non si vuole rimpiazzare la resistenza interna valgono le stesse osservazioni fatte poc'anzi sui fondoscala: se non era presente
+nessuna modalità con fondoscala adatto sarà necessario utilizzare una resistenza più piccola di quella/e già presente/i. \\ %Piccola?
+Questa operazione consente di integrare (a condizione che ci sia spazio) il microcontrollore all'interno dello strumento in modo da
+ottenere un oggetto più pulito. Se si ha la facoltà di inserire una batteria diventa anche incredibilmente discreto e di più facile
+posizionamento, anche dove è scomodo portare una fonte di alimentazione.
+
+Ulteriori possibile modifiche meno banali includono l'aggiunta di elementi decorativi quali delle luci o funzionali quali bottoni o altoparlanti
+per ampliare le possibilità di utilizzo. Un'altra possibilità di modifica ove possibile è la sostituzione dell'etichetta sotto all'ago
+
 
 \chapter{Use case}
-Prima di parlare del funzionamento dell'oggetto è il caso di soffermarsi su chi interagisce con esso:
 Prima di parlare del funzionamento dell'oggetto è il caso di soffermarsi su chi interagisce con esso e in che modo:  %%Rivedere frase
 \subsection*{Sviluppatore}
 È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e  modificare funzionalità del programma
@@ -322,7 +355,6 @@ proporzionale a un numero a 10 bit (0 - 1023). Per fare questo è possibile util
 libreria standard di Arduino.\\
 Durante i test è emerso che tale funzione non si comporta particolarmente bene quando uno dei range è formato da piccoli numeri
 decimali. Si è quindi preferito inserire nel codice direttamente la formula matematica su cui si basa \texttt{map}:
-\[out = (value - fromLow) \times (toHigh - toLow) / (fromHigh - fromLow) + toLow \]
 \[out = \frac{(value - fromLow) \times (toHigh - toLow)}{(fromHigh - fromLow)} + toLow \]
 
 \noindent Dove:\cite{arduinomap}
