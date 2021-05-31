@@ -16,6 +16,7 @@
 
 \usepackage{hyperref}
 \usepackage{graphicx}
+\graphicspath{{./img/}}
 
 \usepackage{underscore} % !!!
 \usepackage{hyperref}
@@ -118,11 +119,44 @@
 \chapter{Introduzione}
 \section{Data Physicalization: definizione}
 Una data physicalization (in italiano: fisicalizzazione dei dati) è un artefatto fisico la cui geometria o proprietà materiali codificano dei
-dati.\\
+dati.\cite{dataphysorg:terminology}\\
 Gli stessi autori della precedente definizione distinguono tra data physicalization come artefatti (per i quali vale quanto scritto sopra),
 data physicalization come il processo di dare forma fisica ai dati e data physicalization come l'area di ricerca che unisce da visualizzazione
-dei dati e interfacce utenti tangibili. \cite{dataphysorg:terminology}
+dei dati e interfacce utenti tangibili. 
+
+\section{Visualizzazione dei dati}
+Lo scopo della disciplina della visualizzazione dei dati è quello di renderli più comprensibili per gli esseri umani. I display dei computer
+sono l'esempio più classico, hanno molti vantaggi grazie alla loro versatilità tra cui di fornire rappresentazioni visuali dei dati in
+maniera dettagliata e modificabile dinamicamente. Tuttavia, è emersa un'area di ricerca che pone la questione di non limitarsi a una
+matrice di pixel per visualizzazione di e interazione con i dati ma sfruttare altri tipi di interazione pià naturale per gli esseri umani, come
+è stato dimostrato dalla ricerca in Tangible Computing. \cite{hal:dataphys} \\
+
+\section{Esempi di data physicalization e visualization}
+\subsection{Physiradio}
+Una radio vintage che riproduce musica di mood/genere correlato alle condizioni metereologiche. \ref{fig:physiradio}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{physiradio}
+  \caption{Physiradio}
+  \label{fig:physiradio}
+\end{figure}
+
+\subsection{BiblioVisualizer}
+Visualizzazione dei dati sul prestito libri nel Consorzio Culture Socialità Biblioteche Network Operativo (CSBNO) tramite barra di LED.
+\ref{fig:bibliovisualizer}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.4\textwidth]{bibliovisualizer}
+  \caption{BiblioVisualizer}
+  \label{fig:bibliovisualizer}
+\end{figure}
+
+
+%%%% Sezione IoT?
+
+\section{Obiettivo}
 L'obiettivo dell'attività svolta durante il tirocinio è quello di analizzare e sperimentare una forma di rappresentazione
+dei dati mediante strumenti di misura vintage e dispositivi IoT che non richieda l'utilizzo di computer e monitor e sia di semplice fruizione
 da parte dei chi non è avvezzo alla tecnologia e può essere intimorito da complicate dashboard o semplicemente privo della voglia
 di interagire con oggetti tecnologici.
 
