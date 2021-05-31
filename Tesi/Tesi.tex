@@ -186,6 +186,7 @@ Una volta appurate le caratteristiche degli strumenti, è opportuno discutere de
 
 \chapter{Use case}
 Prima di parlare del funzionamento dell'oggetto è il caso di soffermarsi su chi interagisce con esso:
+Prima di parlare del funzionamento dell'oggetto è il caso di soffermarsi su chi interagisce con esso e in che modo:  %%Rivedere frase
 \subsection*{Sviluppatore}
 È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e  modificare funzionalità del programma
 e apportare modifiche dirette ai file di configurazione.
@@ -322,6 +323,7 @@ libreria standard di Arduino.\\
 Durante i test è emerso che tale funzione non si comporta particolarmente bene quando uno dei range è formato da piccoli numeri
 decimali. Si è quindi preferito inserire nel codice direttamente la formula matematica su cui si basa \texttt{map}:
 \[out = (value - fromLow) \times (toHigh - toLow) / (fromHigh - fromLow) + toLow \]
+\[out = \frac{(value - fromLow) \times (toHigh - toLow)}{(fromHigh - fromLow)} + toLow \]
 
 \noindent Dove:\cite{arduinomap}
 \begin{itemize}
