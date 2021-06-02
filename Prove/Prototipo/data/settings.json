@@ -1,7 +1,7 @@
 {
   "apiUrl": "https://giromilano.atm.it/proxy.ashx",
   "filterJSON": "{Lines: [{WaitMessage: true}]}",
-  "post_payload": "url=tpPortal/geodata/pois/stops/11492",
+  "post_payload": "url=tpPortal/geodata/pois/stops/12493",
   "path": "Lines/0/WaitMessage",
   "min_value": 0,
   "max_value": 15,

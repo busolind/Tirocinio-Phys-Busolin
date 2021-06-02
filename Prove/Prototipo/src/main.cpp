@@ -30,7 +30,7 @@ float min_pwm = 0;
 float max_pwm = PWMRANGE;
 #define REQUEST_DELAY_MS 10000 //Request interval. Can be edited in config
 
-int current_mode = FANTOZZI_MODE;
+int current_mode = API_MODE;
 
 String settings_file = "/settings.json";
 
