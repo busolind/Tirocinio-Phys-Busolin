@@ -43,7 +43,7 @@ bool rising = true;
 
 // MQTT CONFIG
 
-const char *mqtt_server = "192.168.178.5";
+const char *mqtt_server = "mqtt.atrent.it";
 #define MQTT_RECONNECT_DELAY 30000
 
 WiFiClient espClient;

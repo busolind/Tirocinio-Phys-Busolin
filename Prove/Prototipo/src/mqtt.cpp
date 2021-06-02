@@ -4,7 +4,7 @@
 
 // TOPICS
 
-String root_topic = "PrototipoPhys";
+String root_topic = "Busolin-PrototipoPhys";
 String sub_to_apiurl = root_topic + "/setApiUrl";
 String sub_to_filterJSON = root_topic + "/setFilterJson";
 String sub_to_path = root_topic + "/setPath";
