@@ -285,7 +285,8 @@ void stream_callback(Stream &stream) {
   Serial.println("Filtered Document:");
   serializeJson(doc, Serial);
 
-  //INIZIO CANTIERE TEST PARSING PATH
+  //Path parsing to extract desired value
+
   JsonVariant jv = doc.as<JsonVariant>();
 
   int path_buf_len = 50;
@@ -296,7 +297,7 @@ void stream_callback(Stream &stream) {
   token = strtok(path_buf, "/");
   Serial.println();
   while (token != NULL) {
-    //controlla se è numero o no
+    //checks if current token is completely numeric (index in array) or not (key in object)
     bool object = false;
     char *p = token;
     while (*p != 0) {
@@ -325,16 +326,6 @@ void stream_callback(Stream &stream) {
     out_value = value_string.toFloat(); //Advantage over jv.as<float>: String::toFloat converts numbers even when the string contains
                                         //characters other than digits (e.g. "3 min" -> 3.00)
   }
-
-  //FINE CANTIERE
-
-  /*
-  JsonVariant jv = doc.as<JsonVariant>();
-  jv = jv["rates"];
-  serializeJson(jv, Serial);
-
-  float value = doc["rates"]["MXN"].as<float>();
-  */
 
   Serial.println();
   Serial.println("Extracted value: " + String(out_value));
