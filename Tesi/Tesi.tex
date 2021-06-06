@@ -122,7 +122,7 @@ Una data physicalization (in italiano: fisicalizzazione dei dati) è un artefatt
 dati.\cite{dataphysorg:terminology}\\
 Gli stessi autori della precedente definizione distinguono tra data physicalization come artefatti (per i quali vale quanto scritto sopra),
 data physicalization come il processo di dare forma fisica ai dati e data physicalization come l'area di ricerca che unisce da visualizzazione
-dei dati e interfacce utenti tangibili. 
+dei dati e interfacce utenti tangibili.
 
 \section{Visualizzazione dei dati}
 Lo scopo della disciplina della visualizzazione dei dati è quello di renderli più comprensibili per gli esseri umani. I display dei computer
@@ -349,6 +349,33 @@ La quasi totalità delle API mette a disposizione risposte contenenti dati in fo
 utilizzata la libreria \texttt{ArduinoJson} per la deserializzazione e la scelta del campo da estrarre.\\
 JSON è stato successivamente usato anche come formato per la serializzazione e deserializzazione delle impostazioni da salvare sulla
 memoria flash dell'ESP per permetterne la persistenza anche a seguito di perdite di tensione.
+
+\subsection{Approfondimento su filtro JSON e path} %Giusto averlo qui o meglio in sezione a parte?
+Il centro del funzionamento della modalità API e la sua adattabilità all'utilizzo di fonti dati diverse risiede nei campi
+filterJSON e path.\\
+\texttt{filterJSON} consente di evitare che tutta la risposta delle API venga salvata in memoria. Viene quindi scartato ogni campo che non
+appaia come placeholder all'interno della stringa, ad esempio:\\
+\texttt{"\{Lines: [\{WaitMessage: true\}]\}"} consente di mantenere
+in memoria solo il campo con chiave WaitMessage di ogni elemento contenuto nell'array avente chiave Lines. Questa funzionalità è
+implementata e ben documentata nella libreria \texttt{ArduinoJSON}.~\cite{arduinojsonfiltering} \\
+Questo filtro non è sufficiente come indicatore del campo desiderato, in quanto il documento JSON salvato in memoria conterrà comunque
+tutta la gerarchia e per come funzionano i placeholder sugli array non è neanche detto che ci sia in totale un solo campo con un valore
+assegnato.\\
+Per questo motivo è stato aggiunto il campo \texttt{path} alla configurazione. Questa stringa, nel programma, viene interpretata token per
+token usando lo slash come separatore e usata per esplorare la gerarchia dei campi. Un token completamente numerico viene visto come
+indice di un array, altrimenti come chiave da cercare all'interno di un oggetto.\\
+Per fare un esempio coerente con il precedente: \texttt{"Lines/0/WaitMessage"} verrà approcciato nel seguente modo:
+\begin{itemize}
+  \item Interpretare la radice come un oggetto, cercare la chiave \texttt{Lines} e spostarvisi all'interno;
+  \item Interpretare il successivo livello come un array, estrarre l'elemento in posizione 0 e spostarvisi all'interno;
+  \item Interpretare il successivo livello come un oggetto, cercare la chiave \texttt{WaitMessage} e spostarvisi all'interno.
+\end{itemize}
+A questo punto, finita la stringa, il programma assumerà di trovarsi dinnanzi a un campo interpretabile come numerico (tollera molto,
+ad esempio la stringa "123aaa" verrà interpretata come 123.00), lo estrarrà e lo rappresenterà in output.\\ %excursus JsonVariant?
+Questo approccio grazie al modo in cui è implementata la libreria è molto tollerante a errori o inesattezze. Se nel JSON non fosse
+presente il campo desiderato il parsing della path, così come la conversione da stringa a numero presente subito dopo, non causerebbero
+alcun crash del programma. È quindi possibile avere filtro e path inizialmente non corretti e adattarli tramite trial and error senza
+causare riavvii indesiderati del microcontrollore a seguito di eccezioni.
 
 \subsection{Map}
 Una volta ottenuto il valore da rappresentare è necessario trasformarlo in una tensione, ottenuta tramite PWM il cui duty cycle è
