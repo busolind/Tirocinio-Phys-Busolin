@@ -176,6 +176,7 @@ void setup_wifi() {
   //WiFi.softAP(hostName);
 }
 
+// Maps out_value to out_pwm and writes to "analog" output, handles scanning animation
 void write_output() {
   if (!scanning) {
     //out_pwm = map(value, min_value, max_value, min_pwm, max_pwm);
@@ -198,7 +199,7 @@ void write_output() {
 }
 Task write_output_task(100 * TASK_MILLISECOND, TASK_FOREVER, write_output);
 
-// HTTP(S) request. On successful request returns a stream to the callback
+// HTTP(S) request. On successful request returns the response stream to the callback
 void http_s_request(void (*callback)(Stream &), String post_payload = (const char *)nullptr) {
   WiFiClient client;
   BearSSL::WiFiClientSecure ssl_client;
@@ -256,7 +257,7 @@ void http_s_request(void (*callback)(Stream &), String post_payload = (const cha
   }
 }
 
-// HTTP(S) callback. Takes a stream as a parameter, parses the json within it, extracts the required value as specified in config (filter + path) and maps the out_pwm value accordingly
+// HTTP(S) callback. Takes a stream as a parameter, parses the json within it, extracts the required value as specified in config (filter + path)
 void stream_callback(Stream &stream) {
   //LoggingStream ls(stream, Serial);
   ReadBufferingStream rbs(stream, 64);
@@ -331,7 +332,7 @@ void stream_callback(Stream &stream) {
   Serial.println("Extracted value: " + String(out_value));
 }
 
-// Function called by request task. It makes the HTTP or HTTPS request and sets the PWM output according to out_pwm
+// Function called by request task. It makes the HTTP or HTTPS request and prints some debug information
 void request_task_callback() {
   http_s_request(stream_callback, post_payload);
 

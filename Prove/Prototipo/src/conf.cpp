@@ -25,6 +25,7 @@ void mode_select(int mode) {
   }
 }
 
+// Returns the config file stored in flash as a String
 String load_conf_from_flash() {
   String conf = "";
   if (!LittleFS.exists(settings_file)) {
@@ -41,6 +42,7 @@ String load_conf_from_flash() {
   return conf;
 }
 
+// Saves running config as a file to flash
 void running_conf_to_flash() {
   File file = LittleFS.open(settings_file, "w");
   if (!file) {
