@@ -1,4 +1,3 @@
-% scopiazzato dal template di Matteo Longeri (grazie!)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[12pt,a4paper]{report}
 % o article, book, ...
@@ -15,6 +14,7 @@
 %\usepackage[a-1b]{pdfx}
 
 \usepackage{hyperref}
+\usepackage{refcheck}
 \usepackage{graphicx}
 \graphicspath{{./img/}}
 
@@ -60,7 +60,13 @@
 
 
 % Per inserire testo a caso in attesa di realizzare i capitoli
-\usepackage{lipsum}
+%\usepackage{lipsum}
+
+\usepackage{todonotes}
+%\usepackage[disable]{todonotes} % alla fine mettere
+
+\usepackage[a4paper,top=2cm,bottom=2cm,outer=5cm,verbose,headheight=1cm,heightrounded]{geometry}
+\setlength{\marginparwidth}{4.5cm} %per farci stare todonotes, nel final si può rimuovere
 
 
 
@@ -103,7 +109,7 @@
   \end{center}
 \end{titlepage}
 
-
+\listoftodos
 \tableofcontents
 
 
@@ -118,8 +124,9 @@
 % o sections (dipende dal documentclass)
 \chapter{Introduzione}
 \section{Data Physicalization: definizione}
-Una data physicalization (in italiano: fisicalizzazione dei dati) è un artefatto fisico la cui geometria o proprietà materiali codificano dei
-dati.\cite{dataphysorg:terminology}\\
+Una data physicalization (in italiano: fisicalizzazione dei dati) è un artefatto fisico la cui geometria o proprietà materiali codificano dei dati.\cite{dataphysorg:terminology}
+\todo{atrent: in generale i link web li metterei in footnote, se vuoi lasciarli in bib devi mostrare anche l'url}
+\todo{atrent: puoi eliminare tutti i doppi backslash, non servono}
 Gli stessi autori della precedente definizione distinguono tra data physicalization come artefatti (per i quali vale quanto scritto sopra),
 data physicalization come il processo di dare forma fisica ai dati e data physicalization come l'area di ricerca che unisce da visualizzazione
 dei dati e interfacce utenti tangibili.
@@ -130,8 +137,10 @@ sono l'esempio più classico, hanno molti vantaggi grazie alla loro versatilità
 maniera dettagliata e modificabile dinamicamente. Tuttavia, è emersa un'area di ricerca che pone la questione di non limitarsi a una
 matrice di pixel per visualizzazione di e interazione con i dati ma sfruttare altri tipi di interazione più naturale per gli esseri umani, come
 è stato dimostrato dalla ricerca in Tangible Computing. \cite{hal:dataphys} \\
+\todo{atrent: in generale van riportati i principali concetti esposti negli articoli/libri che citi}
 
 \section{Esempi di data physicalization e visualization}
+\todo{atrent: fai anche esempi non miei, prendi quelli che ti piacciono di più, due o tre esempi}
 \subsection{Physiradio}
 Una radio vintage che riproduce musica di mood/genere correlato alle condizioni metereologiche. Figura~\ref{fig:physiradio}
 \begin{figure}[h]
@@ -167,8 +176,8 @@ decorativi comunicano informazioni utili.
 
 
 \chapter{Generalizzazione degli strumenti di misura}
-In questo capitolo si tenterà di generalizzare le caratteristiche degli strumenti di misura ai fini di associarle a componenti software e
-tipi di dato.
+In questo capitolo si tenterà di generalizzare le caratteristiche degli strumenti di misura ai fini di associarle a componenti software e tipi di dato.
+\todo{atrent: strada giusta! fai anche esempi pratici finali}
 \section{Indicatori}
 \subsection{Strumenti ad ago}
 Sono il tipo più comune di strumenti di misura vintage. Un esempio sono i voltmetri / amperometri / multimetri analogici che si utilizzavano
@@ -196,6 +205,10 @@ gli scambi di lettere presenti sulla macchina Enigma.
 
 
 \chapter{Guida alla trasformazione degli strumenti vintage}
+
+\todo{atrent: manca una trattazione di come è fatto e come funziona lo strumento ad ago (che sarà il più frequente oggetto di visualizzazione), spiega bene la sua architettura, wikipedia is your friend}
+
+
 Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione.
 
 
@@ -233,6 +246,9 @@ deve essere particolarmente intuitiva, ad esempio una piccola interfaccia web pe
 al primo avvio. La sorgente dei dati deve essere preconfigurata e se ne viene resa disponibile più di una la scelta deve essere molto
 semplice, possibilmente tramite interazione fisica con il dispositivo.
 
+\todo{atrent: questi sono i ruoli, mancano gli use case veri e propri (parlando formalmente, faccio riferimento a UML)}
+
+\todo{atrent: in generale metterei tanti schemi e disegni}
 
 \chapter{Utilizzo del prototipo}
 
@@ -434,6 +450,8 @@ migliorare la sicurezza dell'operazione mediante utilizzo di password e hash fir
 
 
 \chapter{Conclusioni}
+
+\todo{atrent: oltre alla presentazione all'hacklab (domani!) proviamo a organizzare una sessione ad hoc almeno con gli studenti del corso SistEmbed (e magari quelli di PROS?)}
 
 \section{Reperibilità delle API}
 Durante la ricerca di API rappresentabili mediante Data Physicalization è risultato evidente che molte di quelle più congeniali non
