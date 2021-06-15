@@ -17,7 +17,7 @@
 
 // MAIN CONFIG
 const char *hostName = "prototipo-phys";
-#define OUT_PIN D2
+#define METER D2
 
 // atrent
 #define RGBLED_DATA D3
@@ -202,7 +202,7 @@ void write_output() {
     out_pwm = 0;
   if (out_pwm > PWMRANGE)
     out_pwm = PWMRANGE;
-  analogWrite(OUT_PIN, out_pwm);
+  analogWrite(METER, out_pwm);
 }
 Task write_output_task(100 * TASK_MILLISECOND, TASK_FOREVER, write_output);
 
@@ -358,7 +358,7 @@ void setup() {
   setup_wifi();
   setup_ota();
   //setup_ws();
-  pinMode(OUT_PIN, OUTPUT);
+  pinMode(METER, OUTPUT);
   LittleFS.begin();
 
   ts.addTask(mqtt_reconnect_task);
@@ -376,6 +376,8 @@ void setup() {
 }
 
 void loop() {
+  // atrent: si possono mettere *tutte* le attività nei task ;)
+
   if (!mqtt_client.connected()) {
     mqtt_reconnect_task.enableIfNot();
   } else {
