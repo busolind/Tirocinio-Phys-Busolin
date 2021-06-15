@@ -18,6 +18,12 @@ String sub_to_setFromJSON = root_topic + "/setFromJSON";
 String sub_to_setValue = root_topic + "/setValue";
 String sub_to_setMode = root_topic + "/setMode";
 
+//TODO atrent: bisogna espandere l'API MQTT, parliamone la prox volta, tipo:
+// - aggiungere un config in un colpo solo (minV maxV minP maxP)
+// - aggiungere blink e beep
+// ecc.
+// cioè estendiamo l'alfabeto dei comandi via MQTT che in fondo l'oggetto non deve fare poi tante cose, è meglio se i test e i calcoli li facciamo fare ad altri e poi qui li fisicalizziamo (cmq va benissimo il PoC dell'ATM!)
+
 // Callbacks:
 
 void mqtt_callback_setApiUrl(String topic, String message) {
