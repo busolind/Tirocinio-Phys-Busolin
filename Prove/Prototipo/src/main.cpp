@@ -19,6 +19,13 @@
 const char *hostName = "prototipo-phys";
 #define OUT_PIN D2
 
+// atrent
+#define RGBLED_DATA D3
+#define RGBLED_CLOCK D4
+#define BUZZER D5
+#define LED D0
+
+
 // Default hardcoded values. If a config file is present on flash, its settings will be used instead.
 String apiUrl = "https://csrng.net/csrng/csrng.php?min=0&max=150"; //https_random
 String filterJSON = "[{random: true}]";                            //https_random
