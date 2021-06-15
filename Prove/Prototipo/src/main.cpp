@@ -27,6 +27,8 @@ const char *hostName = "prototipo-phys"; //TODO atrent: deve diventare autogener
 //TODO atrent: cominciare a usare anche almeno LED e BUZZER (ad esempio per segnalare variazioni molto grandi o estremi dei range)
 //TODO atrent: definire due funzioni (tipo bing e blink) per attivare genericamente LED e BUZZER
 
+//TODO atrent: fornire anche un meccanismo di taratura del range tensioni? magari basta solo uno sketch a parte, minimale
+
 // Default hardcoded values. If a config file is present on flash, its settings will be used instead.
 String apiUrl = "https://csrng.net/csrng/csrng.php?min=0&max=150"; //https_random
 String filterJSON = "[{random: true}]";                            //https_random
