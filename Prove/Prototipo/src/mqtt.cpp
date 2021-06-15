@@ -4,7 +4,7 @@
 
 // TOPICS
 
-String root_topic = "Busolin-PrototipoPhys";
+String root_topic = "Busolin-PrototipoPhys"; //TODO atrent: diamo un nome definitivo... aggiungendo anche un subtopic col nome del device
 String sub_to_apiurl = root_topic + "/setApiUrl";
 String sub_to_filterJSON = root_topic + "/setFilterJson";
 String sub_to_path = root_topic + "/setPath";
@@ -101,3 +101,6 @@ void mqtt_reconnect() {
     Serial.println(mqtt_client.state());
   }
 }
+
+
+//TODO atrent: secondo me dovrebbe dare un po' di feedback MQTT oltre che visualizzare col dial, in modo da sapere cosa sta visualizzando

@@ -16,7 +16,7 @@
 #include <TaskScheduler.h>
 
 // MAIN CONFIG
-const char *hostName = "prototipo-phys";
+const char *hostName = "prototipo-phys"; //TODO atrent: deve diventare autogenerato, magari aggiungendo il macaddress, altrimenti tutti sono uguali
 #define METER D2
 
 // atrent
@@ -24,7 +24,8 @@ const char *hostName = "prototipo-phys";
 #define RGBLED_CLOCK D4
 #define BUZZER D5
 #define LED D0
-
+//TODO atrent: cominciare a usare anche almeno LED e BUZZER (ad esempio per segnalare variazioni molto grandi o estremi dei range)
+//TODO atrent: definire due funzioni (tipo bing e blink) per attivare genericamente LED e BUZZER
 
 // Default hardcoded values. If a config file is present on flash, its settings will be used instead.
 String apiUrl = "https://csrng.net/csrng/csrng.php?min=0&max=150"; //https_random
@@ -376,7 +377,7 @@ void setup() {
 }
 
 void loop() {
-  // atrent: si possono mettere *tutte* le attività nei task ;)
+  //TODO atrent: si possono mettere *tutte* le attività nei task ;)
 
   if (!mqtt_client.connected()) {
     mqtt_reconnect_task.enableIfNot();
