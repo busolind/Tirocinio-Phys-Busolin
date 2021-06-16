@@ -15,6 +15,8 @@
 #include <StreamUtils.h>
 #include <TaskScheduler.h>
 
+//TODO atrent: rinomina e sposta dir progetto, non più Prove e non più Prototipo ;)
+
 // MAIN CONFIG
 const char *hostName = "prototipo-phys"; //TODO atrent: deve diventare autogenerato, magari aggiungendo il macaddress, altrimenti tutti sono uguali
 #define METER D2

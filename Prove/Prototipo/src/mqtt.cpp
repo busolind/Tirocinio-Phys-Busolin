@@ -23,6 +23,8 @@ String sub_to_setMode = root_topic + "/setMode";
 // - aggiungere blink e beep
 // ecc.
 // cioè estendiamo l'alfabeto dei comandi via MQTT che in fondo l'oggetto non deve fare poi tante cose, è meglio se i test e i calcoli li facciamo fare ad altri e poi qui li fisicalizziamo (cmq va benissimo il PoC dell'ATM!)
+// l'oggetto inoltre mi sa che è meglio parta in modalità MQTT di default così è più facile integrarlo ad esempio in un sistema di home automation (da citare nella tesi!)
+// ***potresti addirittura implementare una sorta di "reflection" MQTT in modo da poter interrogare l'oggetto per capire cosa offre (pulsanti, commutatori, ecc.)***
 
 // Callbacks:
 
