@@ -17,8 +17,10 @@
 
 //TODO atrent: rinomina e sposta dir progetto, non più Prove e non più Prototipo ;)
 
+//TODO atrent: ripensare/aggiungere, deve diventare un sistema modulare che permetta di "attivare" (con dei #define) varie funzionalità tipo commutatori ecc.
+
 // MAIN CONFIG
-const char *hostName = "prototipo-phys"; //TODO atrent: deve diventare autogenerato, magari aggiungendo il macaddress, altrimenti tutti sono uguali
+const char *hostName = "prototipo-phys"; //TODO atrent: deve diventare autogenerato, magari aggiungendo il macaddress, altrimenti tutti sono uguali, pensiamo ad un main topic fisso e poi subtopic identificativi
 #define METER D2
 
 // atrent
