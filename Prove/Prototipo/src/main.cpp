@@ -28,6 +28,9 @@ const char *hostName = "prototipo-phys"; //TODO atrent: deve diventare autogener
 #define RGBLED_CLOCK D4
 #define BUZZER D5
 #define LED D0
+#define PUSHBTN D7
+#define SWITCH A0
+
 //TODO atrent: cominciare a usare anche almeno LED e BUZZER (ad esempio per segnalare variazioni molto grandi o estremi dei range)
 //TODO atrent: definire due funzioni (tipo bing e blink) per attivare genericamente LED e BUZZER
 
