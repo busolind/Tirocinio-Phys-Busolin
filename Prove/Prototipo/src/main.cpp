@@ -21,6 +21,8 @@
 
 // MAIN CONFIG
 const char *hostName = "prototipo-phys"; //TODO atrent: deve diventare autogenerato, magari aggiungendo il macaddress, altrimenti tutti sono uguali, pensiamo ad un main topic fisso e poi subtopic identificativi
+//TODO cfr. https://arduino-esp8266.readthedocs.io/en/latest/PROGMEM.html
+
 #define METER D2
 
 // atrent
