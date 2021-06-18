@@ -15,14 +15,15 @@
 #include <StreamUtils.h>
 #include <TaskScheduler.h>
 
-//TODO atrent: "portar fuori" la definizione/configurazione (GPIO) del device in modo da poterla switchare (QRcode?) facilmente tra un pezzo e l'altro
-
-//TODO atrent: rinomina e sposta dir progetto, non più Prove e non più Prototipo ;)
-
+//TODO atrent: "portar fuori" la definizione/configurazione (GPIO) del device in modo da poterla switchare (QRcode?) facilmente tra un pezzo e l'altro - NON un .ini ma un .h o .cpp
 //TODO atrent: ripensare/aggiungere, deve diventare un sistema modulare che permetta di "attivare" (con dei #define) varie funzionalità tipo commutatori ecc.
+//TODO verifica funzione invocata o meno
+
+//TODO atrent: rinomina e sposta dir progetto, non più Prove e non più Prototipo ;)  [IoTDial]
+
 
 // MAIN CONFIG
-const char *hostName = "prototipo-phys"; //TODO atrent: deve diventare autogenerato, magari aggiungendo il macaddress, altrimenti tutti sono uguali, pensiamo ad un main topic fisso e poi subtopic identificativi
+const char *hostNamePrefix = "IotDial-"; //TODO atrent: deve diventare autogenerato, magari aggiungendo il macaddress, altrimenti tutti sono uguali, pensiamo ad un main topic fisso e poi subtopic identificativi
 //TODO cfr. https://arduino-esp8266.readthedocs.io/en/latest/PROGMEM.html
 
 #define METER D2

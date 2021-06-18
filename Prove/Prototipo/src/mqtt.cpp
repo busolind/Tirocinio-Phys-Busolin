@@ -4,7 +4,7 @@
 
 // TOPICS
 
-String root_topic = "Busolin-PrototipoPhys"; //TODO atrent: diamo un nome definitivo... aggiungendo anche un subtopic col nome del device
+String root_topic = "IoTDial/<hostname>"; //TODO atrent: diamo un nome definitivo... aggiungendo anche un subtopic col nome del device
 String sub_to_apiurl = root_topic + "/setApiUrl";
 String sub_to_filterJSON = root_topic + "/setFilterJson";
 String sub_to_path = root_topic + "/setPath";
@@ -17,6 +17,22 @@ String sub_to_setFromJSON = root_topic + "/setFromJSON";
 
 String sub_to_setValue = root_topic + "/setValue";
 String sub_to_setMode = root_topic + "/setMode";
+
+
+/*
+   IoTDial/<hostname>/setApiUrl <valore>   : configura l'url da usare per <hostname>
+
+   IoTDial/<hostname>/myCurrentValue <valore>   : pubblica il valore corrente del dial su <hostname>
+
+   IoTDial/<hostname>/getButton <which?> : chiede valore button nr <which> su <hostname>
+   IoTDial/<hostname>/getSwitch <which?> : chiede valore switch nr <which> su <hostname>
+   IoTDial/<hostname>/switchVal <which?>,<val> : pubblica valore switch nr <which> su <hostname>
+
+   IoTDial/<hostname>/queryMethods <wildcard?>  : chiede quali API sono disponibili su <hostname>
+   IoTDial/<hostname>/queryMethod <whichMethod?>  : chiede i dettagli di <whichMethod> su <hostname>
+
+   IoTDial/<hostname>/listOfMethods <getSwitch,getButton,...>  : pubblica quali API sono disponibili su <hostname>
+*/
 
 //TODO atrent: bisogna espandere l'API MQTT, parliamone la prox volta, tipo:
 // - aggiungere un config in un colpo solo (minV maxV minP maxP)
