@@ -4,20 +4,36 @@
 
 // TOPICS
 
-String root_topic = "IoTDial/<hostname>"; //TODO atrent: diamo un nome definitivo... aggiungendo anche un subtopic col nome del device
-String sub_to_apiurl = root_topic + "/setApiUrl";
-String sub_to_filterJSON = root_topic + "/setFilterJson";
-String sub_to_path = root_topic + "/setPath";
-String sub_to_min_value = root_topic + "/setMinValue";
-String sub_to_max_value = root_topic + "/setMaxValue";
-String sub_to_min_pwm = root_topic + "/setMinPwm";
-String sub_to_max_pwm = root_topic + "/setMaxPwm";
-String sub_to_interval_ms = root_topic + "/setRequestIntervalMs";
-String sub_to_setFromJSON = root_topic + "/setFromJSON";
+String root_topic; //TODO atrent: diamo un nome definitivo... aggiungendo anche un subtopic col nome del device
+String sub_to_apiurl;
+String sub_to_filterJSON;
+String sub_to_path;
+String sub_to_min_value;
+String sub_to_max_value;
+String sub_to_min_pwm;
+String sub_to_max_pwm;
+String sub_to_interval_ms;
+String sub_to_setFromJSON;
 
-String sub_to_setValue = root_topic + "/setValue";
-String sub_to_setMode = root_topic + "/setMode";
+String sub_to_setValue;
+String sub_to_setMode;
 
+// Builds topic strings starting with IoTDial/<hostName>
+void mqtt_create_topics() {
+  root_topic = "IoTDial/" + hostName;
+  sub_to_apiurl = root_topic + "/setApiUrl";
+  sub_to_filterJSON = root_topic + "/setFilterJson";
+  sub_to_path = root_topic + "/setPath";
+  sub_to_min_value = root_topic + "/setMinValue";
+  sub_to_max_value = root_topic + "/setMaxValue";
+  sub_to_min_pwm = root_topic + "/setMinPwm";
+  sub_to_max_pwm = root_topic + "/setMaxPwm";
+  sub_to_interval_ms = root_topic + "/setRequestIntervalMs";
+  sub_to_setFromJSON = root_topic + "/setFromJSON";
+
+  sub_to_setValue = root_topic + "/setValue";
+  sub_to_setMode = root_topic + "/setMode";
+}
 
 /*
    IoTDial/<hostname>/setApiUrl <valore>   : configura l'url da usare per <hostname>
@@ -104,7 +120,7 @@ void mqtt_callback_setMode(String topic, String message) {
 
 void mqtt_reconnect() {
   Serial.print("Attempting MQTT connection...");
-  String clientId = "ESP8266Client-" + String(random(0xffff), HEX);
+  String clientId = hostName;
   // Attempt to connect
   if (mqtt_client.connect(clientId.c_str())) {
     Serial.println("connected");
@@ -125,6 +141,5 @@ void mqtt_reconnect() {
     Serial.println(mqtt_client.state());
   }
 }
-
 
 //TODO atrent: secondo me dovrebbe dare un po' di feedback MQTT oltre che visualizzare col dial, in modo da sapere cosa sta visualizzando

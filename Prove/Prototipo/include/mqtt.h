@@ -6,6 +6,8 @@
 #include <PubSubClientTools.h>
 #include <TaskSchedulerDeclarations.h> //TaskScheduler.h throws errors on multiple inclusions
 
+extern String hostName;
+
 extern String apiUrl;
 extern String filterJSON;
 extern String post_payload;
@@ -23,6 +25,8 @@ extern PubSubClient mqtt_client;
 extern PubSubClientTools mqtt_tools;
 
 extern Task request_task;
+
+void mqtt_create_topics();
 
 void mqtt_callback_setApiUrl(String topic, String message);
 void mqtt_callback_setFilterJson(String topic, String message);

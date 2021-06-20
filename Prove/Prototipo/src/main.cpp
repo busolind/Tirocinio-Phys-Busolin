@@ -22,7 +22,7 @@
 //TODO atrent: rinomina e sposta dir progetto, non più Prove e non più Prototipo ;)  [IoTDial]
 
 // MAIN CONFIG
-const char *hostNamePrefix = "IotDial-";
+const char *hostNamePrefix = "IoTDial-";
 String hostName;
 //TODO cfr. https://arduino-esp8266.readthedocs.io/en/latest/PROGMEM.html
 
@@ -383,6 +383,7 @@ Task mqtt_reconnect_task(MQTT_RECONNECT_DELAY *TASK_MILLISECOND, TASK_FOREVER, m
 void setup() {
   Serial.begin(115200);
   setup_hostname();
+  mqtt_create_topics();
   setup_wifi();
   setup_ota();
   //setup_ws();
