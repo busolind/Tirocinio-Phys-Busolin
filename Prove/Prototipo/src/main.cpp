@@ -21,9 +21,9 @@
 
 //TODO atrent: rinomina e sposta dir progetto, non più Prove e non più Prototipo ;)  [IoTDial]
 
-
 // MAIN CONFIG
-const char *hostNamePrefix = "IotDial-"; //TODO atrent: deve diventare autogenerato, magari aggiungendo il macaddress, altrimenti tutti sono uguali, pensiamo ad un main topic fisso e poi subtopic identificativi
+const char *hostNamePrefix = "IotDial-";
+String hostName;
 //TODO cfr. https://arduino-esp8266.readthedocs.io/en/latest/PROGMEM.html
 
 #define METER D2
@@ -120,6 +120,18 @@ void setup_ws() {
     request->send(404, "text/plain", "Not found");
   });
   server.begin();
+}
+
+//Hostname setup, assigns the "hostName" variable with the format <hostNamePrefix>-<MAC_ADDR>
+void setup_hostname() {
+  byte mac[6];
+  WiFi.macAddress(mac);
+  hostName = String(hostNamePrefix);
+  for (int i = 0; i < 6; i++) {
+    hostName += String(mac[i], HEX);
+  }
+  Serial.println();
+  Serial.println("Set hostname to " + hostName);
 }
 
 //OTA setup
@@ -370,6 +382,7 @@ Task mqtt_reconnect_task(MQTT_RECONNECT_DELAY *TASK_MILLISECOND, TASK_FOREVER, m
 
 void setup() {
   Serial.begin(115200);
+  setup_hostname();
   setup_wifi();
   setup_ota();
   //setup_ws();
