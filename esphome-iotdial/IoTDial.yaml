@@ -1,0 +1,77 @@
+esphome:
+  name: iotdial-test
+  platform: ESP8266
+  board: d1_mini
+
+# Enable logging
+logger:
+  level: INFO
+
+# Enable Home Assistant API
+#api:
+#  password: "IoTDial"
+#https://esphome.io/components/mqtt.html - Warning
+
+ota:
+  password: "IoTDial"
+
+wifi:
+  ssid: "IOT_TEST"
+  password: "IOT_TEST"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Iotdial-Test Fallback Hotspot"
+    password: "IoTDial!"
+
+captive_portal:
+
+mqtt:
+  broker: mqtt.atrent.it
+  topic_prefix: IoTDial/busolin
+  discovery: True #homeassistant
+
+
+globals:
+  - id: min_value
+    type: float
+    restore_value: no
+    initial_value: '0'
+
+  - id: max_value
+    type: float
+    restore_value: no
+    initial_value: '40'
+
+  - id: min_pwm
+    type: float
+    restore_value: no
+    initial_value: '0'
+
+  - id: max_pwm
+    type: float
+    restore_value: no
+    initial_value: '0.89' #percentuale!
+    
+
+
+
+sensor:
+  - platform: mqtt_subscribe
+    name: "Temperatura"
+    id: temperatura
+    topic: fuori_come_un_balcone/temp
+    on_value:
+      then:
+        - output.set_level:
+            id: dial
+            level: !lambda "return (x - id(min_value)) * (id(max_pwm) - id(min_pwm)) / (id(max_value) - id(min_value)) + id(min_pwm);"
+            #level: !lambda "return x/100;"
+
+
+# METER D2
+output:
+  - platform: esp8266_pwm
+    pin: D2
+    #frequency: 1000 Hz
+    id: dial
