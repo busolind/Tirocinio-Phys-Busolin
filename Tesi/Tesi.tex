@@ -233,12 +233,12 @@ gli scambi di lettere presenti sulla macchina Enigma.
 
 \todo{atrent: tenterei anche una panoramica storica degli strumenti di ``visualizzazione'' (occhi magici, elettrofori, dekatron, oscilloscopi, ...) dando idee su come si potrebbero usare per datafisicalizzare}
 
-\subsection{Introduzione}
+\section{Introduzione}
 Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione,
 ma prima una parentesi su come funziona uno strumento ad ago (più frequente oggetto di visualizzazione, nonché quello
 usato nell'esperimento di conversione nell'ambito del tirocinio).
 
-\subsection{Funzionamento degli strumenti ad ago}
+\subsection*{Funzionamento degli strumenti ad ago}
 %generica per ora
 Quasi tutti gli strumenti ad ago sono basati su milliamperometri, aventi una resistenza interna, integrati con resistenze di taratura
 in serie e/o in parallelo in base all'utilizzo finale desiderato. Per ottenere un voltmetro con fondoscala adeguato, è spesso necessario
@@ -254,6 +254,7 @@ Esempio di scheda resistenze in Figura~\ref{fig:schedaresistenze}
   \label{fig:schedaresistenze}
 \end{figure}
 
+\section{Interventi}
 \subsection{Intervento minimale}
 Il metodo più semplice per ottenere un oggetto funzionante è quello di collegare il GPIO del microcontrollore settato come output
 e GND rispettivamente al terminale positivo e negativo dello strumento di misura in modalità voltmetro. Se la tensione in uscita massima
