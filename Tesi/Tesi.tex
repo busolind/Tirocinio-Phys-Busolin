@@ -233,16 +233,35 @@ gli scambi di lettere presenti sulla macchina Enigma.
 
 \todo{atrent: tenterei anche una panoramica storica degli strumenti di ``visualizzazione'' (occhi magici, elettrofori, dekatron, oscilloscopi, ...) dando idee su come si potrebbero usare per datafisicalizzare}
 
+\subsection{Introduzione}
+Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione,
+ma prima una parentesi su come funziona uno strumento ad ago (più frequente oggetto di visualizzazione, nonché quello
+usato nell'esperimento di conversione nell'ambito del tirocinio).
 
-Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione.
+\subsection{Funzionamento degli strumenti ad ago}
+%generica per ora
+Quasi tutti gli strumenti ad ago sono basati su milliamperometri, aventi una resistenza interna, integrati con resistenze di taratura
+in serie e/o in parallelo in base all'utilizzo finale desiderato. Per ottenere un voltmetro con fondoscala adeguato, è spesso necessario
+inserire una resistenza in serie con il milliamperometro, in modo da ridurne la sensibilità.
+Questo principio si basa sulla legge di Ohm: conoscendo il flusso di corrente necessario normalmente per arrivare a fondo scala, è
+possibile calcolare la resistenza totale necessaria per portare l'ago al 100\% in corrispondenza di una tensione desiderata.
+Esempio di scheda resistenze in Figura~\ref{fig:schedaresistenze}
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{schedaresistenze}
+  \caption{Scheda resistenze di un voltmetro analogico}
+  \label{fig:schedaresistenze}
+\end{figure}
 
+\subsection{Intervento minimale}
 Il metodo più semplice per ottenere un oggetto funzionante è quello di collegare il GPIO del microcontrollore settato come output
 e GND rispettivamente al terminale positivo e negativo dello strumento di misura in modalità voltmetro. Se la tensione in uscita massima
 coincide con il fondoscala dello strumento di misura questo è sufficiente, altrimenti è necessario ridurla via software oppure
 utilizzare un partitore di tensione o un potenziometro. Nel caso in cui la tensione in uscita massima del microcontrollore sia inferiore
 ad ogni possibile fondoscala dello strumento di misura, questo metodo non è attuabile.
 
+\subsection{Intervento approfondito}
 Un metodo più invasivo ma più pulito consiste nel modificare la struttura interna dello strumento di misura, collegandosi ai capi dello
 strumento interno vero e proprio bypassando selettore di modalità/fondoscala.
 Se non si vuole rimpiazzare la resistenza interna valgono le stesse osservazioni fatte poc'anzi sui fondoscala: è necessario che
