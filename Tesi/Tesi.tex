@@ -17,6 +17,7 @@
 \usepackage{refcheck}
 \usepackage{graphicx}
 \graphicspath{{./img/}}
+\usepackage{subfig}
 
 \usepackage{underscore} % !!!
 \usepackage{hyperref}
@@ -203,6 +204,14 @@ In questo capitolo si tenterà di generalizzare le caratteristiche degli strumen
 \subsection{Strumenti ad ago}
 Sono il tipo più comune di strumenti di misura vintage. Un esempio sono i voltmetri / amperometri / multimetri analogici che si utilizzavano
 fino a pochi anni fa. Possono essere utilizzati per visualizzare grandezze lineari, facendo attenzione alla scala scelta.
+Panoramica in Figura~\ref{fig:strumentiago}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{strumentiago}
+  \caption{Assortimento di strumenti ad ago in bachelite, legno e metallo}
+  \label{fig:strumentiago}
+\end{figure}
 
 \section{Interazione con l'utente}
 
@@ -214,15 +223,35 @@ Possono essere mappati in un programma a tipi \texttt{enum}, utilizzabili per se
 utilizzabili come parametro in un programma. Ad esempio un commutatore a 7 posti può essere utilizzato per selezionare un giorno della
 settimana.
 
+Per evitare di occupare tanti pin del microcontrollore quante sono le possibili posizioni di un commutatore, è possibile convertirlo in un
+partitore di tensione mediante l'ausilio di resistenze tutte uguali collegate come da esempio in Figura~\ref{fig:commutatoreprimadopo},
+ottenendo una sorta di potenziometro che invece di variare nel continuo assume valori in step regolari tra il minimo e il massimo
+dell'ingresso, che possono essere agevolmente distinti e interpretati come valori discreti.
+
+\begin{figure}[h]
+  \centering
+  \subfloat[Prima]{{\includegraphics[height=3.5cm]{commutatoreStock}}}
+  \enspace
+  \subfloat[Dopo]{{\includegraphics[height=3.5cm]{commutatorePartitore}}}
+  \caption{Dettaglio commutatore prima e dopo la modifica come partitore}
+  \label{fig:commutatoreprimadopo}
+\end{figure}
+
 \subsection{Potenziometri}
 Consentono di variare una differenza di potenziale nel continuo quindi possono essere mappati a valori aventi intervallo arbitrario, con una precisione limitata dalla risoluzione del convertitore analogico-digitale integrato nel microcontrollore.
 
 \subsection{Connettori multipli}
-Alcuni strumenti dispongono di più ingressi per le sonde di misura, adatti a connettori a banana o non standard, e specifici alle
+Alcuni strumenti dispongono di più ingressi per le sonde di misura, adatti a connettori a banana o non standard, specifici alle
 diverse modalità di misura e/o i diversi fondoscala tra cui scegliere. Possono essere utilizzati come selettori a livello software in base a
 quali degli ingressi vengono ponticellati, in maniera simile alle connessioni tra utenze telefoniche nei vecchi centralini o agli spinotti per
-gli scambi di lettere presenti sulla macchina Enigma.
+gli scambi di lettere presenti sulla macchina Enigma. Si riporta un esempio in Figura~\ref{fig:connettorimultipli}
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{connettorimultipli}
+  \caption{Amperometro con connettori separati in base alla scala}
+  \label{fig:connettorimultipli}
+\end{figure}
 
 
 \chapter{Guida alla trasformazione degli strumenti vintage}
@@ -266,14 +295,22 @@ Un metodo più invasivo ma più pulito consiste nel modificare la struttura inte
 strumento interno vero e proprio bypassando selettore di modalità/fondoscala.
 Se non si vuole rimpiazzare la resistenza interna valgono le stesse osservazioni fatte poc'anzi sui fondoscala: è necessario che
 esista una modalità con fondoscala minore o uguale alla tensione di uscita massima del microcontrollore, altrimenti sarà necessario
-utilizzare una resistenza più piccola di quella/e già presente/i. \\
-Questa operazione consente di integrare (a condizione che ci sia spazio) il microcontrollore all'interno dello strumento in modo da
-ottenere un sistema composto da un solo oggetto. Se si ha la facoltà di inserire una batteria diventa anche incredibilmente discreto
-e di più facile posizionamento, anche dove è scomodo portare una fonte di alimentazione.
+utilizzare una resistenza più piccola di quella/e già presente/i. 
 
+Esiste però un caso in cui, nonostante la rimozione delle resistenze di taratura, la sensibilità dello strumento rimane più bassa di quanto
+desiderato e la tensione massima che può emettere il microcontrollore non basta per arrivare a fondoscala. In questo caso le alternative
+sarebbero adoperare un survoltore per raggiungere la tensione necessaria oppure rinunciare e provare con un altro strumento.
+
+Questa operazione consente di integrare (a condizione che ci sia spazio, gli strumenti in Figura~\ref{fig:strumentiago} sono quasi tutti
+adatti) il microcontrollore all'interno dello strumento in modo da ottenere un sistema composto da un solo oggetto.
+Se si ha la facoltà di inserire una batteria diventa anche incredibilmente discreto e di più facile posizionamento, anche dove è
+scomodo portare una fonte di alimentazione.
+
+\subsection{Interventi aggiuntivi}
 Ulteriori possibili modifiche meno banali includono l'aggiunta di elementi decorativi quali delle luci o funzionali quali bottoni o altoparlanti
-per ampliare le possibilità di utilizzo. Un'altra possibilità di modifica ove possibile è la sostituzione dell'etichetta sotto all'ago per adattare
-la scala rappresentata alla vera scala dei dati (a condizione che questa rimanga fissa).
+per ampliare le possibilità di utilizzo. Un'altra possibilità di modifica ove possibile è la sostituzione dell'etichetta dietro all'ago per adattare
+la scala rappresentata alla vera scala dei dati (a condizione che questa rimanga fissa). Adoperando un display e-paper si potrebbe
+adattare dinamicamente la scala rappresentata dallo strumento senza più bisogno di interventi fisici.
 
 
 \chapter{Use case}
