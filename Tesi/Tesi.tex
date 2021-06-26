@@ -165,11 +165,11 @@ mediante l'erogazione controllata di acqua su un particolare tipo di muschio.  \
 % Altra papabile: http://dataphys.org/list/self-knitted-scarf-of-train-delays/
 
 \subsection{Physiradio}
-Una radio vintage che riproduce musica di mood/genere correlato alle condizioni metereologiche. Figura~\ref{fig:physiradio}
+Una radio vintage che riproduce musica di mood/genere correlato alle condizioni metereologiche. \cite{physiradio}, Figura~\ref{fig:physiradio}
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\textwidth]{physiradio}
-  \caption{Physiradio \cite{physiradio}}
+  \caption{Physiradio}
   \label{fig:physiradio}
 \end{figure}
 
@@ -215,8 +215,8 @@ Panoramica in Figura~\ref{fig:strumentiago}.
 
 \section{Interazione con l'utente}
 
-\subsection{Interruttori}
-Possono essere mappati a valori booleani (true/false)
+\subsection{Interruttori / Pulsanti}
+Possono essere mappati a valori booleani (true/false).
 
 \subsection{Commutatori a n posizioni}
 Possono essere mappati in un programma a tipi \texttt{enum}, utilizzabili per selezionare tra un insieme di modalità o un insieme di valori
@@ -227,6 +227,7 @@ Per evitare di occupare tanti pin del microcontrollore quante sono le possibili 
 partitore di tensione mediante l'ausilio di resistenze tutte uguali collegate come da esempio in Figura~\ref{fig:commutatoreprimadopo},
 ottenendo una sorta di potenziometro che invece di variare nel continuo assume valori in step regolari tra il minimo e il massimo
 dell'ingresso, che possono essere agevolmente distinti e interpretati come valori discreti.
+\todo{busolin: meglio metterlo negli interventi?}
 
 \begin{figure}[h]
   \centering
@@ -273,7 +274,7 @@ in serie e/o in parallelo in base all'utilizzo finale desiderato. Per ottenere u
 inserire una resistenza in serie con il milliamperometro, in modo da ridurne la sensibilità.
 Questo principio si basa sulla legge di Ohm: conoscendo il flusso di corrente necessario normalmente per arrivare a fondo scala, è
 possibile calcolare la resistenza totale necessaria per portare l'ago al 100\% in corrispondenza di una tensione desiderata.
-Esempio di scheda resistenze in Figura~\ref{fig:schedaresistenze}
+Esempio di scheda resistenze in Figura~\ref{fig:schedaresistenze}.
 
 \begin{figure}[h]
   \centering
@@ -288,7 +289,16 @@ Il metodo più semplice per ottenere un oggetto funzionante è quello di collega
 e GND rispettivamente al terminale positivo e negativo dello strumento di misura in modalità voltmetro. Se la tensione in uscita massima
 coincide con il fondoscala dello strumento di misura questo è sufficiente, altrimenti è necessario ridurla via software oppure
 utilizzare un partitore di tensione o un potenziometro. Nel caso in cui la tensione in uscita massima del microcontrollore sia inferiore
-ad ogni possibile fondoscala dello strumento di misura, questo metodo non è attuabile.
+ad ogni possibile fondoscala dello strumento di misura, questo metodo non è attuabile. Esempio di intervento minimale in
+Figura~\ref{fig:interventominimale}. Notare il cavo collegato ai terminali: il microcontrollore è esterno
+e i commutatori devono rimanere nella posizione rappresentata per consentire un corretto funzionamento.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{interventominimale}
+  \caption{Esempio di intervento minimale}
+  \label{fig:interventominimale}
+\end{figure}
 
 \subsection{Intervento approfondito}
 Un metodo più invasivo ma più pulito consiste nel modificare la struttura interna dello strumento di misura, collegandosi ai capi dello
@@ -310,8 +320,17 @@ scomodo portare una fonte di alimentazione.
 Ulteriori possibili modifiche meno banali includono l'aggiunta di elementi decorativi quali delle luci o funzionali quali bottoni o altoparlanti
 per ampliare le possibilità di utilizzo. Un'altra possibilità di modifica ove possibile è la sostituzione dell'etichetta dietro all'ago per adattare
 la scala rappresentata alla vera scala dei dati (a condizione che questa rimanga fissa). Adoperando un display e-paper si potrebbe
-adattare dinamicamente la scala rappresentata dallo strumento senza più bisogno di interventi fisici.
+adattare dinamicamente la scala rappresentata dallo strumento senza più bisogno di interventi fisici. Esempio di strumento dopo
+modifiche avanzate in Figura~\ref{fig:interventocompleto}: è stato sostituito il terminale sinistro con un connettore USB da pannello
+ai fini di interfacciarsi con il microcontrollore e alimentarlo. Il terminale destro è stato sostituito con un indicatore LED e all'interno è stato
+posizionato un buzzer che consente di riprodurre dei suoni.
 
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{interventocompleto}
+  \caption{Esempio di strumento dopo modifiche avanzate}
+  \label{fig:interventocompleto}
+\end{figure}
 
 \chapter{Use case}
 Prima di parlare del funzionamento dell'oggetto è il caso di soffermarsi su chi interagisce con esso e in che modo:  %%Rivedere frase
@@ -339,9 +358,7 @@ utilizzata, di cui sono state salvate le credenziali. Se non è mai stata effett
 quella salvata non è disponibile, viene attivato un Access Point che tramite Captive Portal (lo stesso che viene usato su reti pubbliche
 o aziendali per richiedere l'autenticazione) chiede di selezionare una delle reti WiFi vicine e di inserirne la password.\\
 
-\vspace{4mm}
-{[SCREENSHOT]}\\
-\vspace{4mm}
+\missingfigure{screenshot}
 
 Successivamente viene tentata la connessione. Se non ha successo viene riproposto lo stesso procedimento, altrimenti viene disattivato
 l'Access Point temporaneo e il programma prosegue.
@@ -385,17 +402,15 @@ in formato JSON, esempio:
 La configurazione può essere alterata tramite una pagina web accessibile all'indirizzo IP nella rete locale del microcontrollore o il suo
 hostname.
 
-\vspace{4mm}
-{[SCREENSHOT PAGINA WEB]}
+\missingfigure{screenshot pagina web}
 
-\vspace{4mm}
 I form sono precompilati con la configurazione in esecuzione (\emph{running-conf}) ed è presente una sezione che riporta la configurazione
 salvata nella flash (\emph{saved-conf}).\\
 È possibile inoltre inviare un JSON di configurazione tramite MQTT al topic \texttt{Phys/setFromJSON}. I campi possono essere modificati
 singolarmente ai topic:
 \begin{itemize}
   \item \texttt{Phys/setApiUrl}
-        % ToDo: setPostPayload
+  \item \texttt{Phys/setPostPayload}
   \item \texttt{Phys/setFilterJson}
   \item \texttt{Phys/setPath}
   \item \texttt{Phys/setMinValue}
@@ -520,7 +535,10 @@ Nel dettaglio, sono esposti i seguenti endpoint:
         valore associato alla chiave setFromJSON. È inoltre possibile asssociare alla chiave saveToFlash il valore `true' per copiare
         la configurazione in esecuzione nella memoria flash.
 \end{itemize}
-%%%%%% Da rivedere
+
+Questa feature è successivamente stata disattivata perché l'esecuzione contemporanea di un webserver e di richieste API creava
+problemi di allocazione della memoria del microcontrollore che spesso risultavano in crash improvvisi. Oltretutto, la spartana
+interfaccia web risultava ridondante rispetto alle modalità di configurazione già presenti.
 
 \subsection{OTA}
 Sono stati implementati gli aggiornamenti OTA (Over the Air), processo tramite il quale è possibile eseguire l'upload di firmware
@@ -532,7 +550,7 @@ migliorare la sicurezza dell'operazione mediante utilizzo di password e hash fir
 
 \chapter{Conclusioni}
 
-\todo{atrent: oltre alla presentazione all'hacklab (domani!) proviamo a organizzare una sessione ad hoc almeno con gli studenti del corso SistEmbed (e magari quelli di PROS?)}
+%\todo{atrent: oltre alla presentazione all'hacklab (domani!) proviamo a organizzare una sessione ad hoc almeno con gli studenti del corso SistEmbed (e magari quelli di PROS?)}
 
 \section{Reperibilità delle API}
 Durante la ricerca di API rappresentabili mediante Data Physicalization è risultato evidente che molte di quelle più congeniali non
