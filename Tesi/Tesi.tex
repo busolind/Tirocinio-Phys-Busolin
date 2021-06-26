@@ -393,90 +393,19 @@ semplice, possibilmente tramite interazione fisica con il dispositivo.
 
 \todo{atrent: in generale metterei tanti schemi e disegni}
 
-\chapter{Utilizzo del prototipo}
 
-\section{All'avvio}
-Per prima cosa contestualmente all'accensione, mediante WiFiManager, viene effettuato un tentativo di connessione all'ultima rete WiFi
-utilizzata, di cui sono state salvate le credenziali. Se non è mai stata effettuata la connessione ad alcuna rete WiFi o se
-quella salvata non è disponibile, viene attivato un Access Point che tramite Captive Portal (lo stesso che viene usato su reti pubbliche
-o aziendali per richiedere l'autenticazione) chiede di selezionare una delle reti WiFi vicine e di inserirne la password.\\
-
-\missingfigure{screenshot}
-
-Successivamente viene tentata la connessione. Se non ha successo viene riproposto lo stesso procedimento, altrimenti viene disattivato
-l'Access Point temporaneo e il programma prosegue.
-
-\pagebreak
-\section{Modalità operative}
-
-\subsection{Modalità API}
-Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo configurabili di richieste HTTP o HTTPS ad API REST
-e sulla conversione del risultato in una tensione di uscita.
-La configurazione è salvata nella memoria flash del microcontrollore
-in formato JSON, esempio:
-
-\begin{lstlisting}[language=json,firstnumber=1]
-{
-  "apiUrl": "http://api.coindesk.com/v1/bpi/currentprice/USD.json",
-  "filterJSON": "{bpi:{USD:{rate_float:true}}}",
-  "path": "bpi/USD/rate_float",
-  "min_value": 58700,
-  "max_value": 58900,
-  "min_pwm": 0,
-  "max_pwm": 1023,
-  "request_interval_ms": 15000
-}
-\end{lstlisting}
-
-
-\noindent Dove:
-\begin{itemize}
-  \item \texttt{apiUrl} è l'URL della risorsa (stringa)
-  \item \texttt{post_payload} in caso di richiesta POST contiene la stringa da inviare nel body
-  \item \texttt{filterJSON} è un documento JSON che contiene \texttt{true} come placeholder del campo che si vuole considerare dalla risposta (stringa/oggetto)
-  \item \texttt{path} è una stringa che contiene il "percorso" del campo che si vuole rappresentare fisicamente (campo: float, path: stringa)
-  \item \texttt{min_value} indica il valore minimo della scala per rappresentare il valore (float)
-  \item \texttt{max_value} indica il valore massimo (float)
-  \item \texttt{min_pwm} indica il valore minimo di uscita della PWM da mappare al valore restituito dalle API (int)
-  \item \texttt{max_pwm} indica il valore massimo [su ESP il duty cycle massimo equivale a 1023] (int)
-  \item \texttt{request_interval_ms} indica l'intervallo di tempo in millisecondi che intercorre tra le richieste alla risorsa (int)
-\end{itemize}
-
-La configurazione può essere alterata tramite una pagina web accessibile all'indirizzo IP nella rete locale del microcontrollore o il suo
-hostname.
-
-\missingfigure{screenshot pagina web}
-
-I form sono precompilati con la configurazione in esecuzione (\emph{running-conf}) ed è presente una sezione che riporta la configurazione
-salvata nella flash (\emph{saved-conf}).\\
-È possibile inoltre inviare un JSON di configurazione tramite MQTT al topic \texttt{Phys/setFromJSON}. I campi possono essere modificati
-singolarmente ai topic:
-\begin{itemize}
-  \item \texttt{Phys/setApiUrl}
-  \item \texttt{Phys/setPostPayload}
-  \item \texttt{Phys/setFilterJson}
-  \item \texttt{Phys/setPath}
-  \item \texttt{Phys/setMinValue}
-  \item \texttt{Phys/setMaxValue}
-  \item \texttt{Phys/setMinPwm}
-  \item \texttt{Phys/setMaxPwm}
-  \item \texttt{Phys/setRequestIntervalMs}
-\end{itemize}
-
-Le modifiche non sono automaticamente salvate nella memoria flash ma ciò deve essere richiesto esplicitamente. Nei form di configurazione
-è presente una checkbox da spuntare in caso si voglia che questo avvenga.
-
-
-\subsection{Modalità MQTT}
-Non ancora implementata, ma l'idea è che consenta di visualizzare un valore ricevuto direttamente tramite sottoscrizione a un topic MQTT
-invece che andarlo a reperire tramite richieste HTTP(S).
-
-\chapter{Realizzazione del prototipo}
+\chapter{Realizzazione del prototipo - IoTDial}
+Questo capitolo tratterà dell'implementazione delle varie feature del prototipo realizzato durante il tirocinio, chiamato IoTDial,
+e alcune osservazioni al riguardo.
 
 \section{Hardware}
-Il prototipo è molto semplice dal punto di vista hardware, consiste in un voltmetro analogico ad ago e un WeMos D1 mini basato su ESP8266.\\
-Il terminale positivo del voltmetro è connesso a un GPIO dell'ESP, mentre il terminale negativo a terra. È configurato mediante i
-commutatori in modalità corrente continua con fondo scala a 3V.
+Il prototipo era inizialmente molto semplice dal punto di vista hardware: consisteva in un voltmetro analogico ad ago impostato con
+fondoscala a 3V e un WeMos D1 mini basato su ESP8266. Il terminale positivo del voltmetro era connesso a un GPIO dell'ESP,
+mentre il terminale negativo a GND.
+
+Successivamente sono stati eseguiti maggiori interventi fisici fino ad arrivare alla situazione visibile in Figura~\ref{fig:interventocompleto}
+e descritta nella corrispondente sezione, con il microcontrollore inserito all'interno della scocca dello strumento e alcune modifiche estetiche
+e funzionali.
 
 \section{Software}
 La parte software del prototipo è stata realizzata utilizzando il linguaggio di programmazione di Arduino, esteso all'utilizzo con
@@ -590,6 +519,87 @@ in situazioni di difficile accesso fisico al microcontrollore.\\
 Il processo di upload usa Digest-MD5 per la verifica dell'integrità, onde evitare di rendere il dispositivo inservibile. È inoltre possibile
 migliorare la sicurezza dell'operazione mediante utilizzo di password e hash firmati. \cite{espota}
 
+\chapter{Utilizzo del prototipo}
+
+\section{All'avvio}
+Per prima cosa contestualmente all'accensione, mediante WiFiManager, viene effettuato un tentativo di connessione all'ultima rete WiFi
+utilizzata, di cui sono state salvate le credenziali. Se non è mai stata effettuata la connessione ad alcuna rete WiFi o se
+quella salvata non è disponibile, viene attivato un Access Point che tramite Captive Portal (lo stesso che viene usato su reti pubbliche
+o aziendali per richiedere l'autenticazione) chiede di selezionare una delle reti WiFi vicine e di inserirne la password.\\
+
+\missingfigure{screenshot}
+
+Successivamente viene tentata la connessione. Se non ha successo viene riproposto lo stesso procedimento, altrimenti viene disattivato
+l'Access Point temporaneo e il programma prosegue.
+
+\pagebreak
+\section{Modalità operative}
+
+\subsection{Modalità API}
+Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo configurabili di richieste HTTP o HTTPS ad API REST
+e sulla conversione del risultato in una tensione di uscita.
+La configurazione è salvata nella memoria flash del microcontrollore
+in formato JSON, esempio:
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "apiUrl": "https://giromilano.atm.it/proxy.ashx",
+  "filterJSON": "{Lines: [{WaitMessage: true}]}",
+  "post_payload": "url=tpPortal/geodata/pois/stops/12493",
+  "path": "Lines/0/WaitMessage",
+  "min_value": 0,
+  "max_value": 15,
+  "min_pwm": 0,
+  "max_pwm": 920,
+  "request_interval_ms": 15000,
+  "mode": 2
+}
+\end{lstlisting}
+
+
+\noindent Dove:
+\begin{itemize}
+  \item \texttt{apiUrl} è l'URL della risorsa (stringa)
+  \item \texttt{post_payload} in caso di richiesta POST contiene la stringa da inviare nel body
+  \item \texttt{filterJSON} è un documento JSON che contiene \texttt{true} come placeholder del campo che si vuole considerare dalla risposta (stringa/oggetto)
+  \item \texttt{path} è una stringa che contiene il "percorso" del campo che si vuole rappresentare fisicamente (campo: float, path: stringa)
+  \item \texttt{min_value} indica il valore minimo della scala per rappresentare il valore (float)
+  \item \texttt{max_value} indica il valore massimo (float)
+  \item \texttt{min_pwm} indica il valore minimo di uscita della PWM da mappare al valore restituito dalle API (int)
+  \item \texttt{max_pwm} indica il valore massimo [su ESP il duty cycle massimo equivale a 1023] (int)
+  \item \texttt{request_interval_ms} indica l'intervallo di tempo in millisecondi che intercorre tra le richieste alla risorsa (int)
+  \item \texttt{mode} indica il codice numerico della modalità di funzionamento da selezionare
+\end{itemize}
+
+La configurazione può essere alterata tramite una pagina web accessibile all'indirizzo IP nella rete locale del microcontrollore o il suo
+hostname.
+\todo{busolin: utilizzo del passato}
+
+\missingfigure{screenshot pagina web}
+
+I form sono precompilati con la configurazione in esecuzione (\emph{running-conf}) ed è presente una sezione che riporta la configurazione
+salvata nella flash (\emph{saved-conf}).\\
+È possibile inoltre inviare un JSON di configurazione tramite MQTT al topic \texttt{Phys/setFromJSON}. I campi possono essere modificati
+singolarmente ai topic:
+\begin{itemize}
+  \item \texttt{Phys/setApiUrl}
+  \item \texttt{Phys/setPostPayload}
+  \item \texttt{Phys/setFilterJson}
+  \item \texttt{Phys/setPath}
+  \item \texttt{Phys/setMinValue}
+  \item \texttt{Phys/setMaxValue}
+  \item \texttt{Phys/setMinPwm}
+  \item \texttt{Phys/setMaxPwm}
+  \item \texttt{Phys/setRequestIntervalMs}
+\end{itemize}
+
+Le modifiche non sono automaticamente salvate nella memoria flash ma ciò deve essere richiesto esplicitamente. Nei form di configurazione
+è presente una checkbox da spuntare in caso si voglia che questo avvenga.
+
+
+\subsection{Modalità MQTT}
+Non ancora implementata, ma l'idea è che consenta di visualizzare un valore ricevuto direttamente tramite sottoscrizione a un topic MQTT
+invece che andarlo a reperire tramite richieste HTTP(S).
 
 \chapter{Conclusioni}
 
