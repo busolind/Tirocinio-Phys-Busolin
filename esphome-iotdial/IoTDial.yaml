@@ -2,6 +2,7 @@ esphome:
   name: iotdial-test
   platform: ESP8266
   board: d1_mini
+  esp8266_restore_from_flash: yes
 
 # Enable logging
 logger:
@@ -35,22 +36,22 @@ mqtt:
 globals:
   - id: min_value
     type: float
-    restore_value: no
+    restore_value: yes
     initial_value: '0'
 
   - id: max_value
     type: float
-    restore_value: no
+    restore_value: yes
     initial_value: '40'
 
   - id: min_pwm
     type: float
-    restore_value: no
+    restore_value: yes
     initial_value: '0'
 
   - id: max_pwm
     type: float
-    restore_value: no
+    restore_value: yes
     initial_value: '0.89' #percentuale!
     
 
@@ -67,6 +68,14 @@ sensor:
             id: dial
             level: !lambda "return (x - id(min_value)) * (id(max_pwm) - id(min_pwm)) / (id(max_value) - id(min_value)) + id(min_pwm);"
             #level: !lambda "return x/100;"
+
+  - platform: mqtt_subscribe
+    name: "setMaxValue"
+    id: setMaxValue
+    topic: IoTDial/busolin/settings/setMaxValue
+    on_value:
+      then:
+        - lambda: "id(max_value)=x;"
 
 
 # METER D2
