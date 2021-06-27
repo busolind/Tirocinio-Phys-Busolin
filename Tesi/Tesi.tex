@@ -409,45 +409,52 @@ e funzionali.
 
 \section{Software}
 La parte software del prototipo è stata realizzata utilizzando il linguaggio di programmazione di Arduino, esteso all'utilizzo con
-ESP8266 e con l'aiuto di numerose librerie.
+ESP8266 e con l'aiuto di numerose librerie. Come IDE è stato usato Visual Studio Code con l'estensione PlatformIO, la quale
+permette di specificare le dipendenze direttamente in file di configurazione e di scaricare automaticamente le librerie necessarie
+per ogni progetto.
 
 \subsection{PWM}
-Il principio di base che permette di produrre una tensione variabile da parte di un sistema digitale è la Pulse-Width Modulation.\\
+Il principio di base che permette di produrre una tensione variabile da parte di un sistema digitale è la Pulse-Width Modulation.
 Ciò permette di controllare finemente la posizione dell'ago del voltmetro via software.
 
 \subsection{Richieste API}
 Il primo passo verso la fisicalizzazione dei dati è stato quello di ottenerli, mediante richieste ad API REST in locale o su Internet.
-Per questo è stata utilizzata la libreria \texttt{ESP8266HTTPClient}.\\
+Per questo è stata utilizzata la libreria \texttt{ESP8266HTTPClient}.
+
 Le richieste HTTP hanno funzionato fin da subito, per HTTPS c'è stato più da lavorare in quanto non erano eccessivamente
 documentate e tutte le soluzioni trovate online prevedevano l'utilizzo di stringhe per memorizzare intere risposte, che per via
-della limitata disponibilità di memoria dell'ESP non è sempre una soluzione funzionante.\\
+della limitata disponibilità di memoria dell'ESP non è sempre una soluzione adeguata.
 Un'alternativa fornita dalla libreria è quella di utilizzo di uno stream, per poter leggere dalla risposta un byte alla volta senza doverla
 memorizzare per intero, potendo ignorare le parti non necessarie. Questo meccanismo però è di facile utilizzo solo finché ci si limita a
 HTTP. Per HTTPS la funzione per estrarre lo stream della risposta, secondo la documentazione della libreria, non è supportata.
-Come soluzione è stato utilizzato come stream direttamente il BearSSL::WiFiClientSecure referenziato dalla connessione, impostato in
-modalità insicura (senza la verifica della fingerprint), che però non sempre presenta un output "pulito" della risposta ma potrebbe essere
-preceduto da una linea contentente (presumibilmente) la lunghezza in byte della risposta.
+Per questo motivo è stato utilizzato come stream direttamente il BearSSL::WiFiClientSecure referenziato dalla connessione, impostato in
+modalità insicura (senza la verifica della fingerprint), che però non sempre presenta un output "pulito" della risposta ma essa potrebbe
+essere preceduta da una linea contentente (presumibilmente) la lunghezza in byte della risposta, che va eliminata prima di poter
+passare lo stream al parser JSON.
 
 \subsection{JSON}
-La quasi totalità delle API mette a disposizione risposte contenenti dati in formato JSON (JavaScript Object Notation), è stata quindi
-utilizzata la libreria \texttt{ArduinoJson} per la deserializzazione e la scelta del campo da estrarre.\\
+La quasi totalità delle API mette a disposizione risposte contenenti dati in formato JSON (JavaScript Object Notation). È stata quindi
+utilizzata la libreria \texttt{ArduinoJson} per la deserializzazione e la scelta del campo da estrarre.
 JSON è stato successivamente usato anche come formato per la serializzazione e deserializzazione delle impostazioni da salvare sulla
 memoria flash dell'ESP per permetterne la persistenza anche a seguito di perdite di tensione.
 
 \subsection{Approfondimento su filtro JSON e path} %Giusto averlo qui o meglio in sezione a parte?
 Il centro del funzionamento della modalità API e la sua adattabilità all'utilizzo di fonti dati diverse risiede nei campi
-filterJSON e path.\\
+filterJSON e path.
 \texttt{filterJSON} consente di evitare che tutta la risposta delle API venga salvata in memoria. Viene quindi scartato ogni campo che non
-appaia come placeholder all'interno della stringa, ad esempio:\\
+appaia come placeholder all'interno della stringa, ad esempio:
 \texttt{"\{Lines: [\{WaitMessage: true\}]\}"} consente di mantenere
 in memoria solo il campo con chiave WaitMessage di ogni elemento contenuto nell'array avente chiave Lines. Questa funzionalità è
-implementata e ben documentata nella libreria \texttt{ArduinoJSON}.~\cite{arduinojsonfiltering} \\
+implementata e ben documentata nella libreria \texttt{ArduinoJSON}.~\cite{arduinojsonfiltering}
+
 Questo filtro non è sufficiente come indicatore del campo desiderato, in quanto il documento JSON salvato in memoria conterrà comunque
 tutta la gerarchia e per come funzionano i placeholder sugli array non è neanche detto che ci sia in totale un solo campo con un valore
-assegnato.\\
-Per questo motivo è stato aggiunto il campo \texttt{path} alla configurazione. Questa stringa, nel programma, viene interpretata token per
-token usando lo slash come separatore e usata per esplorare la gerarchia dei campi. Un token completamente numerico viene visto come
-indice di un array, altrimenti come chiave da cercare all'interno di un oggetto.\\
+assegnato.
+Per questo motivo è stato aggiunto il campo \texttt{path} alla configurazione e implementato nel codice un metodo di parsing specifico.
+Questa stringa, nel programma, viene interpretata token per token prendendo gli slash come separatori e usata per esplorare
+la gerarchia del documento JSON. Un token completamente numerico viene visto come indice di un array, altrimenti come chiave da
+cercare all'interno di un oggetto.
+
 Per fare un esempio coerente con il precedente: \texttt{"Lines/0/WaitMessage"} verrà approcciato nel seguente modo:
 \begin{itemize}
   \item Interpretare la radice come un oggetto, cercare la chiave \texttt{Lines} e spostarvisi all'interno;
@@ -455,16 +462,19 @@ Per fare un esempio coerente con il precedente: \texttt{"Lines/0/WaitMessage"} v
   \item Interpretare il successivo livello come un oggetto, cercare la chiave \texttt{WaitMessage} e spostarvisi all'interno.
 \end{itemize}
 A questo punto, finita la stringa, il programma assumerà di trovarsi dinnanzi a un campo interpretabile come numerico (tollera molto,
-ad esempio la stringa "123aaa" verrà interpretata come 123.00), lo estrarrà e lo rappresenterà in output.\\ %excursus JsonVariant?
-Questo approccio grazie al modo in cui è implementata la libreria è molto tollerante a errori o inesattezze. Se nel JSON non fosse
-presente il campo desiderato il parsing della path, così come la conversione da stringa a numero presente subito dopo, non causerebbero
-alcun crash del programma. È quindi possibile avere filtro e path inizialmente non corretti e adattarli tramite trial and error senza
-causare riavvii indesiderati del microcontrollore a seguito di eccezioni.
+ad esempio la stringa ``123aaa" verrà interpretata come 123.00) e lo estrarrà come risultato. %excursus JsonVariant?
+
+Questo approccio, grazie alla cura con cui è implementata la libreria \texttt{ArduinoJson}, è molto tollerante a errori o inesattezze.
+Se nel JSON non fosse presente un campo desiderato durante il parsing della path, così come se non fosse possibile la conversione
+da stringa a numero presente subito dopo, non avverrebbe alcun crash del programma.
+È quindi possibile avere filtro e path inizialmente non corretti e adattarli tramite \textit{trial and error} senza ottenere riavvii
+indesiderati del microcontrollore a seguito di eccezioni.
 
 \subsection{Map}
 Una volta ottenuto il valore da rappresentare è necessario trasformarlo in una tensione, ottenuta tramite PWM il cui duty cycle è
 proporzionale a un numero a 10 bit (0 - 1023). Per fare questo è possibile utilizzare la funzione \texttt{map} già presente nella
-libreria standard di Arduino.\\
+libreria standard di Arduino.
+
 Durante i test è emerso che tale funzione non si comporta particolarmente bene quando uno dei range è formato da piccoli numeri
 decimali. Si è quindi preferito inserire nel codice direttamente la formula matematica su cui si basa \texttt{map}:
 \[out = \frac{(value - fromLow) \times (toHigh - toLow)}{(fromHigh - fromLow)} + toLow \]
@@ -480,11 +490,22 @@ decimali. Si è quindi preferito inserire nel codice direttamente la formula mat
 
 \subsection{Task}
 Attività periodiche come le richieste API sono state rese dei task per mezzo della libreria \texttt{TaskScheduler}, che permette di
-impostare un intervallo di tempo tra esecuzioni ripetute di una procedura.
+impostare un intervallo di tempo tra esecuzioni ripetute di una procedura. \todo{busolin: Integrare tutto come task}
 
 \subsection{Configurazione via MQTT}
-Come prima modalità di modifica "a runtime" della configurazione, è stata implementata la possibilità di inviare messaggi MQTT ai
-topic precedentemente descritti
+Come modalità di modifica ``a runtime" della configurazione, è stata implementata la possibilità di inviare messaggi MQTT al topic
+\texttt{Phys/setFromJSON} per impostare l'intera configurazione, altrimenti i campi singoli possono essere settati tramite i topic:
+\begin{itemize}
+  \item \texttt{Phys/setApiUrl}
+  \item \texttt{Phys/setPostPayload}
+  \item \texttt{Phys/setFilterJson}
+  \item \texttt{Phys/setPath}
+  \item \texttt{Phys/setMinValue}
+  \item \texttt{Phys/setMaxValue}
+  \item \texttt{Phys/setMinPwm}
+  \item \texttt{Phys/setMaxPwm}
+  \item \texttt{Phys/setRequestIntervalMs}
+\end{itemize}
 
 \subsection{Credenziali WiFi}
 Per la connessione alla rete wireless, grazie alla libreria \texttt{WiFiManager}, l'ESP memorizzerà le ultime credenziali utilizzate
@@ -497,7 +518,7 @@ Un'altra forma di modifica della configurazione è stata implementata tramite un
 di configurazione, successivamente è stata aggiunta la possibilità di impostare i singoli parametri attraverso un form precompilato
 e richieste AJAX. Un punto debole di questa soluzione è la scarsa flessibilità del web server, che gestisce richieste POST solo codificate
 come Form Data, quindi invece che poter mandare un semplice JSON nel body della richiesta come da prassi con AJAX, è stato necessario
-trasformarlo in FormData come valore associato alla chiave setFromJSON.\\
+trasformarlo in FormData come valore associato alla chiave setFromJSON.
 Nel dettaglio, sono esposti i seguenti endpoint:
 \begin{itemize}
   \item /: Pagina di configurazione (index.html)
@@ -507,30 +528,31 @@ Nel dettaglio, sono esposti i seguenti endpoint:
         valore associato alla chiave setFromJSON. È inoltre possibile asssociare alla chiave saveToFlash il valore `true' per copiare
         la configurazione in esecuzione nella memoria flash.
 \end{itemize}
-
 Questa feature è successivamente stata disattivata perché l'esecuzione contemporanea di un webserver e di richieste API creava
 problemi di allocazione della memoria del microcontrollore che spesso risultavano in crash improvvisi. Oltretutto, la spartana
-interfaccia web risultava ridondante rispetto alle modalità di configurazione già presenti.
+interfaccia web risultava ridondante rispetto alle modalità di configurazione già presenti in quanto non garantiva una maggiore
+semplicità di utilizzo per l'utente, che deve essere comunque esperto per apportare certe modifiche.
 
 \subsection{OTA}
 Sono stati implementati gli aggiornamenti OTA (Over the Air), processo tramite il quale è possibile eseguire l'upload di firmware
 mediante WiFi invece che tramite porta seriale. Questo rimuove l'obbligo di utilizzo di una connessione cablata ed è molto utile
-in situazioni di difficile accesso fisico al microcontrollore.\\
+in situazioni di difficile accesso fisico al microcontrollore.
+
 Il processo di upload usa Digest-MD5 per la verifica dell'integrità, onde evitare di rendere il dispositivo inservibile. È inoltre possibile
 migliorare la sicurezza dell'operazione mediante utilizzo di password e hash firmati. \cite{espota}
 
-\chapter{Utilizzo del prototipo}
+\chapter{Utilizzo di IoTDial}
 
 \section{All'avvio}
 Per prima cosa contestualmente all'accensione, mediante WiFiManager, viene effettuato un tentativo di connessione all'ultima rete WiFi
 utilizzata, di cui sono state salvate le credenziali. Se non è mai stata effettuata la connessione ad alcuna rete WiFi o se
 quella salvata non è disponibile, viene attivato un Access Point che tramite Captive Portal (lo stesso che viene usato su reti pubbliche
-o aziendali per richiedere l'autenticazione) chiede di selezionare una delle reti WiFi vicine e di inserirne la password.\\
+o aziendali per richiedere l'autenticazione) chiede di selezionare una delle reti WiFi vicine e di inserirne la password.
 
 \missingfigure{screenshot}
 
-Successivamente viene tentata la connessione. Se non ha successo viene riproposto lo stesso procedimento, altrimenti viene disattivato
-l'Access Point temporaneo e il programma prosegue.
+Successivamente viene tentata la connessione. Se non ha successo viene ripetuto lo stesso procedimento, altrimenti viene disattivato
+l'Access Point temporaneo, avviene la connesisone e il programma prosegue.
 
 \pagebreak
 \section{Modalità operative}
@@ -571,35 +593,19 @@ in formato JSON, esempio:
   \item \texttt{mode} indica il codice numerico della modalità di funzionamento da selezionare
 \end{itemize}
 
-La configurazione può essere alterata tramite una pagina web accessibile all'indirizzo IP nella rete locale del microcontrollore o il suo
-hostname.
-\todo{busolin: utilizzo del passato}
+Come descritto in precedenza, la configurazione poteva essere alterata anche tramite una pagina web accessibile all'indirizzo IP
+nella rete locale del microcontrollore o il suo hostname.
 
 \missingfigure{screenshot pagina web}
 
-I form sono precompilati con la configurazione in esecuzione (\emph{running-conf}) ed è presente una sezione che riporta la configurazione
-salvata nella flash (\emph{saved-conf}).\\
-È possibile inoltre inviare un JSON di configurazione tramite MQTT al topic \texttt{Phys/setFromJSON}. I campi possono essere modificati
-singolarmente ai topic:
-\begin{itemize}
-  \item \texttt{Phys/setApiUrl}
-  \item \texttt{Phys/setPostPayload}
-  \item \texttt{Phys/setFilterJson}
-  \item \texttt{Phys/setPath}
-  \item \texttt{Phys/setMinValue}
-  \item \texttt{Phys/setMaxValue}
-  \item \texttt{Phys/setMinPwm}
-  \item \texttt{Phys/setMaxPwm}
-  \item \texttt{Phys/setRequestIntervalMs}
-\end{itemize}
-
-Le modifiche non sono automaticamente salvate nella memoria flash ma ciò deve essere richiesto esplicitamente. Nei form di configurazione
-è presente una checkbox da spuntare in caso si voglia che questo avvenga.
+I form erano precompilati con la configurazione in esecuzione (\emph{running-conf}) ed era presente una sezione che riportava la
+configurazione salvata nella flash (\emph{saved-conf}).
+Le modifiche non erano automaticamente salvate nella memoria flash ma ciò doveva essere richiesto esplicitamente. Nei form di configurazione
+era presente una checkbox da spuntare in caso si volesse che questo avvenisse.
 
 
-\subsection{Modalità MQTT}
-Non ancora implementata, ma l'idea è che consenta di visualizzare un valore ricevuto direttamente tramite sottoscrizione a un topic MQTT
-invece che andarlo a reperire tramite richieste HTTP(S).
+\subsection{Modalità MQTT / smart home}
+\todo{busolin: descrizione vecchia modalità MQTT e esphome}
 
 \chapter{Conclusioni}
 
