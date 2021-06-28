@@ -365,8 +365,8 @@ per ampliare le possibilità di utilizzo. Un'altra possibilità di modifica ove 
 la scala rappresentata alla vera scala dei dati (a condizione che questa rimanga fissa). Adoperando un display e-paper si potrebbe
 adattare dinamicamente la scala rappresentata dallo strumento senza più bisogno di interventi fisici. Esempio di strumento dopo
 modifiche avanzate in Figura~\ref{fig:interventocompleto}: è stato sostituito il terminale sinistro con un connettore USB da pannello
-ai fini di interfacciarsi con il microcontrollore e alimentarlo. Il terminale destro è stato sostituito con un indicatore LED e all'interno è stato
-posizionato un buzzer che consente di riprodurre dei suoni.
+ai fini di interfacciarsi con il microcontrollore e alimentarlo. Il terminale destro è stato sostituito con un indicatore LED, il commutatore
+destro con un pulsante e all'interno è stato posizionato un buzzer che consente di riprodurre dei suoni.
 
 \begin{figure}[h]
   \centering
@@ -421,6 +421,28 @@ Ciò permette di controllare finemente la posizione dell'ago del voltmetro via s
 Il primo passo verso la fisicalizzazione dei dati è stato quello di ottenerli, mediante richieste ad API REST in locale o su Internet.
 Per questo è stata utilizzata la libreria \texttt{ESP8266HTTPClient}.
 
+\lstset{language=C++,
+                basicstyle=\ttfamily,
+                breaklines=true,
+                keywordstyle=\color{blue}\ttfamily,
+                stringstyle=\color{red}\ttfamily,
+                commentstyle=\color{green}\ttfamily,
+                morecomment=[l][\color{magenta}]{\#}
+}
+\begin{lstlisting}
+bool begin;
+if (use_https) {
+  begin = http.begin(ssl_client, apiUrl);
+  Serial.print("[HTTPS] ");
+} else {
+  begin = http.begin(client, apiUrl);
+  Serial.print("[HTTP] ");
+}
+
+Serial.print("begin... ");
+Serial.println("URL: " + apiUrl);
+\end{lstlisting}
+
 Le richieste HTTP hanno funzionato fin da subito, per HTTPS c'è stato più da lavorare in quanto non erano eccessivamente
 documentate e tutte le soluzioni trovate online prevedevano l'utilizzo di stringhe per memorizzare intere risposte, che per via
 della limitata disponibilità di memoria dell'ESP non è sempre una soluzione adeguata.
@@ -432,11 +454,40 @@ modalità insicura (senza la verifica della fingerprint), che però non sempre p
 essere preceduta da una linea contentente (presumibilmente) la lunghezza in byte della risposta, che va eliminata prima di poter
 passare lo stream al parser JSON.
 
+Si riporta la sezione di codice che chiama un metodo di callback che accetta uno stream per argomento. Notare che per una richiesta
+HTTP è utilizzato il metodo getStream messo a disposizione dalla libreria, mentre per HTTPS viene passato direttamente il client.
+\begin{lstlisting}
+if (httpCode == HTTP_CODE_OK) {
+  if (use_https) {
+    callback(ssl_client);
+  } else {
+    callback(http.getStream());
+  }
+}
+\end{lstlisting}
+
 \subsection{Risposte JSON}
 La quasi totalità delle API mette a disposizione risposte contenenti dati in formato JSON (JavaScript Object Notation). È stata quindi
 utilizzata la libreria \texttt{ArduinoJson} per la deserializzazione e la scelta del campo da estrarre.
 JSON è stato successivamente usato anche come formato per la serializzazione e deserializzazione delle impostazioni da salvare sulla
 memoria flash dell'ESP per permetterne la persistenza anche a seguito di perdite di tensione.
+
+Segue una porzione di codice della callback che evidenzia l'utilizzo di uno stream con buffer da 64 byte ai fini di un miglioramento delle
+performance, la deserializzazione del filtro e la "pulizia" dello stream nel caso in cui si usi HTTPS ed esso contenga caratteri iniziali
+diversi dalle parentesi.
+\begin{lstlisting}
+void stream_callback(Stream &stream) {
+  ReadBufferingStream rbs(stream, 64);
+  StaticJsonDocument<200> filter;
+  deserializeJson(filter, filterJSON);
+  Serial.println("--- Start of text excluded from stream ---");
+  while (rbs.available() && char(rbs.peek()) != '{' && char(rbs.peek()) != '[') {
+    Serial.print(char(rbs.read()));
+  }
+  Serial.println("---  End of text excluded from stream  ---");
+  DynamicJsonDocument doc(2000);
+  deserializeJson(doc, rbs, DeserializationOption::Filter(filter));
+\end{lstlisting}
 
 \subsection{Approfondimento su filtro JSON e path} %Giusto averlo qui o meglio in sezione a parte?
 Il centro del funzionamento della modalità API e la sua adattabilità all'utilizzo di fonti dati diverse risiede nei campi
@@ -469,6 +520,32 @@ Se nel JSON non fosse presente un campo desiderato durante il parsing della path
 da stringa a numero presente subito dopo, non avverrebbe alcun crash del programma.
 È quindi possibile avere filtro e path inizialmente non corretti e adattarli tramite \textit{trial and error} senza ottenere riavvii
 indesiderati del microcontrollore a seguito di eccezioni.
+
+Nella seguente porzione di codice è possibile osservare le istruzioni cruciali per l'implementazione del parsing della path:
+\begin{lstlisting}
+JsonVariant jv = doc.as<JsonVariant>();
+token = strtok(path_buf, "/");
+while (token != NULL) {
+  bool object = false;
+  char *p = token;
+  while (*p != 0) {
+    if (!isDigit(*p)) {
+      object = true;
+      break;
+    }
+    p++;
+  }
+  if (object) {
+    jv = jv[token];
+  } else {
+    jv = jv[atoi(token)];
+  }
+  token = strtok(NULL, "/");
+}
+\end{lstlisting}
+Un'alternativa possibile sarebbe quella di distinguere chiavi e indici mediante appositi prefissi, evitando la scansione completa di ogni
+token per determinare se esso sia numerico o meno. Un ulteriore vantaggio sarebbe quello di avere chiavi completamente numeriche
+senza che esse vengano confuse con indici di array.
 
 \subsection{File di configurazione JSON}
 La configurazione è salvata nella memoria flash del microcontrollore
@@ -524,7 +601,7 @@ decimali. Si è quindi preferito inserire nel codice direttamente la formula mat
 
 \subsection{Task}
 Attività periodiche come le richieste API sono state rese dei task per mezzo della libreria \texttt{TaskScheduler}, che permette di
-impostare un intervallo di tempo tra esecuzioni ripetute di una procedura. \todo{busolin: Integrare tutto come task}
+impostare un intervallo di tempo tra esecuzioni ripetute di una procedura.
 
 \subsection{Configurazione via MQTT}
 Come modalità di modifica ``a runtime" della configurazione, è stata implementata la possibilità di inviare messaggi MQTT al topic
