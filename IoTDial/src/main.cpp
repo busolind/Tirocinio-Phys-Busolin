@@ -9,6 +9,7 @@
 #include <ESP8266WiFi.h>
 #include <ESPAsyncWiFiManager.h>
 #include <FS.h>
+#include <FTPServer.h>
 #include <LittleFS.h>
 #include <PubSubClient.h>
 #include <PubSubClientTools.h>
@@ -74,6 +75,10 @@ PubSubClientTools mqtt_tools(mqtt_client);
 
 AsyncWebServer server(80);
 DNSServer dns;
+
+#define FTP_USER "ftp"
+#define FTP_PASSWORD "ftp"
+FTPServer ftp(LittleFS);
 
 Scheduler ts;
 
@@ -401,6 +406,10 @@ void setup() {
   Serial.println(conf_to_json());
   delay(3000);
 
+  Serial.println("Enabling FTP...");
+  ftp.begin(FTP_USER, FTP_PASSWORD);
+  Serial.println("FTP enabled...");
+
   write_output_task.enable();
 }
 
@@ -419,4 +428,5 @@ void loop() {
 
   mqtt_client.loop();
   ts.execute();
+  ftp.handleFTP();
 }
