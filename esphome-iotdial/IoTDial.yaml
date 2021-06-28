@@ -69,6 +69,15 @@ sensor:
             level: !lambda "return (x - id(min_value)) * (id(max_pwm) - id(min_pwm)) / (id(max_value) - id(min_value)) + id(min_pwm);"
             #level: !lambda "return x/100;"
 
+  
+  - platform: mqtt_subscribe
+    name: "setMinValue"
+    id: setMinValue
+    topic: IoTDial/busolin/settings/setMinValue
+    on_value:
+      then:
+        - lambda: "id(min_value)=x;"
+
   - platform: mqtt_subscribe
     name: "setMaxValue"
     id: setMaxValue
@@ -76,6 +85,23 @@ sensor:
     on_value:
       then:
         - lambda: "id(max_value)=x;"
+
+  - platform: mqtt_subscribe
+    name: "setMinPwm"
+    id: setMinPwm
+    topic: IoTDial/busolin/settings/setMinPwm
+    on_value:
+      then:
+        - lambda: "id(min_pwm)=x;"
+
+  - platform: mqtt_subscribe
+    name: "setMaxPwm"
+    id: setMaxPwm
+    topic: IoTDial/busolin/settings/setMaxPwm
+    on_value:
+      then:
+        - lambda: "id(max_pwm)=x;"
+    
 
 
 # METER D2
