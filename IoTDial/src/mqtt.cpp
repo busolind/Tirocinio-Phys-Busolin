@@ -119,26 +119,28 @@ void mqtt_callback_setMode(String topic, String message) {
 }
 
 void mqtt_reconnect() {
-  Serial.print("Attempting MQTT connection...");
-  String clientId = hostName;
-  // Attempt to connect
-  if (mqtt_client.connect(clientId.c_str())) {
-    Serial.println("connected");
-    mqtt_tools.subscribe(sub_to_apiurl, mqtt_callback_setApiUrl);
-    mqtt_tools.subscribe(sub_to_filterJSON, mqtt_callback_setFilterJson);
-    mqtt_tools.subscribe(sub_to_path, mqtt_callback_setPath);
-    mqtt_tools.subscribe(sub_to_setFromJSON, mqtt_callback_setFromJSON);
-    mqtt_tools.subscribe(sub_to_min_value, mqtt_callback_setMinValue);
-    mqtt_tools.subscribe(sub_to_max_value, mqtt_callback_setMaxValue);
-    mqtt_tools.subscribe(sub_to_min_pwm, mqtt_callback_setMinPwm);
-    mqtt_tools.subscribe(sub_to_max_pwm, mqtt_callback_setMaxPwm);
-    mqtt_tools.subscribe(sub_to_interval_ms, mqtt_callback_setRequestIntervalMs);
+  if (!mqtt_client.connected()) {
+    Serial.print("Attempting MQTT connection...");
+    String clientId = hostName;
+    // Attempt to connect
+    if (mqtt_client.connect(clientId.c_str())) {
+      Serial.println("connected");
+      mqtt_tools.subscribe(sub_to_apiurl, mqtt_callback_setApiUrl);
+      mqtt_tools.subscribe(sub_to_filterJSON, mqtt_callback_setFilterJson);
+      mqtt_tools.subscribe(sub_to_path, mqtt_callback_setPath);
+      mqtt_tools.subscribe(sub_to_setFromJSON, mqtt_callback_setFromJSON);
+      mqtt_tools.subscribe(sub_to_min_value, mqtt_callback_setMinValue);
+      mqtt_tools.subscribe(sub_to_max_value, mqtt_callback_setMaxValue);
+      mqtt_tools.subscribe(sub_to_min_pwm, mqtt_callback_setMinPwm);
+      mqtt_tools.subscribe(sub_to_max_pwm, mqtt_callback_setMaxPwm);
+      mqtt_tools.subscribe(sub_to_interval_ms, mqtt_callback_setRequestIntervalMs);
 
-    mqtt_tools.subscribe(sub_to_setValue, mqtt_callback_setValue);
-    mqtt_tools.subscribe(sub_to_setMode, mqtt_callback_setMode);
-  } else {
-    Serial.print("failed, rc=");
-    Serial.println(mqtt_client.state());
+      mqtt_tools.subscribe(sub_to_setValue, mqtt_callback_setValue);
+      mqtt_tools.subscribe(sub_to_setMode, mqtt_callback_setMode);
+    } else {
+      Serial.print("failed, rc=");
+      Serial.println(mqtt_client.state());
+    }
   }
 }
 

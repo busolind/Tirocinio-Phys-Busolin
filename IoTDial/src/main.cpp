@@ -385,6 +385,23 @@ Task request_task(REQUEST_DELAY_MS *TASK_MILLISECOND, TASK_FOREVER, request_task
 
 Task mqtt_reconnect_task(MQTT_RECONNECT_DELAY *TASK_MILLISECOND, TASK_FOREVER, mqtt_reconnect);
 
+void arduinoOTA_handle() {
+  if (WiFi.status() == WL_CONNECTED) {
+    ArduinoOTA.handle();
+  }
+}
+Task arduinoOTA_handle_task(100 * TASK_MILLISECOND, TASK_FOREVER, arduinoOTA_handle);
+
+void mqtt_loop() {
+  mqtt_client.loop();
+}
+Task mqtt_loop_task(10 * TASK_MILLISECOND, TASK_FOREVER, mqtt_loop);
+
+void ftp_handle() {
+  ftp.handleFTP();
+}
+Task ftp_handle_task(10 * TASK_MILLISECOND, TASK_FOREVER, ftp_handle);
+
 void setup() {
   Serial.begin(115200);
   setup_hostname();
@@ -398,6 +415,9 @@ void setup() {
   ts.addTask(mqtt_reconnect_task);
   ts.addTask(write_output_task);
   ts.addTask(request_task);
+  ts.addTask(arduinoOTA_handle_task);
+  ts.addTask(mqtt_loop_task);
+  ts.addTask(ftp_handle_task);
   mode_select(current_mode);
 
   Serial.println("Started with hardcoded config, trying to load from file...");
@@ -411,22 +431,13 @@ void setup() {
   Serial.println("FTP enabled...");
 
   write_output_task.enable();
+  arduinoOTA_handle_task.enable();
+  mqtt_reconnect_task.enable();
+  mqtt_loop_task.enable();
+  ftp_handle_task.enable();
 }
 
 void loop() {
   //TODO atrent: si possono mettere *tutte* le attività nei task ;)
-
-  if (!mqtt_client.connected()) {
-    mqtt_reconnect_task.enableIfNot();
-  } else {
-    mqtt_reconnect_task.disable();
-  }
-
-  if (WiFi.status() == WL_CONNECTED) {
-    ArduinoOTA.handle();
-  }
-
-  mqtt_client.loop();
   ts.execute();
-  ftp.handleFTP();
 }
