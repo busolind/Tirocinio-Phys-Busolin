@@ -343,6 +343,7 @@ void stream_callback(Stream &stream) {
     while (*p != 0) {
       if (!isDigit(*p)) {
         object = true;
+        break;
       }
       p++;
     }
