@@ -421,6 +421,7 @@ void setup() {
   mode_select(current_mode);
 
   Serial.println("Started with hardcoded config, trying to load from file...");
+  set_config_file_from_flash();
   set_conf_from_json(load_conf_from_flash());
 
   Serial.println(conf_to_json());
@@ -428,7 +429,7 @@ void setup() {
 
   Serial.println("Enabling FTP...");
   ftp.begin(FTP_USER, FTP_PASSWORD);
-  Serial.println("FTP enabled...");
+  Serial.println("FTP enabled.");
 
   write_output_task.enable();
   arduinoOTA_handle_task.enable();

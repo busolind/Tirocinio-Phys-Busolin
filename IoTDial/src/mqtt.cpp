@@ -14,9 +14,11 @@ String sub_to_min_pwm;
 String sub_to_max_pwm;
 String sub_to_interval_ms;
 String sub_to_setFromJSON;
+String sub_to_saveToFlash;
 
 String sub_to_setValue;
 String sub_to_setMode;
+String sub_to_setConfigFile;
 
 // Builds topic strings starting with IoTDial/<hostName>
 void mqtt_create_topics() {
@@ -30,9 +32,11 @@ void mqtt_create_topics() {
   sub_to_max_pwm = root_topic + "/setMaxPwm";
   sub_to_interval_ms = root_topic + "/setRequestIntervalMs";
   sub_to_setFromJSON = root_topic + "/setFromJSON";
+  sub_to_saveToFlash = root_topic + "/saveToFlash";
 
-  sub_to_setValue = root_topic + "/setValue";
+  sub_to_setValue = root_topic + "/setValue"; //Deprecated
   sub_to_setMode = root_topic + "/setMode";
+  sub_to_setConfigFile = root_topic + "/setConfigFile";
 }
 
 /*
@@ -105,6 +109,11 @@ void mqtt_callback_setFromJSON(String topic, String message) {
   set_conf_from_json(message);
 }
 
+void mqtt_callback_saveToFlash(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]:\n" + message + "\n");
+  running_conf_to_flash();
+}
+
 void mqtt_callback_setValue(String topic, String message) {
   Serial.println("Message arrived [" + topic + "]:\n" + message + "\n");
   if (current_mode == MQTT_MODE) {
@@ -118,6 +127,11 @@ void mqtt_callback_setMode(String topic, String message) {
   mode_select(message.toInt());
 }
 
+void mqtt_callback_setConfigFile(String topic, String message) {
+  Serial.println("Message arrived [" + topic + "]:\n" + message + "\n");
+  set_config_file(message);
+}
+
 void mqtt_reconnect() {
   if (!mqtt_client.connected()) {
     Serial.print("Attempting MQTT connection...");
@@ -129,6 +143,7 @@ void mqtt_reconnect() {
       mqtt_tools.subscribe(sub_to_filterJSON, mqtt_callback_setFilterJson);
       mqtt_tools.subscribe(sub_to_path, mqtt_callback_setPath);
       mqtt_tools.subscribe(sub_to_setFromJSON, mqtt_callback_setFromJSON);
+      mqtt_tools.subscribe(sub_to_saveToFlash, mqtt_callback_saveToFlash);
       mqtt_tools.subscribe(sub_to_min_value, mqtt_callback_setMinValue);
       mqtt_tools.subscribe(sub_to_max_value, mqtt_callback_setMaxValue);
       mqtt_tools.subscribe(sub_to_min_pwm, mqtt_callback_setMinPwm);
@@ -137,6 +152,7 @@ void mqtt_reconnect() {
 
       mqtt_tools.subscribe(sub_to_setValue, mqtt_callback_setValue);
       mqtt_tools.subscribe(sub_to_setMode, mqtt_callback_setMode);
+      mqtt_tools.subscribe(sub_to_setConfigFile, mqtt_callback_setConfigFile);
     } else {
       Serial.print("failed, rc=");
       Serial.println(mqtt_client.state());

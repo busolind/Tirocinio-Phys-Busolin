@@ -24,6 +24,12 @@ extern String settings_file;
 extern Scheduler ts;
 extern Task request_task;
 
+// Sets the config filename and stores it in flash as a plaintextfile named "confselect"
+void set_config_file(String config_filename);
+
+// Updates config file variable as the content of "confselect" file from flash
+void set_config_file_from_flash();
+
 // Returns config file from flash as a string
 String load_conf_from_flash();
 

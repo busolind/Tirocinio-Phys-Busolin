@@ -25,7 +25,35 @@ void mode_select(int mode) {
   }
 }
 
-// Returns the config file stored in flash as a String
+void set_config_file(String config_filename) {
+  File file = LittleFS.open("confselect", "w");
+  if (!file) {
+    Serial.println("ERROR: could not open confselect in write mode");
+  } else {
+    file.print(config_filename);
+    file.close();
+    Serial.println("confselect file saved");
+    settings_file = config_filename;
+  }
+}
+
+void set_config_file_from_flash() {
+  String filename = "confselect";
+  if (!LittleFS.exists(filename)) {
+    Serial.println("ERROR: confselect not found, skipping");
+  } else {
+    File file = LittleFS.open(filename, "r");
+    if (!file) {
+      Serial.println("ERROR: could not open confselect");
+    } else {
+      String content = file.readString();
+      settings_file = content;
+      Serial.println("Set config filename to " + content);
+      file.close();
+    }
+  }
+}
+
 String load_conf_from_flash() {
   String conf = "";
   if (!LittleFS.exists(settings_file)) {
@@ -42,7 +70,6 @@ String load_conf_from_flash() {
   return conf;
 }
 
-// Saves running config as a file to flash
 void running_conf_to_flash() {
   File file = LittleFS.open(settings_file, "w");
   if (!file) {
@@ -54,7 +81,6 @@ void running_conf_to_flash() {
   }
 }
 
-// Takes a JSON string and sets running config accordingly (only sets specified fields, leaves the rest untouched)
 void set_conf_from_json(String json) {
   DynamicJsonDocument doc(2000);
   deserializeJson(doc, json);
@@ -94,7 +120,6 @@ void set_conf_from_json(String json) {
   }
 }
 
-// Converts running config to a JSON string
 String conf_to_json() {
   DynamicJsonDocument doc(2000);
 
