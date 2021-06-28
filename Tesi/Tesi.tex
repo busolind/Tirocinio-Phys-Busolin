@@ -134,7 +134,7 @@ dei dati e interfacce utenti tangibili.
 
 \section{Visualizzazione dei dati}
 Lo scopo della disciplina della visualizzazione dei dati è quello di renderli più comprensibili per gli esseri umani. I display dei computer
-sono l'esempio più classico, hanno molti vantaggi grazie alla loro versatilità tra cui di fornire rappresentazioni visuali dei dati in
+sono l'esempio più classico, hanno molti vantaggi grazie alla loro versatilità tra cui quello di fornire rappresentazioni visuali dei dati in
 maniera dettagliata e modificabile dinamicamente. Tuttavia, è emersa un'area di ricerca che pone la questione di non limitarsi a una
 matrice di pixel per visualizzazione di e interazione con i dati ma sfruttare altri tipi di interazione più naturale per gli esseri umani, come
 è stato dimostrato dalla ricerca in Tangible Computing. \cite{hal:dataphys} \\
@@ -394,9 +394,9 @@ semplice, possibilmente tramite interazione fisica con il dispositivo.
 \todo{atrent: in generale metterei tanti schemi e disegni}
 
 
-\chapter{Realizzazione del prototipo - IoTDial}
+\chapter{Il prototipo - IoTDial}
 Questo capitolo tratterà dell'implementazione delle varie feature del prototipo realizzato durante il tirocinio, chiamato IoTDial,
-e alcune osservazioni al riguardo.
+il loro utilizzo e alcune osservazioni al riguardo.
 
 \section{Hardware}
 Il prototipo era inizialmente molto semplice dal punto di vista hardware: consisteva in un voltmetro analogico ad ago impostato con
@@ -432,7 +432,7 @@ modalità insicura (senza la verifica della fingerprint), che però non sempre p
 essere preceduta da una linea contentente (presumibilmente) la lunghezza in byte della risposta, che va eliminata prima di poter
 passare lo stream al parser JSON.
 
-\subsection{JSON}
+\subsection{Risposte JSON}
 La quasi totalità delle API mette a disposizione risposte contenenti dati in formato JSON (JavaScript Object Notation). È stata quindi
 utilizzata la libreria \texttt{ArduinoJson} per la deserializzazione e la scelta del campo da estrarre.
 JSON è stato successivamente usato anche come formato per la serializzazione e deserializzazione delle impostazioni da salvare sulla
@@ -469,6 +469,40 @@ Se nel JSON non fosse presente un campo desiderato durante il parsing della path
 da stringa a numero presente subito dopo, non avverrebbe alcun crash del programma.
 È quindi possibile avere filtro e path inizialmente non corretti e adattarli tramite \textit{trial and error} senza ottenere riavvii
 indesiderati del microcontrollore a seguito di eccezioni.
+
+\subsection{File di configurazione JSON}
+La configurazione è salvata nella memoria flash del microcontrollore
+in formato JSON, esempio:
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "apiUrl": "https://giromilano.atm.it/proxy.ashx",
+  "filterJSON": "{Lines: [{WaitMessage: true}]}",
+  "post_payload": "url=tpPortal/geodata/pois/stops/12493",
+  "path": "Lines/0/WaitMessage",
+  "min_value": 0,
+  "max_value": 15,
+  "min_pwm": 0,
+  "max_pwm": 920,
+  "request_interval_ms": 15000,
+  "mode": 2
+}
+\end{lstlisting}
+
+
+\noindent Dove:
+\begin{itemize}
+  \item \texttt{apiUrl} è l'URL della risorsa (stringa)
+  \item \texttt{post_payload} in caso di richiesta POST contiene la stringa da inviare nel body
+  \item \texttt{filterJSON} è un documento JSON che contiene \texttt{true} come placeholder del campo che si vuole considerare dalla risposta (stringa/oggetto)
+  \item \texttt{path} è una stringa che contiene il "percorso" del campo che si vuole rappresentare fisicamente (campo: float, path: stringa)
+  \item \texttt{min_value} indica il valore minimo della scala per rappresentare il valore (float)
+  \item \texttt{max_value} indica il valore massimo (float)
+  \item \texttt{min_pwm} indica il valore minimo di uscita della PWM da mappare al valore restituito dalle API (int)
+  \item \texttt{max_pwm} indica il valore massimo [su ESP il duty cycle massimo equivale a 1023] (int)
+  \item \texttt{request_interval_ms} indica l'intervallo di tempo in millisecondi che intercorre tra le richieste alla risorsa (int)
+  \item \texttt{mode} indica il codice numerico della modalità di funzionamento da selezionare
+\end{itemize}
 
 \subsection{Map}
 Una volta ottenuto il valore da rappresentare è necessario trasformarlo in una tensione, ottenuta tramite PWM il cui duty cycle è
@@ -510,16 +544,23 @@ Come modalità di modifica ``a runtime" della configurazione, è stata implement
 \subsection{Credenziali WiFi}
 Per la connessione alla rete wireless, grazie alla libreria \texttt{WiFiManager}, l'ESP memorizzerà le ultime credenziali utilizzate
 per ritentare la connessione al riavvio. In caso le credenziali non siano valide o non ve ne siano di salvate, verrà avviato un
-Access Point temporaneo con captive portal per richiedere delle credenziali valide.
+Access Point temporaneo con captive portal (lo stesso che comunemente viene usato su reti pubbliche o aziendali per richiedere
+l'autenticazione) al fine di permettere all'utente di inserire delle credenziali valide mediante form web.
+
+\missingfigure{screenshot}
+
+Successivamente viene tentata la connessione. Se non ha successo viene ripetuto lo stesso procedimento, altrimenti viene disattivato
+l'Access Point temporaneo, avviene la connesisone e il programma prosegue.
 
 \subsection{Configurazione tramite form web}
 Un'altra forma di modifica della configurazione è stata implementata tramite un web server configurato per mezzo della libreria
-\texttt{ESPAsyncWebServer}. Inizialmente la pagina conteneva un semplice form tramite il quale era possibile inviare un intero JSON
+\texttt{ESPAsyncWebServer} ed esposto alla rete locale all'indirizzo IP o hostname del microcontrollore.
+ Inizialmente la pagina conteneva un semplice form tramite il quale era possibile inviare un intero JSON
 di configurazione, successivamente è stata aggiunta la possibilità di impostare i singoli parametri attraverso un form precompilato
 e richieste AJAX. Un punto debole di questa soluzione è la scarsa flessibilità del web server, che gestisce richieste POST solo codificate
 come Form Data, quindi invece che poter mandare un semplice JSON nel body della richiesta come da prassi con AJAX, è stato necessario
 trasformarlo in FormData come valore associato alla chiave setFromJSON.
-Nel dettaglio, sono esposti i seguenti endpoint:
+Nel dettaglio, erano esposti i seguenti endpoint:
 \begin{itemize}
   \item /: Pagina di configurazione (index.html)
   \item /get/running-conf: Restituisce la configurazione attualmente in esecuzione in formato JSON
@@ -528,6 +569,16 @@ Nel dettaglio, sono esposti i seguenti endpoint:
         valore associato alla chiave setFromJSON. È inoltre possibile asssociare alla chiave saveToFlash il valore `true' per copiare
         la configurazione in esecuzione nella memoria flash.
 \end{itemize}
+
+Si riporta a seguito in Figura la pagina di configurazione
+
+\missingfigure{screenshot pagina web}
+
+I form erano precompilati con la configurazione in esecuzione (\emph{running-conf}) ed era presente una sezione che riportava la
+configurazione salvata nella flash (\emph{saved-conf}).
+Le modifiche non erano automaticamente salvate nella memoria flash ma ciò doveva essere richiesto esplicitamente. Nei form di configurazione
+era presente una checkbox da spuntare in caso si volesse che questo avvenisse.
+
 Questa feature è successivamente stata disattivata perché l'esecuzione contemporanea di un webserver e di richieste API creava
 problemi di allocazione della memoria del microcontrollore che spesso risultavano in crash improvvisi. Oltretutto, la spartana
 interfaccia web risultava ridondante rispetto alle modalità di configurazione già presenti in quanto non garantiva una maggiore
@@ -541,67 +592,15 @@ in situazioni di difficile accesso fisico al microcontrollore.
 Il processo di upload usa Digest-MD5 per la verifica dell'integrità, onde evitare di rendere il dispositivo inservibile. È inoltre possibile
 migliorare la sicurezza dell'operazione mediante utilizzo di password e hash firmati. \cite{espota}
 
-\chapter{Utilizzo di IoTDial}
-
-\section{All'avvio}
-Per prima cosa contestualmente all'accensione, mediante WiFiManager, viene effettuato un tentativo di connessione all'ultima rete WiFi
-utilizzata, di cui sono state salvate le credenziali. Se non è mai stata effettuata la connessione ad alcuna rete WiFi o se
-quella salvata non è disponibile, viene attivato un Access Point che tramite Captive Portal (lo stesso che viene usato su reti pubbliche
-o aziendali per richiedere l'autenticazione) chiede di selezionare una delle reti WiFi vicine e di inserirne la password.
-
-\missingfigure{screenshot}
-
-Successivamente viene tentata la connessione. Se non ha successo viene ripetuto lo stesso procedimento, altrimenti viene disattivato
-l'Access Point temporaneo, avviene la connesisone e il programma prosegue.
-
 \pagebreak
 \section{Modalità operative}
 
 \subsection{Modalità API}
 Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo configurabili di richieste HTTP o HTTPS ad API REST
 e sulla conversione del risultato in una tensione di uscita.
-La configurazione è salvata nella memoria flash del microcontrollore
-in formato JSON, esempio:
-
-\begin{lstlisting}[language=json,firstnumber=1]
-{
-  "apiUrl": "https://giromilano.atm.it/proxy.ashx",
-  "filterJSON": "{Lines: [{WaitMessage: true}]}",
-  "post_payload": "url=tpPortal/geodata/pois/stops/12493",
-  "path": "Lines/0/WaitMessage",
-  "min_value": 0,
-  "max_value": 15,
-  "min_pwm": 0,
-  "max_pwm": 920,
-  "request_interval_ms": 15000,
-  "mode": 2
-}
-\end{lstlisting}
 
 
-\noindent Dove:
-\begin{itemize}
-  \item \texttt{apiUrl} è l'URL della risorsa (stringa)
-  \item \texttt{post_payload} in caso di richiesta POST contiene la stringa da inviare nel body
-  \item \texttt{filterJSON} è un documento JSON che contiene \texttt{true} come placeholder del campo che si vuole considerare dalla risposta (stringa/oggetto)
-  \item \texttt{path} è una stringa che contiene il "percorso" del campo che si vuole rappresentare fisicamente (campo: float, path: stringa)
-  \item \texttt{min_value} indica il valore minimo della scala per rappresentare il valore (float)
-  \item \texttt{max_value} indica il valore massimo (float)
-  \item \texttt{min_pwm} indica il valore minimo di uscita della PWM da mappare al valore restituito dalle API (int)
-  \item \texttt{max_pwm} indica il valore massimo [su ESP il duty cycle massimo equivale a 1023] (int)
-  \item \texttt{request_interval_ms} indica l'intervallo di tempo in millisecondi che intercorre tra le richieste alla risorsa (int)
-  \item \texttt{mode} indica il codice numerico della modalità di funzionamento da selezionare
-\end{itemize}
 
-Come descritto in precedenza, la configurazione poteva essere alterata anche tramite una pagina web accessibile all'indirizzo IP
-nella rete locale del microcontrollore o il suo hostname.
-
-\missingfigure{screenshot pagina web}
-
-I form erano precompilati con la configurazione in esecuzione (\emph{running-conf}) ed era presente una sezione che riportava la
-configurazione salvata nella flash (\emph{saved-conf}).
-Le modifiche non erano automaticamente salvate nella memoria flash ma ciò doveva essere richiesto esplicitamente. Nei form di configurazione
-era presente una checkbox da spuntare in caso si volesse che questo avvenisse.
 
 
 \subsection{Modalità MQTT / smart home}
