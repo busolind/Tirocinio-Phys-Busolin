@@ -18,6 +18,7 @@
 \usepackage{graphicx}
 \graphicspath{{./img/}}
 \usepackage{subfig}
+\usepackage{circuitikz}
 
 \usepackage{underscore} % !!!
 \usepackage{hyperref}
@@ -273,12 +274,24 @@ visualizzare delle grafiche. Esempio in Figura~\ref{fig:oscilloscopio}.
 
 \section{Componenti}
 \subsection{Interruttori / Pulsanti}
+Formati da un semplice meccanismo che permette di aprire o chiudere un circuito.
 \subsection{Commutatori a n posizioni}
+Sono utilizzati per chiudere uno tra n possibili circuiti attraverso la loro rotazione.
 \subsection{Potenziometri}
+Consentono di variare una differenza di potenziale nel continuo mediante un partitore resistivo ``mobile".
+\subsection{Morsetti / Connettori}
+Consentono di collegare e scollegare cavi o sonde allo strumento.
 \subsection{Lampadine}
+Fonte luminosa. Generalmente quelle che si possono trovare nei vecchi apparati sono piccole e a incandescenza. Contengono un filamento
+metallico, generalmente di tungsteno, che scaldandosi emette della luce.
 \subsection{Buzzer/Altoparlanti}
+Consentono di produrre dei suoni, un esempio di applicazione è nei tester di continuità elettrica, che emettono un suono alla rilevazione.
 \subsection{Termometri}
+Componente in grado di misurare la temperatura ambientale. Negli strumenti di misura possono essere usati per compensare le misurazioni
+di componenti sensibili alle variazioni di temperatura nell'ambiente di utilizzo.
 \subsection{Inclinometri a mercurio}
+Particolari interruttori basati sulla gravità, i più semplici contengono una goccia di mercurio e due contatti elettrici, la cui chiusura dipende dalla
+direzione della forza di gravità a cui è soggetto il componente: se la goccia viene spinta verso i contatti il circuito è chiuso, altrimenti rimane aperto.
 
 
 \chapter{Generalizzazione degli strumenti di misura}
@@ -288,6 +301,14 @@ In questo capitolo si tenterà di generalizzare le caratteristiche degli strumen
 
 \subsection{Interruttori / Pulsanti}
 Possono essere mappati a valori booleani (true/false). \todo{+ Collegamenti a GPIO}
+
+\begin{circuitikz} \draw
+(0,0) to[cute open switch] (0,4)
+   -- (4,4)
+  to[twoport,t={ESP}] (4,0)
+  -- (0,0)
+;
+\end{circuitikz}
 
 \subsection{Commutatori a n posizioni}
 Possono essere mappati in un programma a tipi \texttt{enum}, utilizzabili per selezionare tra un insieme di modalità o un insieme di valori
@@ -309,7 +330,16 @@ dell'ingresso, che possono essere agevolmente distinti e interpretati come valor
 \end{figure}
 
 \subsection{Potenziometri}
-Consentono di variare una differenza di potenziale nel continuo quindi possono essere mappati a valori aventi intervallo arbitrario, con una precisione limitata dalla risoluzione del convertitore analogico-digitale integrato nel microcontrollore.
+Possono essere mappati a valori aventi intervallo arbitrario, con una precisione limitata dalla risoluzione del convertitore analogico-digitale integrato nel microcontrollore.
+
+\begin{circuitikz} \draw
+(0,4) to[potentiometer, n=pot] (0,0)
+  (0,4) to[short,-o] (4,4)
+  to[twoport,t={ESP}, n=esp] (4,0)
+  -- (0,0)
+  (pot.wiper) -- (esp)
+;
+\end{circuitikz}
 
 \subsection{Connettori multipli}
 Alcuni strumenti dispongono di più ingressi per le sonde di misura, adatti a connettori a banana o non standard, specifici alle
