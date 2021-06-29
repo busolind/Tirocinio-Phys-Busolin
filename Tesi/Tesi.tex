@@ -285,7 +285,7 @@ Consentono di collegare e scollegare cavi o sonde allo strumento.
 Fonte luminosa. Generalmente quelle che si possono trovare nei vecchi apparati sono piccole e a incandescenza. Contengono un filamento
 metallico, generalmente di tungsteno, che scaldandosi emette della luce.
 \subsection{Buzzer/Altoparlanti}
-Consentono di produrre dei suoni, un esempio di applicazione è nei tester di continuità elettrica, che emettono un suono alla rilevazione.
+Consentono di produrre dei suoni, un esempio di applicazione è nei tester di continuità elettrica, che emettono un ``beep" alla rilevazione.
 \subsection{Termometri}
 Componente in grado di misurare la temperatura ambientale. Negli strumenti di misura possono essere usati per compensare le misurazioni
 di componenti sensibili alle variazioni di temperatura nell'ambiente di utilizzo.
@@ -296,21 +296,30 @@ direzione della forza di gravità a cui è soggetto il componente: se la goccia 
 
 \chapter{Generalizzazione degli strumenti di misura}
 \todo{Sezione mapping componenti e interventi di modifica possibili}
-In questo capitolo si tenterà di generalizzare le caratteristiche degli strumenti di misura ai fini di associarle a componenti software e tipi di dato.
+In questo capitolo si tenterà di generalizzare le caratteristiche dei componenti degli strumenti di misura ai fini di associarle a componenti
+software e tipi di dato.
 %\todo{atrent: strada giusta! fai anche esempi pratici finali}
 
-\subsection{Interruttori / Pulsanti}
-Possono essere mappati a valori booleani (true/false). \todo{+ Collegamenti a GPIO}
+\section{Interruttori / Pulsanti}
+Possono essere mappati a valori booleani (true/false). Collegabile da un capo a GND e dall'altro capo a un GPIO del microcontrollore in modalità
+input pullup. Può essere utilizzato nel codice mediante la funzione digitalRead o come switch component su esphome. Esempio di collegamento
+in Figura~\ref{fig:switchconnection}
 
-\begin{circuitikz} \draw
-(0,0) to[cute open switch] (0,4)
-   -- (4,4)
-  to[twoport,t={ESP}] (4,0)
-  -- (0,0)
-;
-\end{circuitikz}
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz} \draw
+    (0,0) to[cute open switch] (0,4)
+   -- (4,4) node[above]{GPIO}
+    to[twoport,t={ESP}] (4,0) node[below]{GND}
+    -- (0,0)
+    ;
+  \end{circuitikz}
+  \caption{Schema collegamento switch all'ESP}
+  \label{fig:switchconnection}
+\end{figure}
 
-\subsection{Commutatori a n posizioni}
+
+\section{Commutatori a n posizioni}
 Possono essere mappati in un programma a tipi \texttt{enum}, utilizzabili per selezionare tra un insieme di modalità o un insieme di valori
 utilizzabili come parametro in un programma. Ad esempio un commutatore a 7 posti può essere utilizzato per selezionare un giorno della
 settimana.
@@ -319,6 +328,8 @@ Per evitare di occupare tanti pin del microcontrollore quante sono le possibili 
 partitore di tensione mediante l'ausilio di resistenze tutte uguali collegate come da esempio in Figura~\ref{fig:commutatoreprimadopo},
 ottenendo una sorta di potenziometro che invece di variare nel continuo assume valori in step regolari tra il minimo e il massimo
 dell'ingresso, che possono essere agevolmente distinti e interpretati come valori discreti.
+Esempio di collegamento in figura~\ref{fig:rotaryconnection}. Per la lettura valgono le considerazioni fatte sui potenziometri, bisognerà
+poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dovere nel codice.
 
 \begin{figure}[h]
   \centering
@@ -329,19 +340,41 @@ dell'ingresso, che possono essere agevolmente distinti e interpretati come valor
   \label{fig:commutatoreprimadopo}
 \end{figure}
 
-\subsection{Potenziometri}
-Possono essere mappati a valori aventi intervallo arbitrario, con una precisione limitata dalla risoluzione del convertitore analogico-digitale integrato nel microcontrollore.
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz} \draw
+    (0,0) -- (0,4)
+     -- (4,4)
+    to[twoport,t={ESP}] (4,0)
+    -- (0,0)
+  ;
+  \draw (0,4) -- ++(1,0) node[rotary switch, anchor=in](){}; 
+  \end{circuitikz}
+  \caption{Schema collegamento commutatore modificato all'ESP}
+  \label{fig:rotaryconnection}
+\end{figure} \todo{WIP}
 
-\begin{circuitikz} \draw
-(0,4) to[potentiometer, n=pot] (0,0)
-  (0,4) to[short,-o] (4,4)
-  to[twoport,t={ESP}, n=esp] (4,0)
-  -- (0,0)
-  (pot.wiper) -- (esp)
-;
-\end{circuitikz}
+\section{Potenziometri}
+Possono essere mappati a valori aventi intervallo arbitrario, con una precisione limitata dalla risoluzione del convertitore analogico-digitale
+integrato nel microcontrollore. Per poter leggere l'output è necessario collegarlo a un GPIO che supporta la lettura di segnali analogici
+e nel codice utilizzare la funzione analogRead. Su esphome è necessario usare un sensore di tipo adc.
+Esempio di collegamento in Figura~\ref{fig:potconnection}
 
-\subsection{Connettori multipli}
+\begin{figure}[h]
+  \centering
+  \begin{circuitikz} \draw
+    (0,4) to[potentiometer, n=pot] (0,0)
+    (0,4) to[short] (4,4) node[above]{3.3v}
+    to[twoport,t={ESP}, n=esp] (4,0) node[below]{GND}
+    -- (0,0)
+    (pot.wiper) -- (esp)
+  ;
+  \end{circuitikz}
+  \caption{Schema collegamento potenziometro all'ESP}
+  \label{fig:potconnection}
+\end{figure}
+
+\section{Connettori multipli}
 Alcuni strumenti dispongono di più ingressi per le sonde di misura, adatti a connettori a banana o non standard, specifici alle
 diverse modalità di misura e/o i diversi fondoscala tra cui scegliere. Possono essere utilizzati come selettori a livello software in base a
 quali degli ingressi vengono ponticellati, in maniera simile alle connessioni tra utenze telefoniche nei vecchi centralini o agli spinotti per
