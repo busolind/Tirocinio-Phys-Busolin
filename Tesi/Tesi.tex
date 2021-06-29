@@ -208,7 +208,7 @@ decorativi comunicano informazioni utili.
 
 
 \chapter{Panoramica storica e caratteristiche fisiche degli strumenti}
-\todo{Sezione panoramica storica più caratteristiche fisiche, "istanze"}
+%\todo{Sezione panoramica storica più caratteristiche fisiche, "istanze"}
 
 \section{Strumenti}
 \subsection{Strumenti ad ago}
@@ -295,7 +295,7 @@ direzione della forza di gravità a cui è soggetto il componente: se la goccia 
 
 
 \chapter{Generalizzazione degli strumenti di misura}
-\todo{Sezione mapping componenti e interventi di modifica possibili}
+%\todo{Sezione mapping componenti e interventi di modifica possibili}
 In questo capitolo si tenterà di generalizzare le caratteristiche dei componenti degli strumenti di misura ai fini di associarle a componenti
 software e tipi di dato.
 %\todo{atrent: strada giusta! fai anche esempi pratici finali}
@@ -396,7 +396,26 @@ gli scambi di lettere presenti sulla macchina Enigma. Si riporta un esempio in F
   \label{fig:connettorimultipli}
 \end{figure}
 
+\subsection{Lampadine}
+Possono essere utilizzate per rappresentare uno stato binario o comunicare diverse informazioni mediante dei pattern di lampeggiamento.
+In genere con i sistemi embedded si adoperano i LED al posto delle lampadine a incandescenza, in quanto possono essere pilotati
+direttamente dai pin del microcontrollore, salvo eventuali resistenze in serie per ridurre il flusso di corrente.
+Nel codice di Arduino un LED può essere pilotato mediante una digitalWrite per funzionamento on/off o una analogWrite per
+intensità variabili mediante PWM (in maniera simile a come si è fatto con l'ago dello strumento per il prototipo). In esphome si può
+utilizzare un componente di tipo light.
 
+\subsection{Buzzer/Altoparlanti}
+Possono essere usati per dare indicazioni audio, ad esempio in caso di errore. I buzzer possono solitamente essere pilotati direttamente
+dal microcontrollore, mentre gli altoparlanti spesso richiedono un amplificatore di potenza.
+Il funzionamento dal punto di vista software dipende dal tipo di buzzer utilizzato: un buzzer attivo contiene al suo interno un oscillatore
+e quindi genererà un beep mentre è alimentato. Un buzzer passivo si comporta in maniera simile a un altoparlante in quanto ha bisogno di
+un segnale audio in input. Attraverso esphome è possibile riprodurre delle semplici melodie con buzzer passivi utilizzando il componente rtttl.
+
+\subsection{Termometri} \todo{busolin: Se anche uno strumento ha al suo interno un termometro di taratura, quasi sicuramente non sarà integrabile con l'ESP. Menziono lo stesso la possibilità di aggiungere un DHT?}
+
+\subsection{Inclinometri a mercurio}
+Ai fini implementativi hanno un funzionamento al pari degli interruttori/pulsanti. L'unica differenza sta nel principio fisico di funzionamento
+e quindi al significato che si può dare all'output nel codice.
 
 \chapter{Guida alla trasformazione degli strumenti vintage}
 \todo{Sezione guida alla conversione vera e propria che fa riferimenti alla sezione precedente}
