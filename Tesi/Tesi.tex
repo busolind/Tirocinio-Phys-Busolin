@@ -544,8 +544,8 @@ while (token != NULL) {
 }
 \end{lstlisting}
 Un'alternativa possibile sarebbe quella di distinguere chiavi e indici mediante appositi prefissi, evitando la scansione completa di ogni
-token per determinare se esso sia numerico o meno. Un ulteriore vantaggio sarebbe quello di avere chiavi completamente numeriche
-senza che esse vengano confuse con indici di array.
+token per determinare se esso sia numerico o meno. Un ulteriore vantaggio sarebbe quello di poter avere nel documento JSON
+chiavi completamente numeriche senza che esse vengano confuse con indici di array.
 
 \subsection{File di configurazione JSON}
 La configurazione è salvata nella memoria flash del microcontrollore
@@ -602,20 +602,52 @@ decimali. Si è quindi preferito inserire nel codice direttamente la formula mat
 \subsection{Task}
 Attività periodiche come le richieste API sono state rese dei task per mezzo della libreria \texttt{TaskScheduler}, che permette di
 impostare un intervallo di tempo tra esecuzioni ripetute di una procedura.
+Segue una piccola selezione dei task presenti nel codice a titolo di esempio della loro dichiarazione e utilizzo.
+\begin{lstlisting}
+#include <TaskScheduler.h>
+Scheduler ts;
+void mqtt_loop() {
+  mqtt_client.loop();
+}
+Task mqtt_loop_task(10 * TASK_MILLISECOND, TASK_FOREVER, mqtt_loop);
+void ftp_handle() {
+  ftp.handleFTP();
+}
+Task ftp_handle_task(10 * TASK_MILLISECOND, TASK_FOREVER, ftp_handle);
+[in setup()]
+  ts.addTask(mqtt_loop_task);
+  ts.addTask(ftp_handle_task);
+  mqtt_loop_task.enable();
+  ftp_handle_task.enable();
+
+\end{lstlisting}
+
 
 \subsection{Configurazione via MQTT}
-Come modalità di modifica ``a runtime" della configurazione, è stata implementata la possibilità di inviare messaggi MQTT al topic
-\texttt{Phys/setFromJSON} per impostare l'intera configurazione, altrimenti i campi singoli possono essere settati tramite i topic:
+Come modalità di modifica ``a runtime" della configurazione, è stata implementata la possibilità di inviare messaggi MQTT a diversi
+topic, aventi come radice \texttt{IoTDial/<hostname>}, dove l'hostname è formato da \texttt{IoTDial-MACADDR} e MACADDR è
+l'indirizzo MAC della scheda di rete del microcontrollore (univoco al mondo) escludendo i due punti. Esempio: 
+\texttt{IoTDial/IoTDial-483fda781185} (da qui in poi indicato come \texttt{<root>}.
+A \texttt{<root>/setFromJSON} è possibile inviare un intero JSON di configurazione, altrimenti i campi singoli possono essere
+settati tramite i topic:
 \begin{itemize}
-  \item \texttt{Phys/setApiUrl}
-  \item \texttt{Phys/setPostPayload}
-  \item \texttt{Phys/setFilterJson}
-  \item \texttt{Phys/setPath}
-  \item \texttt{Phys/setMinValue}
-  \item \texttt{Phys/setMaxValue}
-  \item \texttt{Phys/setMinPwm}
-  \item \texttt{Phys/setMaxPwm}
-  \item \texttt{Phys/setRequestIntervalMs}
+  \item \texttt{<root>/setApiUrl}
+  \item \texttt{<root>/setPostPayload}
+  \item \texttt{<root>/setFilterJson}
+  \item \texttt{<root>/setPath}
+  \item \texttt{<root>/setMinValue}
+  \item \texttt{<root>/setMaxValue}
+  \item \texttt{<root>/setMinPwm}
+  \item \texttt{<root>/setMaxPwm}
+  \item \texttt{<root>/setRequestIntervalMs}
+  \item \texttt{<root>/setMode}
+\end{itemize}
+\noindent Sono inoltre presenti alcuni topic di utilità:
+\begin{itemize}
+  \item \texttt{<root>/setConfigFile} imposta il nome del file di configurazione da usare dal momento dell'invio in avanti. Tale
+		impostazione viene automaticamente salvata nella memoria flash quindi è persistente al riavvio.
+  \item \texttt{<root>/saveToFlash} Salva le impostazioni correnti in memoria flash, sovrascrivendo (o creando) il file di configurazione
+		in uso.
 \end{itemize}
 
 \subsection{Credenziali WiFi}
