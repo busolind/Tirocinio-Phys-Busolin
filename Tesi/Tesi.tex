@@ -126,8 +126,8 @@
 \chapter{Introduzione}
 \section{Data Physicalization: definizione}
 Una data physicalization (in italiano: fisicalizzazione dei dati) è un artefatto fisico la cui geometria o proprietà materiali codificano dei dati.\cite{dataphysorg:terminology}
-\todo{atrent: in generale i link web li metterei in footnote, se vuoi lasciarli in bib devi mostrare anche l'url}
-\todo{atrent: puoi eliminare tutti i doppi backslash, non servono}
+%\todo{atrent: in generale i link web li metterei in footnote, se vuoi lasciarli in bib devi mostrare anche l'url}
+%\todo{atrent: puoi eliminare tutti i doppi backslash, non servono}
 Gli stessi autori della precedente definizione distinguono tra data physicalization come artefatti (per i quali vale quanto scritto sopra),
 data physicalization come il processo di dare forma fisica ai dati e data physicalization come l'area di ricerca che unisce da visualizzazione
 dei dati e interfacce utenti tangibili.
@@ -137,11 +137,11 @@ Lo scopo della disciplina della visualizzazione dei dati è quello di renderli p
 sono l'esempio più classico, hanno molti vantaggi grazie alla loro versatilità tra cui quello di fornire rappresentazioni visuali dei dati in
 maniera dettagliata e modificabile dinamicamente. Tuttavia, è emersa un'area di ricerca che pone la questione di non limitarsi a una
 matrice di pixel per visualizzazione di e interazione con i dati ma sfruttare altri tipi di interazione più naturale per gli esseri umani, come
-è stato dimostrato dalla ricerca in Tangible Computing. \cite{hal:dataphys} \\
+è stato dimostrato dalla ricerca in Tangible Computing. \cite{hal:dataphys}
 \todo{atrent: in generale van riportati i principali concetti esposti negli articoli/libri che citi}
 
 \section{Esempi di data physicalization e visualization}
-\todo{atrent: fai anche esempi non miei, prendi quelli che ti piacciono di più, due o tre esempi}
+%\todo{atrent: fai anche esempi non miei, prendi quelli che ti piacciono di più, due o tre esempi}
 
 \subsection{Keyboard Frequency Sculpture}
 Un diagramma a barre 3D appoggiato su una tastiera che mostra la frequenza di ciascuna lettera dell'alfabeto. \cite{physlist}, Figura~\ref{fig:keyboardfreq}
@@ -206,15 +206,14 @@ decorativi comunicano informazioni utili.
 \todo{busolin:  Tecnofobia, Esempi dashboard}
 
 
-\chapter{Generalizzazione degli strumenti di misura}
-In questo capitolo si tenterà di generalizzare le caratteristiche degli strumenti di misura ai fini di associarle a componenti software e tipi di dato.
-\todo{atrent: strada giusta! fai anche esempi pratici finali}
-\section{Indicatori}
+\chapter{Panoramica storica e caratteristiche fisiche degli strumenti}
+\todo{Sezione panoramica storica più caratteristiche fisiche, "istanze"}
+
+\section{Strumenti}
 \subsection{Strumenti ad ago}
-Sono il tipo più comune di strumenti di misura vintage. Un esempio sono i voltmetri / amperometri / multimetri analogici che si utilizzavano
+Sono il tipo più comune di strumento di misura vintage. Un esempio sono i voltmetri / amperometri / multimetri analogici che si utilizzavano
 fino a pochi anni fa. Possono essere utilizzati per visualizzare grandezze lineari, facendo attenzione alla scala scelta.
 Panoramica in Figura~\ref{fig:strumentiago}.
-
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.9\textwidth]{strumentiago}
@@ -222,10 +221,73 @@ Panoramica in Figura~\ref{fig:strumentiago}.
   \label{fig:strumentiago}
 \end{figure}
 
-\section{Interazione con l'utente}
+\paragraph{Funzionamento}
+%generica per ora
+Quasi tutti gli strumenti ad ago sono basati su milliamperometri, aventi una resistenza interna, integrati con resistenze di taratura
+in serie e/o in parallelo in base all'utilizzo finale desiderato. Per ottenere un voltmetro con fondoscala adeguato, è spesso necessario
+inserire una resistenza in serie con il milliamperometro, in modo da ridurne la sensibilità.
+Questo principio si basa sulla legge di Ohm: conoscendo il flusso di corrente necessario normalmente per arrivare a fondo scala, è
+possibile calcolare la resistenza totale necessaria per portare l'ago al 100\% in corrispondenza di una tensione desiderata.
+Esempio di scheda resistenze in Figura~\ref{fig:schedaresistenze}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{schedaresistenze}
+  \caption{Scheda resistenze di un voltmetro analogico}
+  \label{fig:schedaresistenze}
+\end{figure}
+
+
+\subsection{Dekatron}
+Valvola termoionica che svolge la funzione di dispositivo di conteggio, molto usata all'interno dei computer negli anni '50 e '60 e ora
+relegata all'utilizzo hobbistico, ad esempio per la realizzazione di particolari orologi. \cite{itwiki:118300354}, Figura~\ref{fig:dekatron}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{dekatron}
+  \caption{Dekatron \cite{itwiki:118300354}}
+  \label{fig:dekatron}
+\end{figure}
+
+\subsection{Occhio magico}
+Valvola termoionica usata per rappresentare l'intensità di un segnale elettrico. Storicamente impiegata nelle radio come
+indicatore di sintonia. \cite{itwiki:119250611}, Figura~\ref{fig:occhiomagicofasi}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{occhiomagicofasi}
+  \caption{Occhio magico in diverse fasi di illuminazione \cite{itwiki:119250611}}
+  \label{fig:occhiomagicofasi}
+\end{figure}
+
+\subsection{Oscilloscopio}
+Strumento utilizzato per visualizzare l'andamento nel tempo di un segnale in maniera grafica \cite{itwiki:120862120}. Se pilotato a dovere è in grado di
+visualizzare delle grafiche. Esempio in Figura~\ref{fig:oscilloscopio}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{oscilloscopio}
+  \caption{Oscilloscopio impiegato nella visualizzazione di un disegno \cite{instructablesoscilloscope}}
+  \label{fig:oscilloscopio}
+\end{figure}
+
+\section{Componenti}
+\subsection{Interruttori / Pulsanti}
+\subsection{Commutatori a n posizioni}
+\subsection{Potenziometri}
+\subsection{Lampadine}
+\subsection{Buzzer/Altoparlanti}
+\subsection{Termometri}
+\subsection{Inclinometri a mercurio}
+
+
+\chapter{Generalizzazione degli strumenti di misura}
+\todo{Sezione mapping componenti e interventi di modifica possibili}
+In questo capitolo si tenterà di generalizzare le caratteristiche degli strumenti di misura ai fini di associarle a componenti software e tipi di dato.
+%\todo{atrent: strada giusta! fai anche esempi pratici finali}
 
 \subsection{Interruttori / Pulsanti}
-Possono essere mappati a valori booleani (true/false).
+Possono essere mappati a valori booleani (true/false). \todo{+ Collegamenti a GPIO}
 
 \subsection{Commutatori a n posizioni}
 Possono essere mappati in un programma a tipi \texttt{enum}, utilizzabili per selezionare tra un insieme di modalità o un insieme di valori
@@ -236,7 +298,6 @@ Per evitare di occupare tanti pin del microcontrollore quante sono le possibili 
 partitore di tensione mediante l'ausilio di resistenze tutte uguali collegate come da esempio in Figura~\ref{fig:commutatoreprimadopo},
 ottenendo una sorta di potenziometro che invece di variare nel continuo assume valori in step regolari tra il minimo e il massimo
 dell'ingresso, che possono essere agevolmente distinti e interpretati come valori discreti.
-\todo{busolin: meglio metterlo negli interventi?}
 
 \begin{figure}[h]
   \centering
@@ -264,67 +325,18 @@ gli scambi di lettere presenti sulla macchina Enigma. Si riporta un esempio in F
 \end{figure}
 
 
+
 \chapter{Guida alla trasformazione degli strumenti vintage}
+\todo{Sezione guida alla conversione vera e propria che fa riferimenti alla sezione precedente}
 
-\todo{atrent: manca una trattazione di come è fatto e come funziona lo strumento ad ago (che sarà il più frequente oggetto di visualizzazione), spiega bene la sua architettura, wikipedia is your friend}
+%\todo{atrent: manca una trattazione di come è fatto e come funziona lo strumento ad ago (che sarà il più frequente oggetto di visualizzazione), spiega bene la sua architettura, wikipedia is your friend}
 
 
-\todo{atrent: tenterei anche una panoramica storica degli strumenti di ``visualizzazione'' (occhi magici, elettrofori, dekatron, oscilloscopi, ...) dando idee su come si potrebbero usare per datafisicalizzare}
+%\todo{atrent: tenterei anche una panoramica storica degli strumenti di ``visualizzazione'' (occhi magici, elettrofori, dekatron, oscilloscopi, ...) dando idee su come si potrebbero usare per datafisicalizzare}
 
 \section{Introduzione}
-Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione,
-ma prima una parentesi storica su alcuni tipi di strumenti utilizzabili come "visualizzatori" e su come funziona uno strumento ad ago
-(più frequente oggetto di visualizzazione, nonché quello usato nell'esperimento di conversione nell'ambito del tirocinio).
+Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione.
 
-\subsection{Panoramica storica sugli strumenti di "visualizzazione"}
-\paragraph{Dekatron}
-Valvola termoionica che svolge la funzione di dispositivo di conteggio, molto usata all'interno dei computer negli anni '50 e '60 e ora
-relegata all'utilizzo hobbistico, ad esempio per la realizzazione di particolari orologi. \cite{itwiki:118300354}, Figura~\ref{fig:dekatron}.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.9\textwidth]{dekatron}
-  \caption{Dekatron \cite{itwiki:118300354}}
-  \label{fig:dekatron}
-\end{figure}
-
-\paragraph{Occhio magico}
-Valvola termoionica usata per rappresentare l'intensità di un segnale elettrico. Storicamente impiegata nelle radio come
-indicatore di sintonia. \cite{itwiki:119250611}, Figura~\ref{fig:occhiomagicofasi}.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.9\textwidth]{occhiomagicofasi}
-  \caption{Occhio magico in diverse fasi di illuminazione \cite{itwiki:119250611}}
-  \label{fig:occhiomagicofasi}
-\end{figure}
-
-\paragraph{Oscilloscopio}
-Strumento utilizzato per visualizzare l'andamento nel tempo di un segnale in maniera grafica \cite{itwiki:120862120}. Se pilotato a dovere è in grado di
-visualizzare delle grafiche. Esempio in Figura~\ref{fig:oscilloscopio}.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\textwidth]{oscilloscopio}
-  \caption{Oscilloscopio impiegato nella visualizzazione di un disegno \cite{instructablesoscilloscope}}
-  \label{fig:oscilloscopio}
-\end{figure}
-
-\subsection{Funzionamento degli strumenti ad ago}
-%generica per ora
-Quasi tutti gli strumenti ad ago sono basati su milliamperometri, aventi una resistenza interna, integrati con resistenze di taratura
-in serie e/o in parallelo in base all'utilizzo finale desiderato. Per ottenere un voltmetro con fondoscala adeguato, è spesso necessario
-inserire una resistenza in serie con il milliamperometro, in modo da ridurne la sensibilità.
-Questo principio si basa sulla legge di Ohm: conoscendo il flusso di corrente necessario normalmente per arrivare a fondo scala, è
-possibile calcolare la resistenza totale necessaria per portare l'ago al 100\% in corrispondenza di una tensione desiderata.
-Esempio di scheda resistenze in Figura~\ref{fig:schedaresistenze}.
-
-\begin{figure}[h]
-  \centering
-  \includegraphics[width=0.8\textwidth]{schedaresistenze}
-  \caption{Scheda resistenze di un voltmetro analogico}
-  \label{fig:schedaresistenze}
-\end{figure}
 
 \section{Interventi}
 \subsection{Intervento minimale}
@@ -489,7 +501,7 @@ void stream_callback(Stream &stream) {
   deserializeJson(doc, rbs, DeserializationOption::Filter(filter));
 \end{lstlisting}
 
-\subsection{Approfondimento su filtro JSON e path} %Giusto averlo qui o meglio in sezione a parte?
+\subsection{Approfondimento su filtro JSON e path}
 Il centro del funzionamento della modalità API e la sua adattabilità all'utilizzo di fonti dati diverse risiede nei campi
 filterJSON e path.
 \texttt{filterJSON} consente di evitare che tutta la risposta delle API venga salvata in memoria. Viene quindi scartato ogni campo che non
