@@ -301,8 +301,8 @@ software e tipi di dato.
 %\todo{atrent: strada giusta! fai anche esempi pratici finali}
 
 \section{Interruttori / Pulsanti}
-Possono essere mappati a valori booleani (true/false). Collegabile da un capo a GND e dall'altro capo a un GPIO del microcontrollore in modalità
-input pullup. Può essere utilizzato nel codice mediante la funzione digitalRead o come switch component su esphome. Esempio di collegamento
+Possono essere mappati a valori booleani (true/false). Collegabili da un capo a GND e dall'altro capo a un GPIO del microcontrollore in modalità
+input pullup. Possono essere utilizzati nel codice mediante la funzione digitalRead o come switch component su esphome. Esempio di collegamento
 in Figura~\ref{fig:switchconnection}
 
 \begin{figure}[h]
@@ -356,8 +356,8 @@ poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dover
 
 \section{Potenziometri}
 Possono essere mappati a valori aventi intervallo arbitrario, con una precisione limitata dalla risoluzione del convertitore analogico-digitale
-integrato nel microcontrollore. Per poter leggere l'output è necessario collegarlo a un GPIO che supporta la lettura di segnali analogici
-e nel codice utilizzare la funzione analogRead. Su esphome è necessario usare un sensore di tipo adc.
+integrato nel microcontrollore. Per poter leggere l'output è necessario collegarli a un GPIO che supporta la lettura di segnali analogici
+e nel codice utilizzare la funzione analogRead. Su esphome è necessario usare sensori di tipo adc.
 Esempio di collegamento in Figura~\ref{fig:potconnection}
 
 \begin{figure}[h]
