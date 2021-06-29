@@ -478,25 +478,6 @@ destro con un pulsante e all'interno è stato posizionato un buzzer che consente
   \label{fig:interventocompleto}
 \end{figure}
 
-\chapter{Use case}
-Prima di parlare del funzionamento dell'oggetto è il caso di soffermarsi su chi interagisce con esso e in che modo:  %%Rivedere frase
-\subsection*{Sviluppatore}
-È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e  modificare funzionalità del programma
-e apportare modifiche dirette ai file di configurazione.
-\subsection*{Utente esperto}
-Conosce le API ed è in grado di comprendere il formato dei dati che restituiscono. Gli è sufficiente un'interfaccia anche spartana
-per selezionare la sorgente dei dati e il campo specifico che vuole rappresentato.
-\subsection*{Utente inesperto}
-Non conosce le API né il formato JSON: ha bisogno di un prodotto già pronto che richieda la minima configurazione possibile e questa
-deve essere particolarmente intuitiva, ad esempio una piccola interfaccia web per scegliere la rete WiFi e inserirne la password
-al primo avvio. La sorgente dei dati deve essere preconfigurata e se ne viene resa disponibile più di una la scelta deve essere molto
-semplice, possibilmente tramite interazione fisica con il dispositivo.
-
-\todo{atrent: questi sono i ruoli, mancano gli use case veri e propri (parlando formalmente, faccio riferimento a UML)}
-
-\todo{atrent: in generale metterei tanti schemi e disegni}
-
-
 \chapter{Il prototipo - IoTDial}
 Questo capitolo tratterà dell'implementazione delle varie feature del prototipo realizzato durante il tirocinio, chiamato IoTDial,
 il loro utilizzo e alcune osservazioni al riguardo.
@@ -804,19 +785,56 @@ in situazioni di difficile accesso fisico al microcontrollore.
 Il processo di upload usa Digest-MD5 per la verifica dell'integrità, onde evitare di rendere il dispositivo inservibile. È inoltre possibile
 migliorare la sicurezza dell'operazione mediante utilizzo di password e hash firmati. \cite{espota}
 
-\pagebreak
+\section{Ruoli}
+Prima di parlare del delle modalità operative di IoTDial è il caso di soffermarsi su chi vi può interagire:
+\subsection*{Sviluppatore}
+È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e  modificare funzionalità del programma
+e apportare modifiche dirette ai file di configurazione.
+\subsection*{Utente esperto}
+Conosce le API ed è in grado di comprendere il formato dei dati che restituiscono. Gli è sufficiente un'interfaccia anche spartana
+per selezionare la sorgente dei dati e il campo specifico che vuole rappresentato.
+\subsection*{Utente inesperto}
+Non conosce le API né il formato JSON, è possibile che abbia anche una limitata conoscenza del mondo informatico:
+ha bisogno di un prodotto già pronto che richieda la minima configurazione possibile e questa
+deve essere particolarmente intuitiva, ad esempio una piccola interfaccia web per scegliere la rete WiFi e inserirne la password
+al primo avvio. La sorgente dei dati deve essere preconfigurata e se ne viene resa disponibile più di una la scelta deve essere molto
+semplice, possibilmente tramite interazione fisica con il dispositivo.
+
+\todo{atrent: questi sono i ruoli, mancano gli use case veri e propri (parlando formalmente, faccio riferimento a UML)}
+
+\todo{atrent: in generale metterei tanti schemi e disegni}
+
 \section{Modalità operative}
 
 \subsection{Modalità API}
 Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo configurabili di richieste HTTP o HTTPS ad API REST
-e sulla conversione del risultato in una tensione di uscita.
-
-
-
-
+e sulla conversione del risultato in una tensione di uscita, avendo in più le funzionalità descritte precedentemente nella sezione
+sulla realizzazione software.
+Gli interventi al codice richiedono uno sviluppatore, la configurazione della fonte API e la gestione dei multipli file di configurazione sono nelle
+corde di un utente esperto mentre per l'utente inesperto il massimo della funzionalità potrebbe essere quella di alternare tra fonti di dati o
+configurazioni diverse mediante l'interazione con un commutatore fisico.
 
 \subsection{Modalità MQTT / smart home}
 \todo{busolin: descrizione vecchia modalità MQTT e esphome}
+Questa modalità era stata inizialmente pensata come complemento della modalità API: condivideva in parte i parametri di configurazione
+e consisteva nel mappare in uscita sullo strumento, al posto di un valore ritornato dalle API, un valore passato tramite messaggio MQTT
+a uno specifico topic (\texttt{<root>/setValue}).
+
+Andando avanti con le idee di sviluppo era in cantiere un'estensione del programma per l'integrazione nello scambio di messaggi di componenti
+aggiuntive quali switch, commutatori, ecc. già descritte in altre sezioni. Questo avrebbe voluto dire scrivere codice per ogni tipo di device
+aggiuntivo da integrare nel sistema e trovare un modo per abilitare ciò che era necessario in base alla configurazione fisica del dispositivo,
+il tutto in ottica di una possibile integrazione con sistemi di domotica per il raccoglimento e l'elaborazione dei dati dei vari sensori e input.
+
+Questa lista di funzionalità rispecchia molto bene quella di esphome, per cui è stato relegato il funzionamento stand-alone del solo ago
+con codice scritto apposta solo alla ``modalità API", mentre per un'integrazione con sistemi di domotica e la gestione di vari input e output
+sempre diversi si è scelto di fare totale affidamento su esphome, che mediante la sua estensiva documentazione e compatibilità con una vasta
+gamma di componenti esterne si presta molto bene all'incarico.
+
+...
+
+In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di esphome ai vari dispositivi, specialmente per quanto riguarda
+automatismi interni indipendenti da sistemi di smart home. Anche in questo caso per l'utente inesperto è necessario fornire un dispositivo già
+configurato e pronto all'uso.
 
 \chapter{Conclusioni}
 
