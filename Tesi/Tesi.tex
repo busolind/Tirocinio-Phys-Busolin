@@ -211,6 +211,62 @@ ad esempio su una mensola, i quali invece di essere puramente decorativi comunic
   \label{fig:datadash}
 \end{figure}
 
+\section{Stato dell'arte}
+La conversione di strumenti vintage per utilizzi diversi dall'originale è un'attività già svolta in passato da diverse persone. In questa
+sezione verranno riportati alcuni esempi di esperimenti e prototipi e poi verranno descritte alcune delle piattaforme di sviluppo disponibili
+per ESP8266.
+
+\subsection{Retrofitting of an old tester from 1955}
+Trasformazione di un vecchio tester in orologio, luce notturna e sveglia utilizzando un Arduino Nano con un ESP8266-01. 
+\cite{retrofit1955}, Figura~\ref{fig:retrofit1955}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{retrofit1955}
+  \caption{Retrofitting of an old tester from 1955 \cite{retrofit1955}}
+  \label{fig:retrofit1955}
+\end{figure}
+
+\subsection{ESP8266 WIFI NTP VOLTMETER CLOCK}
+Orologio a 12 ore realizzato utilizzando tre voltmetri separati per ore, minuti e secondi. Le etichette sono state adattate per avere un intervallo
+tra 1 e 12 per le ore e tra 0 e 60 per i minuti e secondi. L'ora viene ottenuta da Internet mediante una connessione WiFi e un server NTP.
+\cite{voltclock}, Figura~\ref{fig:voltclock}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{voltclock}
+  \caption{ESP8266 WIFI NTP VOLTMETER CLOCK  \cite{voltclock}}
+  \label{fig:voltclock}
+\end{figure}
+
+
+\subsection{MQTT controlled analog gauge ``vintage style"}
+Basato su ESP8266 e mongoose-os. Controllato mediante MQTT, produce un'uscita PWM che viene visualizzata tramite l'ago del voltmetro,
+appositamente modificato per avere una taratura sul voltaggio del microcontrollore invece che su 110V.
+Questa modifica è molto simile a quelle che verranno affrontate nelle prossime sezioni.
+\cite{gaugevintagestyle}, Figura~\ref{fig:gaugevintagestyle}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{gaugevintagestyle}
+  \caption{MQTT controlled analog gauge ``vintage style" \cite{gaugevintagestyle}}
+  \label{fig:gaugevintagestyle}
+\end{figure}
+
+\subsection{Tasmota}
+Tasmota è un firmware open source per dispositivi basati su ESP8266, nato come espansione per il firmware degli interruttori
+wireless Sonoff al fine di arricchirli con funzionalità MQTT. Il suo obiettivo è quello di rendere più configurabili e controllabili i dispositivi
+smart, mediante interfaccia web, MQTT, KNX e integrazioni con i vari sistemi di home automation.
+\cite{abouttasmota}.
+
+\subsection{ESPHome}
+ESPHome è un sistema per creare firmware personalizzato per dispositivi ESP8266 e ESP32 tramite semplici file di configurazione e poi controllarli
+da remoto mediante sistemi di Home Automation.
+Supporta una grande quantità di componenti hardware e software il che lo rende particolarmente versatile per una vastissima gamma di utilizzi.
+\cite{esphomeio}
+Per alcune delle feature del prototipo realizzato durante il tirocinio è stato deciso di utilizzare questo sistema.
+
+
 \chapter{Panoramica storica e caratteristiche fisiche degli strumenti}
 %\todo{Sezione panoramica storica più caratteristiche fisiche, "istanze"}
 
@@ -846,7 +902,7 @@ il tutto in ottica di una possibile integrazione con sistemi di domotica per il 
 Questa lista di funzionalità rispecchia molto bene quella di esphome, per cui è stato relegato il funzionamento stand-alone del solo ago
 con codice scritto su misura alla ``modalità API", mentre per un'integrazione con sistemi di domotica e la gestione di vari input e output
 sempre diversi si è scelto di fare totale affidamento su esphome, che grazie alla sua estensiva documentazione e compatibilità con una vasta
-gamma di componenti esterne si presta molto bene all'incarico. \cite{esphomeio}
+gamma di componenti esterne si presta molto bene all'incarico. \cite{esphomeio} \todo{busolin: Ora che questo discorso è anche nello stato dell'arte, questa è una ripetizione?}
 In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di esphome ai vari dispositivi, specialmente per quanto riguarda
 automatismi interni indipendenti da sistemi di smart home. Anche in questo caso per l'utente inesperto è necessario fornire un dispositivo già
 configurato e pronto all'uso, al netto di configurazioni della rete WiFi con un meccanismo simile a quello implementato nella modalità API.
@@ -859,7 +915,7 @@ Durante la scelta dei dati che potrebbero essere oggetto di fisicalizzazione, me
 del caso, è risultato evidente che bisogna pensare ai dati in maniera qualitativa, ossia considerando le limitate possibilità di visualizzazione
 offerte dallo spostamento di un ago su una scala lineare bisogna ragionare su cosa sia significativo e comprensibile da visualizzare.
 
-\section{Impressioni su IoTDial}\todo{atrent: da qualche parte mettere i risultati dei questionari}
+\section{Impressioni su IoTDial} %\todo{atrent: da qualche parte mettere i risultati dei questionari}
 Per ottenere delle impressioni esterne sul lavoro svolto e raccogliere qualche idea di dati da fisicalizzare, sono state tenute un paio di
 presentazioni prima con alcuni membri dell'HackLab Cormano e poi con alcuni studenti dei corsi di Sistemi Embedded della laurea triennale
 in Informatica e Progettazione di Sistemi Operativi della magistrale.
