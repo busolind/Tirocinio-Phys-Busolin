@@ -199,13 +199,17 @@ Visualizzazione dei dati sul prestito libri nel consorzio Culture Socialità Bib
 \section{Obiettivo}
 L'obiettivo dell'attività svolta durante il tirocinio è quello di analizzare e sperimentare una forma di fisicalizzazione
 dei dati mediante strumenti di misura vintage e dispositivi IoT che non richieda l'utilizzo di computer e monitor e sia di semplice fruizione
-da parte di chi non è avvezzo alla tecnologia e può essere intimorito da complicate dashboard o semplicemente privo della volontà
-di interagire con dispositivi tecnologici per l'ottenimento di certe informazioni. L'utilizzo di strumenti vintage consente infatti di ottenere
-oggetti discreti che possono far parte dell'arredamento domestico, ad esempio su una mensola, i quali invece di essere puramente
-decorativi comunicano informazioni utili.
+da parte di chi non è avvezzo alla tecnologia e può essere intimorito da complicate dashboard (esempio in Figura~\ref{fig:datadash})
+o semplicemente privo della volontà di interagire con dispositivi tecnologici per l'ottenimento di certe informazioni.
+L'utilizzo di strumenti vintage consente infatti di ottenere oggetti discreti che possono far parte dell'arredamento domestico,
+ad esempio su una mensola, i quali invece di essere puramente decorativi comunicano informazioni utili.
 
-\todo{busolin:  Tecnofobia, Esempi dashboard}
-
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{datadash}
+  \caption{Esempio di dashboard data-oriented \cite{wiki:datadash}}
+  \label{fig:datadash}
+\end{figure}
 
 \chapter{Panoramica storica e caratteristiche fisiche degli strumenti}
 %\todo{Sezione panoramica storica più caratteristiche fisiche, "istanze"}
@@ -763,9 +767,14 @@ Nel dettaglio, erano esposti i seguenti endpoint:
         la configurazione in esecuzione nella memoria flash.
 \end{itemize}
 
-Si riporta a seguito in Figura la pagina di configurazione
+Si riporta in Figura~\ref{fig:confwebpage} la pagina di configurazione. 
 
-\missingfigure{screenshot pagina web}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{confwebpage}
+  \caption{Pagina web di configurazione come si presentava quando abilitata}
+  \label{fig:confwebpage}
+\end{figure}
 
 I form erano precompilati con la configurazione in esecuzione (\emph{running-conf}) ed era presente una sezione che riportava la
 configurazione salvata nella flash (\emph{saved-conf}).
