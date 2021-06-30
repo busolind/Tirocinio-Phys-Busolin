@@ -419,7 +419,7 @@ un segnale audio in input. Attraverso esphome è possibile riprodurre delle semp
 
 \subsection{Inclinometri a mercurio}
 Ai fini implementativi hanno un funzionamento al pari degli interruttori/pulsanti. L'unica differenza sta nel principio fisico di funzionamento
-e quindi al significato che si può dare all'output nel codice.
+e quindi nel significato che si può dare all'output nel codice.
 
 \chapter{Guida alla trasformazione degli strumenti vintage}
 \todo{Sezione guida alla conversione vera e propria che fa riferimenti alla sezione precedente}
@@ -742,9 +742,15 @@ settati tramite i topic:
 Per la connessione alla rete wireless, grazie alla libreria \texttt{WiFiManager}, l'ESP memorizzerà le ultime credenziali utilizzate
 per ritentare la connessione al riavvio. In caso le credenziali non siano valide o non ve ne siano di salvate, verrà avviato un
 Access Point temporaneo con captive portal (lo stesso che comunemente viene usato su reti pubbliche o aziendali per richiedere
-l'autenticazione) al fine di permettere all'utente di inserire delle credenziali valide mediante form web.
+l'autenticazione) al fine di permettere all'utente di inserire delle credenziali valide mediante form web, riportato in
+Figura~\ref{fig:autoconnectap}.
 
-\missingfigure{screenshot}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{autoconnectap}
+  \caption{Processo di inserimento credenziali WiFi tramite WiFiManager}
+  \label{fig:autoconnectap}
+\end{figure}
 
 Successivamente viene tentata la connessione. Se non ha successo viene ripetuto lo stesso procedimento, altrimenti viene disattivato
 l'Access Point temporaneo, avviene la connesisone e il programma prosegue.
@@ -787,7 +793,9 @@ interfaccia web risultava ridondante rispetto alle modalità di configurazione g
 semplicità di utilizzo per l'utente, che deve essere comunque esperto per apportare certe modifiche.
 
 \subsection{Server FTP}
-\todo{busolin: server FTP}
+È stato aggiunto un rudimentale server FTP che consente di interagire con il file system del microcontrollore. Risulta molto utile per
+l'upload, la rimozione e la modifica dei file JSON di configurazione e del file \texttt{confselect}, che contiene al suo interno il nome
+del file di configurazione da utilizzare come attivo.
 
 \subsection{OTA}
 Sono stati implementati gli aggiornamenti OTA (Over the Air), processo tramite il quale è possibile eseguire l'upload di firmware
@@ -844,10 +852,76 @@ automatismi interni indipendenti da sistemi di smart home. Anche in questo caso 
 configurato e pronto all'uso, al netto di configurazioni della rete WiFi con un meccanismo simile a quello implementato nella modalità API.
 
 \chapter{Conclusioni}
-
-\todo{atrent: da qualche parte mettere i risultati dei questionari}
-
 %\todo{atrent: oltre alla presentazione all'hacklab (domani!) proviamo a organizzare una sessione ad hoc almeno con gli studenti del corso SistEmbed (e magari quelli di PROS?)}
+
+\section{Scelta dei dati da ``fisicalizzare"}
+Durante la scelta dei dati che potrebbero essere oggetto di fisicalizzazione, mediante richieste API o integrazione con sistemi MQTT
+del caso, è risultato evidente che bisogna pensare ai dati in maniera qualitativa, ossia considerando le limitate possibilità di visualizzazione
+offerte dallo spostamento di un ago su una scala lineare bisogna ragionare su cosa sia significativo e comprensibile da visualizzare.
+
+\section{Impressioni su IoTDial}\todo{atrent: da qualche parte mettere i risultati dei questionari}
+Per ottenere delle impressioni esterne sul lavoro svolto e raccogliere qualche idea di dati da fisicalizzare, sono state tenute un paio di
+presentazioni prima con alcuni membri dell'HackLab Cormano e poi con alcuni studenti dei corsi di Sistemi Embedded della laurea triennale
+in Informatica e Progettazione di Sistemi Operativi della magistrale.
+Ai partecipanti è stato successivamente sottoposto un questionario in cui venivano proposte alcune idee di dati da fisicalizzare e per ciascuno
+era chiesto un parare di adeguatezza di IoTDial in un intervallo da 1 a 5 considerando la scala da ``Per nulla adatto" a ``Molto adatto".
+Successivamente erano esposti in ordine crescente di complessità/specificità i principi di funzionamento del prototipo e veniva chiesto per
+ciascuno un intervallo da 1 a 5 di comprensione in una scala da ``Poco" a ``Molto".
+Nella sezione finale veniva chiesto sempre in un intervallo da 1 a 5 quanto si potesse ritenere utile avere in casa un oggetto simile a quello
+presentato e un paio di domande aperte relative a suggerimenti sui dati da rappresentare e altri suggerimenti più generali.
+
+Il numero di risposte non è stato altissimo, sicuramente ha influito molto il periodo di presentazione (giugno) in cui gran parte degli
+studenti hanno esami per cui prepararsi.
+Hanno risposto solo uomini rientranti nelle fasce d'età 22-29 e 50-66. Nella prima fascia sono presenti solo studenti mentre nella succesiva
+impiegati e un pensionato. Il livello medio di conoscenza dell'informatica è abbastanza alto mentre quello dell'elettronica è medio-basso.
+
+Le idee di visualizzazione su cui venivano chieste delle opinioni sono:
+\begin{itemize}
+  \item ``Remotizzare" una misurazione allontanandosi dalla posizione fisica del sensore
+  \item Visualizzazione tempo rimanente all'arrivo del bus/tram/treno
+  \item Visualizzare la probabilità di pioggia
+  \item Visualizzare il traffico passante nella rete locale
+  \item Visualizzare il consumo di corrente in appartamento
+  \item Visualizzare la concentrazione di traffico sul percorso casa-lavoro (tanto per regolarsi su quando partire, ad esempio dando un'occhiata mentre ci si prepara)
+\end{itemize}
+Per tutte tranne l'ultima c'è stata una buona risposta generale, specialmente per quanto riguarda il consumo di corrente, mentre per l'ultima
+c'è stata più incertezza e le risposte sono state più distribuite nell'intervallo. I risultati di questa sezione sono consultabili in
+Figura~\ref{fig:adeguatezzavis}.
+\begin{figure}[h]
+  \centering
+  %\includegraphics[width=\textwidth]{}
+  \missingfigure{Risultati sezione 2}
+  \caption{Risultati della sezione sull'adeguatezza alla visualizzazione di certi dati}
+  \label{fig:adeguatezzavis}
+\end{figure}
+
+I principi di funzionamento sono quasi tutti stati afferrati almeno a livello medio dalla totalità dei partecipanti. Nel dettaglio la lista è:
+\begin{itemize}
+  \item Utilizzare uno strumento ad ago come visualizzatore di dati
+  \item Utilizzare un microcontrollore per pilotare lo strumento mediante una differenza di potenziale variabile
+  \item Effettuare richieste ad API su Internet da un dispositivo embedded
+  \item Modificare le impostazioni di ottenimento dei dati mediante meccanismi di messaggistica quale MQTT
+\end{itemize}
+C'è stata un po' più di titubanza sull'utilizzo di messaggistica MQTT per l'alterazione della configurazione.
+I risultati di questa sezione sono consultabili in Figura~\ref{fig:comprensibilita}.
+\begin{figure}[h]
+  \centering
+  %\includegraphics[width=\textwidth]{}
+  \missingfigure{Risultati sezione 3}
+  \caption{Risultati della sezione sulla comprensibilità dei principi}
+  \label{fig:comprensibilita}
+\end{figure}
+
+La sezione finale conteneva la domanda ``Quanto riterresti utile avere in casa un dispositivo simile a quello presentato nella demo che
+funga sia da soprammobile che da fonte di informazioni slegata dai classici device (PC/Smartphone)?", a cui sono arrivati pareri abbastanza
+uniformi nella scala 2-5. Suggerimenti aggiuntivi su dati che potrebbero essere oggetto di visualizzazione hanno restituito:
+\begin{itemize}
+  \item Utilizzo di CPU/RAM/GPU, altre statistiche ottenibili con lm_sensors e strumenti simili
+  \item Alba÷tramonto
+  \item Temperatura frigo o forno
+  \item Qualsiasi altro sensore legato al meteo (es: vento)
+\end{itemize}
+Non sono state inseriti suggerimenti generali nella sezione ``altri suggerimenti".
 
 \section{Reperibilità delle API}
 Durante la ricerca di API rappresentabili mediante Data Physicalization è risultato evidente che molte di quelle più congeniali non
@@ -857,12 +931,12 @@ all'arrivo di un mezzo pubblico ma altri si sono scontrati con quelle di Trenita
 \subsection{Dettagli su ATM}
 Le API di ATM sono usate per \href{https://giromilano.atm.it}{Giromilano} e l'unico modo per comprenderne il funzionamento è utilizzare
 gli strumenti del browser per leggere le richieste e le risposte che vengono scambiate tra client e server durante la ricerca di un
-percorso o di informazioni su una fermata specifica.\\
+percorso o di informazioni su una fermata specifica.
 In particolare per ottenere i minuti rimanenti all'arrivo di un mezzo ad una specifica fermata, è necessario effettuare una richiesta
 POST a\\ \url{https://giromilano.atm.it/proxy.ashx} e nel body inserire\\ \texttt{url=tpPortal/geodata/pois/stops/xxxxx}, dove a
 \texttt{xxxxx} va sostituito il numero della fermata, leggibile (a volte) nel mondo reale sulla pensilina o sul cartello o direttamente
 dal sito.\\
-Per ottenere una risposta è inoltre necessario inviare l'header\\ \texttt{Content-Type: application/x-www-form-urlencoded}.\\
+Per ottenere una risposta è inoltre necessario inviare l'header\\ \texttt{Content-Type: application/x-www-form-urlencoded}.
 A questo punto sorgono alcuni problemi:
 \begin{itemize}
   \item Le risposte contengono un po' di tutto e per via degli avvisi comprensivi di tag HTML possono anche essere molto lunghe, anche
@@ -873,7 +947,7 @@ A questo punto sorgono alcuni problemi:
 
 A prescindere dalle questioni tecniche il problema è anche legale: non essendo API pubbliche l'utilizzo che se ne può fare all'esterno
 dell'ambito aziendale è molto limitato. Può andare bene per utilizzi sperimentali personali, ma non si possono certamente incorporare
-in prodotti da distribuire a qualsiasi titolo.\\
+in prodotti da distribuire a qualsiasi titolo.
 Poter risalire al ritardo accumulato da un mezzo pubblico (specialmente per treni con cadenza oraria o semioraria) senza dover navigare
 siti e app ma direttamente lanciando un'occhiata a un angolo della stanza, come si farebbe con un orologio, sarebbe una comodità in più
 per i pendolari che al momento non è attuabile su larga scala da terzi e le aziende di trasporti non sembrano interessate a proporre
