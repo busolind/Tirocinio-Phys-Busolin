@@ -777,6 +777,9 @@ problemi di allocazione della memoria del microcontrollore che spesso risultavan
 interfaccia web risultava ridondante rispetto alle modalità di configurazione già presenti in quanto non garantiva una maggiore
 semplicità di utilizzo per l'utente, che deve essere comunque esperto per apportare certe modifiche.
 
+\subsection{Server FTP}
+\todo{busolin: server FTP}
+
 \subsection{OTA}
 Sono stati implementati gli aggiornamenti OTA (Over the Air), processo tramite il quale è possibile eseguire l'upload di firmware
 mediante WiFi invece che tramite porta seriale. Questo rimuove l'obbligo di utilizzo di una connessione cablata ed è molto utile
@@ -796,10 +799,7 @@ per selezionare la sorgente dei dati e il campo specifico che vuole rappresentat
 \subsection*{Utente inesperto}
 Non conosce le API né il formato JSON, è possibile che abbia anche una limitata conoscenza del mondo informatico:
 ha bisogno di un prodotto già pronto che richieda la minima configurazione possibile e questa
-deve essere particolarmente intuitiva, ad esempio una piccola interfaccia web per scegliere la rete WiFi e inserirne la password
-al primo avvio. La sorgente dei dati deve essere preconfigurata e se ne viene resa disponibile più di una la scelta deve essere molto
-semplice, possibilmente tramite interazione fisica con il dispositivo.
-
+deve essere particolarmente intuitiva. 
 \todo{atrent: questi sono i ruoli, mancano gli use case veri e propri (parlando formalmente, faccio riferimento a UML)}
 
 \todo{atrent: in generale metterei tanti schemi e disegni}
@@ -811,8 +811,9 @@ Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo co
 e sulla conversione del risultato in una tensione di uscita, avendo in più le funzionalità descritte precedentemente nella sezione
 sulla realizzazione software.
 Gli interventi al codice richiedono uno sviluppatore, la configurazione della fonte API e la gestione dei multipli file di configurazione sono nelle
-corde di un utente esperto mentre per l'utente inesperto il massimo della funzionalità potrebbe essere quella di alternare tra fonti di dati o
-configurazioni diverse mediante l'interazione con un commutatore fisico.
+corde di un utente esperto mentre per l'utente inesperto sarebbe necessario fornire un prodotto già pronto. Potrebbe giusto configurare
+la rete WiFi mediante l'access point integrato e il web form e qualora implementato selezionare fonti di dati o configurazioni diverse mediante
+interazione con un commutatore fisico.
 
 \subsection{Modalità MQTT / smart home}
 \todo{busolin: descrizione vecchia modalità MQTT e esphome}
@@ -822,19 +823,16 @@ a uno specifico topic (\texttt{<root>/setValue}).
 
 Andando avanti con le idee di sviluppo era in cantiere un'estensione del programma per l'integrazione nello scambio di messaggi di componenti
 aggiuntive quali switch, commutatori, ecc. già descritte in altre sezioni. Questo avrebbe voluto dire scrivere codice per ogni tipo di device
-aggiuntivo da integrare nel sistema e trovare un modo per abilitare ciò che era necessario in base alla configurazione fisica del dispositivo,
+aggiuntivo da integrare nel sistema e trovare un modo per abilitare solo il necessario in base alla configurazione fisica del dispositivo,
 il tutto in ottica di una possibile integrazione con sistemi di domotica per il raccoglimento e l'elaborazione dei dati dei vari sensori e input.
 
 Questa lista di funzionalità rispecchia molto bene quella di esphome, per cui è stato relegato il funzionamento stand-alone del solo ago
-con codice scritto apposta solo alla ``modalità API", mentre per un'integrazione con sistemi di domotica e la gestione di vari input e output
-sempre diversi si è scelto di fare totale affidamento su esphome, che mediante la sua estensiva documentazione e compatibilità con una vasta
-gamma di componenti esterne si presta molto bene all'incarico.
-
-...
-
+con codice scritto su misura alla ``modalità API", mentre per un'integrazione con sistemi di domotica e la gestione di vari input e output
+sempre diversi si è scelto di fare totale affidamento su esphome, che grazie alla sua estensiva documentazione e compatibilità con una vasta
+gamma di componenti esterne si presta molto bene all'incarico. \cite{esphomeio}
 In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di esphome ai vari dispositivi, specialmente per quanto riguarda
 automatismi interni indipendenti da sistemi di smart home. Anche in questo caso per l'utente inesperto è necessario fornire un dispositivo già
-configurato e pronto all'uso.
+configurato e pronto all'uso, al netto di configurazioni della rete WiFi con un meccanismo simile a quello implementato nella modalità API.
 
 \chapter{Conclusioni}
 
