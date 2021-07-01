@@ -365,7 +365,7 @@ Particolari interruttori basati sulla gravità, i più semplici contengono una g
 direzione della forza di gravità a cui è soggetto il componente: se la goccia viene spinta verso i contatti il circuito è chiuso, altrimenti rimane aperto.
 
 \todo{atrent: combinatore telefonico, suoneria}
-
+\todo{busolin: foto}
 
 \chapter{Generalizzazione degli strumenti di misura}
 %\todo{Sezione mapping componenti e interventi di modifica possibili}
@@ -484,8 +484,6 @@ Il funzionamento dal punto di vista software dipende dal tipo di buzzer utilizza
 e quindi genererà un beep mentre è alimentato. Un buzzer passivo si comporta in maniera simile a un altoparlante in quanto ha bisogno di
 un segnale audio in input. Attraverso esphome è possibile riprodurre delle semplici melodie con buzzer passivi utilizzando il componente rtttl.
 
-\section{Termometri} \todo{busolin: Se anche uno strumento ha al suo interno un termometro di taratura, quasi sicuramente non sarà integrabile con l'ESP. Menziono lo stesso la possibilità di aggiungere un DHT?}
-
 \section{Inclinometri a mercurio}
 Ai fini implementativi hanno un funzionamento al pari degli interruttori/pulsanti. L'unica differenza sta nel principio fisico di funzionamento
 e quindi nel significato che si può dare all'output nel codice.
@@ -576,56 +574,36 @@ per selezionare la sorgente dei dati e il campo specifico che vuole rappresentat
 Non conosce le API né il formato JSON, è possibile che abbia anche una limitata conoscenza del mondo informatico:
 ha bisogno di un prodotto già pronto che richieda la minima configurazione possibile e questa
 deve essere particolarmente intuitiva. 
-\todo{atrent: questi sono i ruoli, mancano gli use case veri e propri (parlando formalmente, faccio riferimento a UML)}
+%\todo{atrent: questi sono i ruoli, mancano gli use case veri e propri (parlando formalmente, faccio riferimento a UML)}
 
 \subsection{Use case}
 
 \subsubsection{API/standalone}
 Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo configurabili di richieste HTTP o HTTPS ad API REST
-e sulla conversione del risultato in una tensione di uscita, avendo in più le funzionalità descritte precedentemente nella sezione
-sulla realizzazione software.
-Gli interventi al codice richiedono uno sviluppatore, la configurazione della fonte API e la gestione dei multipli file di configurazione sono nelle
-corde di un utente esperto mentre per l'utente inesperto sarebbe necessario fornire un prodotto già pronto. Potrebbe giusto configurare
-la rete WiFi mediante l'access point integrato e il web form e qualora implementato selezionare fonti di dati o configurazioni diverse mediante
-interazione con un commutatore fisico.
+e sulla conversione del risultato in una tensione di uscita, avendo in più le funzionalità descritte successivamente nella sezione
+sulla implementazione software.
+Gli interventi al codice richiedono uno sviluppatore, la configurazione della fonte API e la gestione dei multipli file di configurazione
+sono nelle corde di un utente esperto mentre per l'utente inesperto risulta necessario fornire un prodotto già pronto.
+Potrebbe giusto configurare la rete WiFi mediante l'access point integrato e il web form e selezionare tra fonti di dati o configurazioni
+diverse mediante interazione con un commutatore fisico.
 
 \subsubsection{MQTT/smart home/passivo}
-\todo{busolin: descrizione vecchia modalità MQTT e esphome}
-Questa modalità era stata inizialmente pensata come complemento della modalità API: condivideva in parte i parametri di configurazione
-e consisteva nel mappare in uscita sullo strumento, al posto di un valore ritornato dalle API, un valore passato tramite messaggio MQTT
-a uno specifico topic (\texttt{<root>/setValue}).
+\todo{rivedere}
 
-Andando avanti con le idee di sviluppo era in cantiere un'estensione del programma per l'integrazione nello scambio di messaggi di componenti
-aggiuntive quali switch, commutatori, ecc. già descritte in altre sezioni. Questo avrebbe voluto dire scrivere codice per ogni tipo di device
-aggiuntivo da integrare nel sistema e trovare un modo per abilitare solo il necessario in base alla configurazione fisica del dispositivo,
-il tutto in ottica di una possibile integrazione con sistemi di domotica per il raccoglimento e l'elaborazione dei dati dei vari sensori e input.
-
-Questa lista di funzionalità rispecchia molto bene quella di esphome, per cui è stato relegato il funzionamento stand-alone del solo ago
-con codice scritto su misura alla ``modalità API", mentre per un'integrazione con sistemi di domotica e la gestione di vari input e output
-sempre diversi si è scelto di fare totale affidamento su esphome, che grazie alla sua estensiva documentazione e compatibilità con una vasta
-gamma di componenti esterne si presta molto bene all'incarico. \cite{esphomeio} \todo{busolin: Ora che questo discorso è anche nello stato dell'arte, questa è una ripetizione?}
-
-Nell'implementazione tramite esphome permangono le 4 variabili globali già viste nell'implementazione della modalità API:
-min_value, max_value, min_pwm e max_pwm, per un mapping del valore da rappresentare sullo strumento.
-La differenza sta in min_pwm e max_pwm che invece di seguire un intervallo tra 0 e 1023 sono rappresentate in esphome come una percentuale,
-da 0.00 a 1.00.
-
-In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di esphome ai vari dispositivi, specialmente per quanto riguarda
-automatismi interni indipendenti da sistemi di home automation. Anche in questo caso per l'utente inesperto è necessario fornire un dispositivo già
-configurato e pronto all'uso, al netto di configurazioni della rete WiFi con un meccanismo simile a quello implementato nella modalità API.
-
-
-
-
-\todo{atrent: in generale metterei tanti schemi e disegni}
-
+In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di esphome ai vari dispositivi collegati,
+specialmente per quanto riguarda automatismi interni indipendenti da sistemi di home automation.
+Una configurazione totalmente "passiva" e relegata all'interazione con sistemi di home automation, invece, può essere effettuata
+anche da un utente esperto, vista la semplicità d'uso delle configurazioni di base di esphome e delle interfacce dei sistemi con cui
+si andrà a interfacciare.
+Ancora una volta per l'utente inesperto è necessario fornire un dispositivo già configurato e pronto all'uso, al netto di
+configurazioni della rete WiFi con un meccanismo simile a quello implementato nella modalità API.
 
 
 \section{Implementazione modalità API...}
-La parte software del prototipo è stata realizzata utilizzando il linguaggio di programmazione di Arduino, esteso all'utilizzo con
-ESP8266 e con l'aiuto di numerose librerie. Come IDE è stato usato Visual Studio Code con l'estensione PlatformIO, la quale
-permette di specificare le dipendenze direttamente in file di configurazione e di scaricare automaticamente le librerie necessarie
-per ogni progetto.
+La parte software della modalità standalone è stata realizzata utilizzando il linguaggio di programmazione di Arduino, esteso
+all'utilizzo con ESP8266, e con l'aiuto di numerose librerie.
+Come IDE è stato usato Visual Studio Code con l'estensione PlatformIO, la quale permette di specificare le dipendenze direttamente
+in file di configurazione e di scaricare automaticamente le librerie necessarie per ogni progetto.
 
 \subsection{PWM}
 Il principio di base che permette di produrre una tensione variabile da parte di un sistema digitale è la Pulse-Width Modulation.
@@ -933,7 +911,125 @@ migliorare la sicurezza dell'operazione mediante utilizzo di password e hash fir
 
 \section{Implementazione modalità passiva}
 \todo{atrent: cambiare titolo e riempire, ESPHOME con spiegazione dello yaml}
+Questa modalità era stata inizialmente pensata come complemento della modalità API: condivideva in parte i parametri di configurazione
+e consisteva nel mappare in uscita sullo strumento, al posto di un valore ritornato dalle API, un valore passato tramite messaggio MQTT
+a uno specifico topic (\texttt{<root>/setValue}).
 
+Andando avanti con le idee di sviluppo era in cantiere un'estensione del programma per l'integrazione nello scambio di messaggi di
+componenti aggiuntive quali switch, commutatori, ecc. già descritte in altre sezioni.
+Questo avrebbe voluto dire scrivere codice per ogni tipo di componente aggiuntivo da integrare nel sistema e trovare un modo per
+abilitare solo il necessario in base alla configurazione fisica del dispositivo,
+il tutto in ottica di una possibile integrazione con sistemi di domotica per il raccoglimento e l'elaborazione dei dati dei vari sensori e input.
+
+Questa lista di funzionalità rispecchia molto bene quella di esphome, per cui è stato relegato il funzionamento stand-alone del solo ago
+con codice scritto su misura alla ``modalità API", mentre per un'integrazione con sistemi di domotica e la gestione di vari input e output
+sempre diversi si è scelto di fare totale affidamento su esphome, che grazie alla sua estensiva documentazione e compatibilità con una
+vasta gamma di componenti esterne si presta molto bene all'incarico.
+
+In particolare, la configurazione avviene per mezzo di file YAML in cui è possibile dichiarare proprietà e componenti utilizzati:
+
+\lstset{language= {}}
+
+\begin{lstlisting}
+esphome:
+  name: iotdial-aabbccdd
+  platform: ESP8266
+  board: d1_mini
+  esp8266_restore_from_flash: yes
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Iotdial Fallback Hotspot"
+    password: "IoTDial!"
+captive_portal:
+\end{lstlisting}
+Questa prima parte di configurazione specifica nome e piattaforma, dichiara inoltre una coppia ssid/password per la rete WiFi
+e abilita l'access point di scorta, in maniera simile alla modalità API. Le credenziali della rete sono memorizzate in un file apposito
+denominato secrets.yaml:
+\begin{lstlisting}
+wifi_ssid: "IOT_TEST"
+wifi_password: "IOT_TEST"
+\end{lstlisting}
+
+Nell'implementazione tramite esphome permangono le 4 variabili globali già viste nell'implementazione della modalità API:
+min_value, max_value, min_pwm e max_pwm, per un mapping del valore da rappresentare sullo strumento.
+La differenza sta in min_pwm e max_pwm che invece di seguire un intervallo tra 0 e 1023 sono rappresentate in esphome come una
+percentuale, da 0.00 a 1.00. Segue la dichiarazione delle variabili globali:
+\begin{lstlisting}
+globals:
+  - id: min_value
+    type: float
+    restore_value: yes
+    initial_value: '0'
+
+  - id: max_value
+    type: float
+    restore_value: yes
+    initial_value: '40'
+
+  - id: min_pwm
+    type: float
+    restore_value: yes
+    initial_value: '0'
+
+  - id: max_pwm
+    type: float
+    restore_value: yes
+    initial_value: '0.89'
+\end{lstlisting}
+La flag restore_value, accoppiata con esp8266_restore_from_flash presente all'inizio, serve per comunicare l'intenzione di mantenere
+lo stato di queste variabili in maniera persistente ai riavvii, in modo che le modifiche non vadano perse.
+
+Per la ricezione di valori e configurazioni tramite MQTT è stato configurato il broker:
+\begin{lstlisting}
+mqtt:
+  broker: mqtt.atrent.it
+  topic_prefix: IoTDial/busolin
+  discovery: True #homeassistant
+\end{lstlisting}
+La sottoscrizione a topic MQTT viene effettuata mediante dei componenti sensor ``virtuali":
+\begin{lstlisting}
+sensor:
+  - platform: mqtt_subscribe
+    name: "Temperatura"
+    id: temperatura
+    topic: fuori_come_un_balcone/temp
+    on_value:
+      then:
+        - output.set_level:
+            id: dial
+            level: !lambda "return (x - id(min_value)) * (id(max_pwm) - id(min_pwm)) / (id(max_value) - id(min_value)) + id(min_pwm);"
+
+  - platform: mqtt_subscribe
+    name: "setMinValue"
+    id: setMinValue
+    topic: IoTDial/busolin/settings/setMinValue
+    on_value:
+      then:
+        - lambda: "id(min_value)=x;"
+\end{lstlisting}
+Nel dettaglio, in questo frammento viene effettuata una sottoscrizione ad un topic in cui viene periodicamente pubblicata
+la rilevazione della temperatura esterna e utilizzato un piccolo script viene mappato il valore a un'uscita PWM sfruttando le variabili
+globali.
+Successivamente si può osservare una sottoscrizione creata per l'aggiornamento della variabile globale min_value (ne sono presenti
+per tutte e quattro le variabili). In caso per qualche motivo l'intervallo dei valori cambi (ad esempio per un cambio di stagione) è
+possibile eseguire questa modifica che grazie alle impostazioni precedentemente prescritte viene mantenuta in memoria flash.
+
+L'output verso il voltmetro è dichiarato nel seguente modo:
+\begin{lstlisting}
+output:
+  - platform: esp8266_pwm
+    pin: D2
+    id: dial
+\end{lstlisting}
+
+Ai topic figli di topic_prefix verranno automaticamente pubblicati gli stati di ogni sensore fisico e virtuale configurati nello YAML,
+quindi per un'integrazione con sistemi di domotica basta aggiungere un elemento sotto sensors e attivare la sottoscrizione al
+topic che esso genererà.
 
 \chapter{Conclusioni}
 %\todo{atrent: oltre alla presentazione all'hacklab (domani!) proviamo a organizzare una sessione ad hoc almeno con gli studenti del corso SistEmbed (e magari quelli di PROS?)}
