@@ -220,6 +220,8 @@ La conversione di strumenti vintage per utilizzi diversi dall'originale è un'at
 sezione verranno riportati alcuni esempi di esperimenti e prototipi e poi verranno descritte alcune delle piattaforme di sviluppo disponibili
 per ESP8266.
 
+\todo{atrent: aggiungerne qualcuno (ispirazione hackaday, steampunk)}
+
 \subsection{Retrofitting of an old tester from 1955}
 Trasformazione di un vecchio tester in orologio, luce notturna e sveglia utilizzando un Arduino Nano con un ESP8266-01. 
 \cite{retrofit1955}, Figura~\ref{fig:retrofit1955}.
@@ -337,6 +339,10 @@ visualizzare delle grafiche. Esempio in Figura~\ref{fig:oscilloscopio}.
 \end{figure}
 
 \section{Componenti}
+
+
+\todo{atrent: dire cosa intendi raccontare in questa sezione e dire che alcuni di questi NON saranno usabili}
+
 \subsection{Interruttori / Pulsanti}
 Formati da un semplice meccanismo che permette di aprire o chiudere un circuito.
 \subsection{Commutatori a n posizioni}
@@ -350,12 +356,15 @@ Fonte luminosa. Generalmente quelle che si possono trovare nei vecchi apparati s
 metallico, generalmente di tungsteno, che scaldandosi emette della luce.
 \subsection{Buzzer/Altoparlanti}
 Consentono di produrre dei suoni, un esempio di applicazione è nei tester di continuità elettrica, che emettono un ``beep" alla rilevazione.
+\todo{atrent: spezzare buzzer da altoparlante}
 \subsection{Termometri}
 Componente in grado di misurare la temperatura ambientale. Negli strumenti di misura possono essere usati per compensare le misurazioni
 di componenti sensibili alle variazioni di temperatura nell'ambiente di utilizzo.
 \subsection{Inclinometri a mercurio}
 Particolari interruttori basati sulla gravità, i più semplici contengono una goccia di mercurio e due contatti elettrici, la cui chiusura dipende dalla
 direzione della forza di gravità a cui è soggetto il componente: se la goccia viene spinta verso i contatti il circuito è chiuso, altrimenti rimane aperto.
+
+\todo{atrent: combinatore telefonico, suoneria}
 
 
 \chapter{Generalizzazione degli strumenti di misura}
@@ -460,7 +469,7 @@ gli scambi di lettere presenti sulla macchina Enigma. Si riporta un esempio in F
   \label{fig:connettorimultipli}
 \end{figure}
 
-\subsection{Lampadine}
+\section{Lampadine}
 Possono essere utilizzate per rappresentare uno stato binario o comunicare diverse informazioni mediante dei pattern di lampeggiamento.
 In genere con i sistemi embedded si adoperano i LED al posto delle lampadine a incandescenza, in quanto possono essere pilotati
 direttamente dai pin del microcontrollore, salvo eventuali resistenze in serie per ridurre il flusso di corrente.
@@ -468,16 +477,16 @@ Nel codice di Arduino un LED può essere pilotato mediante una digitalWrite per 
 intensità variabili mediante PWM (in maniera simile a come si è fatto con l'ago dello strumento per il prototipo). In esphome si può
 utilizzare un componente di tipo light.
 
-\subsection{Buzzer/Altoparlanti}
+\section{Buzzer/Altoparlanti}
 Possono essere usati per dare indicazioni audio, ad esempio in caso di errore. I buzzer possono solitamente essere pilotati direttamente
 dal microcontrollore, mentre gli altoparlanti spesso richiedono un amplificatore di potenza.
 Il funzionamento dal punto di vista software dipende dal tipo di buzzer utilizzato: un buzzer attivo contiene al suo interno un oscillatore
 e quindi genererà un beep mentre è alimentato. Un buzzer passivo si comporta in maniera simile a un altoparlante in quanto ha bisogno di
 un segnale audio in input. Attraverso esphome è possibile riprodurre delle semplici melodie con buzzer passivi utilizzando il componente rtttl.
 
-\subsection{Termometri} \todo{busolin: Se anche uno strumento ha al suo interno un termometro di taratura, quasi sicuramente non sarà integrabile con l'ESP. Menziono lo stesso la possibilità di aggiungere un DHT?}
+\section{Termometri} \todo{busolin: Se anche uno strumento ha al suo interno un termometro di taratura, quasi sicuramente non sarà integrabile con l'ESP. Menziono lo stesso la possibilità di aggiungere un DHT?}
 
-\subsection{Inclinometri a mercurio}
+\section{Inclinometri a mercurio}
 Ai fini implementativi hanno un funzionamento al pari degli interruttori/pulsanti. L'unica differenza sta nel principio fisico di funzionamento
 e quindi nel significato che si può dare all'output nel codice.
 
@@ -546,7 +555,6 @@ destro con un pulsante e all'interno è stato posizionato un buzzer che consente
 Questo capitolo tratterà dell'implementazione delle varie feature del prototipo realizzato durante il tirocinio, chiamato IoTDial,
 il loro utilizzo e alcune osservazioni al riguardo.
 
-\section{Hardware}
 Il prototipo era inizialmente molto semplice dal punto di vista hardware: consisteva in un voltmetro analogico ad ago impostato con
 fondoscala a 3V e un WeMos D1 mini basato su ESP8266. Il terminale positivo del voltmetro era connesso a un GPIO dell'ESP,
 mentre il terminale negativo a GND.
@@ -555,7 +563,65 @@ Successivamente sono stati eseguiti maggiori interventi fisici fino ad arrivare 
 e descritta nella corrispondente sezione, con il microcontrollore inserito all'interno della scocca dello strumento e alcune modifiche estetiche
 e funzionali.
 
-\section{Software}
+\section{Contesti d'uso}
+\subsection{Ruoli}
+Prima di parlare del delle modalità operative di IoTDial è il caso di soffermarsi su chi vi può interagire:
+\subsubsection*{Sviluppatore}
+È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e  modificare funzionalità del programma
+e apportare modifiche dirette ai file di configurazione.
+\subsubsection*{Utente esperto}
+Conosce le API ed è in grado di comprendere il formato dei dati che restituiscono. Gli è sufficiente un'interfaccia anche spartana
+per selezionare la sorgente dei dati e il campo specifico che vuole rappresentato.
+\subsubsection*{Utente inesperto}
+Non conosce le API né il formato JSON, è possibile che abbia anche una limitata conoscenza del mondo informatico:
+ha bisogno di un prodotto già pronto che richieda la minima configurazione possibile e questa
+deve essere particolarmente intuitiva. 
+\todo{atrent: questi sono i ruoli, mancano gli use case veri e propri (parlando formalmente, faccio riferimento a UML)}
+
+\subsection{Use case}
+
+\subsubsection{API/standalone}
+Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo configurabili di richieste HTTP o HTTPS ad API REST
+e sulla conversione del risultato in una tensione di uscita, avendo in più le funzionalità descritte precedentemente nella sezione
+sulla realizzazione software.
+Gli interventi al codice richiedono uno sviluppatore, la configurazione della fonte API e la gestione dei multipli file di configurazione sono nelle
+corde di un utente esperto mentre per l'utente inesperto sarebbe necessario fornire un prodotto già pronto. Potrebbe giusto configurare
+la rete WiFi mediante l'access point integrato e il web form e qualora implementato selezionare fonti di dati o configurazioni diverse mediante
+interazione con un commutatore fisico.
+
+\subsubsection{MQTT/smart home/passivo}
+\todo{busolin: descrizione vecchia modalità MQTT e esphome}
+Questa modalità era stata inizialmente pensata come complemento della modalità API: condivideva in parte i parametri di configurazione
+e consisteva nel mappare in uscita sullo strumento, al posto di un valore ritornato dalle API, un valore passato tramite messaggio MQTT
+a uno specifico topic (\texttt{<root>/setValue}).
+
+Andando avanti con le idee di sviluppo era in cantiere un'estensione del programma per l'integrazione nello scambio di messaggi di componenti
+aggiuntive quali switch, commutatori, ecc. già descritte in altre sezioni. Questo avrebbe voluto dire scrivere codice per ogni tipo di device
+aggiuntivo da integrare nel sistema e trovare un modo per abilitare solo il necessario in base alla configurazione fisica del dispositivo,
+il tutto in ottica di una possibile integrazione con sistemi di domotica per il raccoglimento e l'elaborazione dei dati dei vari sensori e input.
+
+Questa lista di funzionalità rispecchia molto bene quella di esphome, per cui è stato relegato il funzionamento stand-alone del solo ago
+con codice scritto su misura alla ``modalità API", mentre per un'integrazione con sistemi di domotica e la gestione di vari input e output
+sempre diversi si è scelto di fare totale affidamento su esphome, che grazie alla sua estensiva documentazione e compatibilità con una vasta
+gamma di componenti esterne si presta molto bene all'incarico. \cite{esphomeio} \todo{busolin: Ora che questo discorso è anche nello stato dell'arte, questa è una ripetizione?}
+
+Nell'implementazione tramite esphome permangono le 4 variabili globali già viste nell'implementazione della modalità API:
+min_value, max_value, min_pwm e max_pwm, per un mapping del valore da rappresentare sullo strumento.
+La differenza sta in min_pwm e max_pwm che invece di seguire un intervallo tra 0 e 1023 sono rappresentate in esphome come una percentuale,
+da 0.00 a 1.00.
+
+In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di esphome ai vari dispositivi, specialmente per quanto riguarda
+automatismi interni indipendenti da sistemi di home automation. Anche in questo caso per l'utente inesperto è necessario fornire un dispositivo già
+configurato e pronto all'uso, al netto di configurazioni della rete WiFi con un meccanismo simile a quello implementato nella modalità API.
+
+
+
+
+\todo{atrent: in generale metterei tanti schemi e disegni}
+
+
+
+\section{Implementazione modalità API...}
 La parte software del prototipo è stata realizzata utilizzando il linguaggio di programmazione di Arduino, esteso all'utilizzo con
 ESP8266 e con l'aiuto di numerose librerie. Come IDE è stato usato Visual Studio Code con l'estensione PlatformIO, la quale
 permette di specificare le dipendenze direttamente in file di configurazione e di scaricare automaticamente le librerie necessarie
@@ -865,57 +931,9 @@ in situazioni di difficile accesso fisico al microcontrollore.
 Il processo di upload usa Digest-MD5 per la verifica dell'integrità, onde evitare di rendere il dispositivo inservibile. È inoltre possibile
 migliorare la sicurezza dell'operazione mediante utilizzo di password e hash firmati. \cite{espota}
 
-\section{Ruoli}
-Prima di parlare del delle modalità operative di IoTDial è il caso di soffermarsi su chi vi può interagire:
-\subsection*{Sviluppatore}
-È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e  modificare funzionalità del programma
-e apportare modifiche dirette ai file di configurazione.
-\subsection*{Utente esperto}
-Conosce le API ed è in grado di comprendere il formato dei dati che restituiscono. Gli è sufficiente un'interfaccia anche spartana
-per selezionare la sorgente dei dati e il campo specifico che vuole rappresentato.
-\subsection*{Utente inesperto}
-Non conosce le API né il formato JSON, è possibile che abbia anche una limitata conoscenza del mondo informatico:
-ha bisogno di un prodotto già pronto che richieda la minima configurazione possibile e questa
-deve essere particolarmente intuitiva. 
-\todo{atrent: questi sono i ruoli, mancano gli use case veri e propri (parlando formalmente, faccio riferimento a UML)}
+\section{Implementazione modalità passiva}
+\todo{atrent: cambiare titolo e riempire, ESPHOME con spiegazione dello yaml}
 
-\todo{atrent: in generale metterei tanti schemi e disegni}
-
-\section{Modalità operative}
-
-\subsection{Modalità API}
-Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo configurabili di richieste HTTP o HTTPS ad API REST
-e sulla conversione del risultato in una tensione di uscita, avendo in più le funzionalità descritte precedentemente nella sezione
-sulla realizzazione software.
-Gli interventi al codice richiedono uno sviluppatore, la configurazione della fonte API e la gestione dei multipli file di configurazione sono nelle
-corde di un utente esperto mentre per l'utente inesperto sarebbe necessario fornire un prodotto già pronto. Potrebbe giusto configurare
-la rete WiFi mediante l'access point integrato e il web form e qualora implementato selezionare fonti di dati o configurazioni diverse mediante
-interazione con un commutatore fisico.
-
-\subsection{Modalità MQTT / smart home}
-\todo{busolin: descrizione vecchia modalità MQTT e esphome}
-Questa modalità era stata inizialmente pensata come complemento della modalità API: condivideva in parte i parametri di configurazione
-e consisteva nel mappare in uscita sullo strumento, al posto di un valore ritornato dalle API, un valore passato tramite messaggio MQTT
-a uno specifico topic (\texttt{<root>/setValue}).
-
-Andando avanti con le idee di sviluppo era in cantiere un'estensione del programma per l'integrazione nello scambio di messaggi di componenti
-aggiuntive quali switch, commutatori, ecc. già descritte in altre sezioni. Questo avrebbe voluto dire scrivere codice per ogni tipo di device
-aggiuntivo da integrare nel sistema e trovare un modo per abilitare solo il necessario in base alla configurazione fisica del dispositivo,
-il tutto in ottica di una possibile integrazione con sistemi di domotica per il raccoglimento e l'elaborazione dei dati dei vari sensori e input.
-
-Questa lista di funzionalità rispecchia molto bene quella di esphome, per cui è stato relegato il funzionamento stand-alone del solo ago
-con codice scritto su misura alla ``modalità API", mentre per un'integrazione con sistemi di domotica e la gestione di vari input e output
-sempre diversi si è scelto di fare totale affidamento su esphome, che grazie alla sua estensiva documentazione e compatibilità con una vasta
-gamma di componenti esterne si presta molto bene all'incarico. \cite{esphomeio} \todo{busolin: Ora che questo discorso è anche nello stato dell'arte, questa è una ripetizione?}
-
-Nell'implementazione tramite esphome permangono le 4 variabili globali già viste nell'implementazione della modalità API:
- min_value, max_value, min_pwm e max_pwm, per un mapping del valore da rappresentare sullo strumento.
-La differenza sta in min_pwm e max_pwm che invece di seguire un intervallo tra 0 e 1023 sono rappresentate in esphome come una percentuale,
-da 0.00 a 1.00.
-
-In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di esphome ai vari dispositivi, specialmente per quanto riguarda
-automatismi interni indipendenti da sistemi di home automation. Anche in questo caso per l'utente inesperto è necessario fornire un dispositivo già
-configurato e pronto all'uso, al netto di configurazioni della rete WiFi con un meccanismo simile a quello implementato nella modalità API.
 
 \chapter{Conclusioni}
 %\todo{atrent: oltre alla presentazione all'hacklab (domani!) proviamo a organizzare una sessione ad hoc almeno con gli studenti del corso SistEmbed (e magari quelli di PROS?)}
