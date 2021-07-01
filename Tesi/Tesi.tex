@@ -383,7 +383,7 @@ in Figura~\ref{fig:switchconnection}
   \begin{circuitikz} \draw
     (0,0) to[cute open switch] (0,4)
    -- (4,4) node[above]{GPIO}
-    to[twoport,t={ESP}] (4,0) node[below]{GND}
+    to[twoport,t={ESP}] (4,0) node[below]{3.3V/GND}
     -- (0,0)
     ;
   \end{circuitikz}
@@ -398,10 +398,11 @@ utilizzabili come parametro in un programma. Ad esempio un commutatore a 7 posti
 settimana.
 
 Per evitare di occupare tanti pin del microcontrollore quante sono le possibili posizioni di un commutatore, è possibile convertirlo in un
-partitore di tensione mediante l'ausilio di resistenze tutte uguali collegate come da esempio in Figura~\ref{fig:commutatoreprimadopo},
+partitore di tensione mediante l'ausilio di resistenze tutte uguali con valore totale intorno ai 10k$\Omega$,
+collegate come da esempio in Figura~\ref{fig:commutatoreprimadopo} e \ref{fig:rotaryconnection},
 ottenendo una sorta di potenziometro che invece di variare nel continuo assume valori in step regolari tra il minimo e il massimo
 dell'ingresso, che possono essere agevolmente distinti e interpretati come valori discreti.
-Esempio di collegamento in figura~\ref{fig:rotaryconnection}. Per la lettura valgono le considerazioni fatte sui potenziometri, bisognerà
+Per la lettura valgono le considerazioni fatte sui potenziometri, bisognerà
 poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dovere nel codice.
 
 \begin{figure}[h]
@@ -422,7 +423,7 @@ poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dover
     (SW.in) -- (esp)
    
 
-    (4,0) to[R] (4,2) to[R] (4,4) to[R] (4,6) 
+    (4,6) to[R=R1] (4,4) to[R=R2] (4,2) to[R=R3] (4,0) 
     (0,6) -- (4,6)
     (0,0) -- (4,0)
 
@@ -432,7 +433,7 @@ poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dover
     (SW.out 4) to[short, -*] (4,0)  node[below]{GND}
   ;
   \end{circuitikz}
-  \caption{Schema collegamento commutatore modificato all'ESP}
+  \caption{Schema collegamento commutatore modificato all'ESP. Le tre resistenze hanno lo stesso valore}
   \label{fig:rotaryconnection}
 \end{figure}
 
