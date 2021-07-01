@@ -907,8 +907,14 @@ Questa lista di funzionalità rispecchia molto bene quella di esphome, per cui �
 con codice scritto su misura alla ``modalità API", mentre per un'integrazione con sistemi di domotica e la gestione di vari input e output
 sempre diversi si è scelto di fare totale affidamento su esphome, che grazie alla sua estensiva documentazione e compatibilità con una vasta
 gamma di componenti esterne si presta molto bene all'incarico. \cite{esphomeio} \todo{busolin: Ora che questo discorso è anche nello stato dell'arte, questa è una ripetizione?}
+
+Nell'implementazione tramite esphome permangono le 4 variabili globali già viste nell'implementazione della modalità API:
+ min_value, max_value, min_pwm e max_pwm, per un mapping del valore da rappresentare sullo strumento.
+La differenza sta in min_pwm e max_pwm che invece di seguire un intervallo tra 0 e 1023 sono rappresentate in esphome come una percentuale,
+da 0.00 a 1.00.
+
 In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di esphome ai vari dispositivi, specialmente per quanto riguarda
-automatismi interni indipendenti da sistemi di smart home. Anche in questo caso per l'utente inesperto è necessario fornire un dispositivo già
+automatismi interni indipendenti da sistemi di home automation. Anche in questo caso per l'utente inesperto è necessario fornire un dispositivo già
 configurato e pronto all'uso, al netto di configurazioni della rete WiFi con un meccanismo simile a quello implementato nella modalità API.
 
 \chapter{Conclusioni}
