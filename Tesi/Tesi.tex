@@ -259,6 +259,29 @@ Questa modifica è molto simile a quelle che verranno affrontate nelle prossime 
   \label{fig:gaugevintagestyle}
 \end{figure}
 
+\subsection{Ampere time}
+Orologio giornaliero realizzato utilizzando un vecchio amperometro per la didattica. Il fatto che le intere 24 ore siano ``schiacciate"
+in un intervallo ristretto, secondo l'autore, è un buon antidoto agli stressanti ritmi della vita moderna.
+\cite{amperetime}, Figura~\ref{fig:amperetime}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{amperetime}
+  \caption{Ampere time \cite{amperetime}}
+  \label{fig:amperetime}
+\end{figure}
+
+\subsection{Retro Nixie Tube Clock}
+Un orologio rétro in stile Steampunk basato su valvole Nixie, tubi in rame e legno riciclato.
+\cite{nixieclock}, Figura~\ref{fig:nixieclock}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{nixieclock}
+  \caption{Retro Nixie Tube Clock \cite{nixieclock}}
+  \label{fig:nixieclock}
+\end{figure}
+
 \subsection{Tasmota}
 Tasmota è un firmware open source per dispositivi basati su ESP8266, nato come espansione per il firmware degli interruttori
 wireless Sonoff al fine di arricchirli con funzionalità MQTT. Il suo obiettivo è quello di rendere più configurabili e controllabili i dispositivi
@@ -272,6 +295,19 @@ Supporta una grande quantità di componenti hardware e software il che lo rende 
 \cite{esphomeio}
 Per alcune delle feature del prototipo realizzato durante il tirocinio è stato deciso di utilizzare questo sistema.
 
+\section{Steampunk}
+Vista l'attinenza con l'obiettivo del tirocinio, è il caso di menzionare anche la corrente artistica Steampunk, la quale si basa su
+un'anacronistica idea di ``futuro" evoluto dall'epoca vittoriana in cui la tecnologia dominante è ancora il vapore (\emph{steam})
+e i materiali di cui sono composti gli oggetti di uso comune rimangono l'ottone e il cuoio. \cite{focussteampunk}
+Nelle opere di questo genere è molto comune trovare grandi tubi per il vapore e indicatori vari sparsi per ogni tipo di oggetto.
+Esempio di oggetto Steampunk in Figura~\ref{fig:steampunklamp}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{steampunklamp}
+  \caption{Bombola di gas convertita in lampada Steampunk \cite{wiki:steampunklamp}}
+  \label{fig:steampunklamp}
+\end{figure}
 
 \chapter{Panoramica storica e caratteristiche fisiche degli strumenti}
 %\todo{Sezione panoramica storica più caratteristiche fisiche, "istanze"}
@@ -339,9 +375,10 @@ visualizzare delle grafiche. Esempio in Figura~\ref{fig:oscilloscopio}.
 \end{figure}
 
 \section{Componenti}
+In questa sezione si farà una panoramica dei componenti che si possono incontrare a bordo degli strumenti vintage. Alcuni hanno
+un'utilità ai fini della fisicalizzazione o in generale alla conversione per l'utilizzo con microcontrollori, mentre altri non sono convertibili.
 
-
-\todo{atrent: dire cosa intendi raccontare in questa sezione e dire che alcuni di questi NON saranno usabili}
+%\todo{atrent: dire cosa intendi raccontare in questa sezione e dire che alcuni di questi NON saranno usabili}
 
 \subsection{Interruttori / Pulsanti}
 Formati da un semplice meccanismo che permette di aprire o chiudere un circuito.
@@ -490,7 +527,7 @@ Ai fini implementativi hanno un funzionamento al pari degli interruttori/pulsant
 e quindi nel significato che si può dare all'output nel codice.
 
 \chapter{Guida alla trasformazione degli strumenti vintage}
-\todo{Sezione guida alla conversione vera e propria che fa riferimenti alla sezione precedente}
+%\todo{Sezione guida alla conversione vera e propria che fa riferimenti alla sezione precedente}
 
 %\todo{atrent: manca una trattazione di come è fatto e come funziona lo strumento ad ago (che sarà il più frequente oggetto di visualizzazione), spiega bene la sua architettura, wikipedia is your friend}
 
@@ -593,7 +630,7 @@ diverse mediante interazione con un commutatore fisico.
 
 In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di esphome ai vari dispositivi collegati,
 specialmente per quanto riguarda automatismi interni indipendenti da sistemi di home automation.
-Una configurazione totalmente "passiva" e relegata all'interazione con sistemi di home automation, invece, può essere effettuata
+Una configurazione totalmente ``passiva" e relegata all'interazione con sistemi di home automation, invece, può essere effettuata
 anche da un utente esperto, vista la semplicità d'uso delle configurazioni di base di esphome e delle interfacce dei sistemi con cui
 si andrà a interfacciare.
 Ancora una volta per l'utente inesperto è necessario fornire un dispositivo già configurato e pronto all'uso, al netto di
@@ -643,7 +680,7 @@ Un'alternativa fornita dalla libreria è quella di utilizzo di uno stream, per p
 memorizzare per intero, potendo ignorare le parti non necessarie. Questo meccanismo però è di facile utilizzo solo finché ci si limita a
 HTTP. Per HTTPS la funzione per estrarre lo stream della risposta, secondo la documentazione della libreria, non è supportata.
 Per questo motivo è stato utilizzato come stream direttamente il BearSSL::WiFiClientSecure referenziato dalla connessione, impostato in
-modalità insicura (senza la verifica della fingerprint), che però non sempre presenta un output "pulito" della risposta ma essa potrebbe
+modalità insicura (senza la verifica della fingerprint), che però non sempre presenta un output  ``pulito" della risposta ma essa potrebbe
 essere preceduta da una linea contentente (presumibilmente) la lunghezza in byte della risposta, che va eliminata prima di poter
 passare lo stream al parser JSON.
 
@@ -666,7 +703,7 @@ JSON è stato successivamente usato anche come formato per la serializzazione e 
 memoria flash dell'ESP per permetterne la persistenza anche a seguito di perdite di tensione.
 
 Segue una porzione di codice della callback che evidenzia l'utilizzo di uno stream con buffer da 64 byte ai fini di un miglioramento delle
-performance, la deserializzazione del filtro e la "pulizia" dello stream nel caso in cui si usi HTTPS ed esso contenga caratteri iniziali
+performance, la deserializzazione del filtro e la ``pulizia" dello stream nel caso in cui si usi HTTPS ed esso contenga caratteri iniziali
 diversi dalle parentesi.
 \begin{lstlisting}
 void stream_callback(Stream &stream) {
@@ -1014,7 +1051,7 @@ sensor:
         - lambda: "id(min_value)=x;"
 \end{lstlisting}
 Nel dettaglio, in questo frammento viene effettuata una sottoscrizione ad un topic in cui viene periodicamente pubblicata
-la rilevazione della temperatura esterna e utilizzato un piccolo script viene mappato il valore a un'uscita PWM sfruttando le variabili
+la rilevazione della temperatura esterna e utilizzando un piccolo script viene mappato il valore a un'uscita PWM sfruttando le variabili
 globali.
 Successivamente si può osservare una sottoscrizione creata per l'aggiornamento della variabile globale min_value (ne sono presenti
 per tutte e quattro le variabili). In caso per qualche motivo l'intervallo dei valori cambi (ad esempio per un cambio di stagione) è
