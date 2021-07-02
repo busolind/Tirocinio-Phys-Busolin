@@ -217,6 +217,28 @@ sono connessi anche oggetti (\emph{cose}), i quali sono molto più adeguati risp
 e scambiarseli.
 \cite{ashton2009internet}
 
+\section{ESP8266}
+Microcontrollore economico e versatile, che comprende al suo interno funzionalità WiFi, un completo stack di rete, 17 pin General
+Purpose (GPIO), supporta vari protocolli di comunicazione come I2C e possiede un ADC (Analog to Digital Converter) a 10 bit.
+\cite{esp8266}.
+
+Lo sviluppo hardware e software del prototipo che verrà illustrato nei seguenti capitoli è stato svolto su un Wemos D1 Mini, basato
+su ESP8266.
+
+\section{MQTT}
+MQTT (Message Queuing Telemetry Transport) è un protocollo di messaggistica basato su publish/subscribe molto utilizzato in ambito
+IoT per via della sua semplicità di implementazione, bassi requisiti prestazionali ed elevate scalabilità e affidabilità. 
+
+L'architettura publish/subscribe si fonda sull'utilizzo di un broker centrale a cui i vari client si connettono e si scambiano messaggi
+divisi per topic (argomenti) \cite{mqttorg}. Schema architetturale in Figura~\ref{fig:mqttarch}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{mqttarch}
+  \caption{Architettura publish/subscribe di MQTT \cite{mqttorg}}
+  \label{fig:mqttarch}
+\end{figure}
+
 \section{Obiettivo}
 L'obiettivo dell'attività svolta durante il tirocinio è quello di analizzare e sperimentare una forma di fisicalizzazione
 dei dati mediante strumenti di misura vintage e dispositivi IoT che non richieda l'utilizzo di computer e monitor e sia di semplice fruizione
@@ -1301,10 +1323,17 @@ siti e app ma direttamente lanciando un'occhiata a un angolo della stanza, come 
 per i pendolari che al momento non è attuabile su larga scala da terzi e le aziende di trasporti non sembrano interessate a proporre
 prodotti simili.
 
+\section{Sviluppi futuri}
+Il prototipo realizzato durante il tirocinio, IoTDial, è solo un esempio di ciò che si può realizzare sulla base dell'idea di conversione degli
+strumenti vintage, alcuni esempi di approcci diversi sono stati riportati nell'introduzione.
+
+Un'idea di espansione di ciò che è stato fatto fino ad ora sarebbe utilizzare strumenti più grossi e con più input/indicatori per creare
+una sorta di pannello di controllo domestico integrato con la domotica, che grazie a ESPHome sarebbe abbastanza immediato.
+Ulteriori trasformazioni e utilizzi sono limitati solamente dalla fantasia.
 
 
 \bibliographystyle{plain}
 \bibliography{Biblio}
-%\addcontentsline{toc}{chapter}{Bibliografia}
+\addcontentsline{toc}{chapter}{Bibliografia}
 
 \end{document}
