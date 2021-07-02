@@ -447,7 +447,7 @@ Interruttore a mercurio in Figura~\ref{fig:mercuryswitch}.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.5\textwidth]{mercuryswitch}
-  \caption{Interruttore a mercurio \cite{wiki:mercuryswitch}}
+  \caption{Interruttore a mercurio in stato ``aperto" \cite{wiki:mercuryswitch}}
   \label{fig:mercuryswitch}
 \end{figure}
 
@@ -477,7 +477,7 @@ software e tipi di dato.
 \section{Interruttori / Pulsanti}
 Possono essere mappati a valori booleani (true/false). Collegabili da un capo a un terminale positivo o GND (in base a come viene letto
 l'input) e dall'altro capo a un GPIO del microcontrollore. 
-Possono essere utilizzati nel codice mediante la funzione digitalRead o come binary sensor su esphome\cite{esphomeio}:
+Possono essere utilizzati nel codice mediante la funzione digitalRead o come binary sensor su ESPHome\cite{esphomeio}:
 \begin{lstlisting}[language=yaml]
 binary_sensor:
   - platform: gpio
@@ -549,7 +549,7 @@ poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dover
 \section{Potenziometri}
 Possono essere mappati a valori aventi intervallo arbitrario, con una precisione limitata dalla risoluzione del convertitore analogico-digitale
 integrato nel microcontrollore. Per poter leggere l'output è necessario collegarli a un GPIO che supporta la lettura di segnali analogici
-e nel codice utilizzare la funzione analogRead. Su esphome è necessario usare sensori di tipo adc\cite{esphomeio}:
+e nel codice utilizzare la funzione analogRead. Su ESPHome è necessario usare sensori di tipo adc\cite{esphomeio}:
 \begin{lstlisting}[language=yaml]
 sensor:
   - platform: adc
@@ -591,7 +591,7 @@ In genere con i sistemi embedded si adoperano i LED al posto delle lampadine a i
 direttamente dai pin del microcontrollore, salvo eventuali resistenze in serie per ridurre il flusso di corrente.
 Nel codice di Arduino un LED può essere pilotato mediante una digitalWrite per funzionamento on/off o una analogWrite per
 intensità variabili mediante PWM (in maniera simile a come si è fatto con l'ago dello strumento per il prototipo).
-In esphome si può utilizzare un componente di tipo light, il più semplice è quello binario che si collega a un output\cite{esphomeio}:
+In ESPHome si può utilizzare un componente di tipo light, il più semplice è quello binario che si collega a un output\cite{esphomeio}:
 \begin{lstlisting}[language=yaml]
 light:
   - platform: binary
@@ -609,7 +609,7 @@ dal microcontrollore, mentre gli altoparlanti spesso richiedono un amplificatore
 Il funzionamento dal punto di vista software dipende dal tipo di buzzer utilizzato: un buzzer attivo contiene al suo interno un oscillatore
 e quindi genererà un beep mentre è alimentato. Un buzzer passivo si comporta in maniera simile a un altoparlante (in effetti ne è un tipo
 particolare) in quanto ha bisogno di un segnale audio in ingresso.
-Attraverso esphome è possibile riprodurre delle semplici melodie con buzzer passivi utilizzando il componente rtttl. Si riporta a seguito
+Attraverso ESPHome è possibile riprodurre delle semplici melodie con buzzer passivi utilizzando il componente rtttl. Si riporta a seguito
 l'esempio di configurazione di un componente buzzer che riproduce il tema di Mission Impossible\cite{esphomeio}:
 \begin{lstlisting}[language=yaml]
 output:
@@ -629,7 +629,7 @@ Ai fini implementativi hanno un funzionamento al pari degli interruttori/pulsant
 e quindi nel significato che si può dare all'output nel codice.
 
 \subsection{Disco combinatore}
-Come descritto precedentemente, questo tipo di dispositivo produce una sequenza di impulsi che vanno letti e contati. Esphome mette
+Come descritto precedentemente, questo tipo di dispositivo produce una sequenza di impulsi che vanno letti e contati. ESPHome mette
 a disposizione un componente che consente di eseguire questo tipo di lettura in maniera semplice:
 \begin{lstlisting}[language=yaml]
 sensor:
@@ -753,10 +753,10 @@ e dipendenza con altri oggetti all'interno o all'esterno della rete locale per f
 dei dati dei componenti aggiuntivi connessi.
 Esiste il modo di rendere un sistema ESPHome completamente autonomo mediante l'utilizzo di procedure interne ma non verrà
 approfondito in questa sede.
-In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di esphome ai vari dispositivi collegati,
+In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di ESPHome ai vari dispositivi collegati,
 specialmente per quanto riguarda automatismi interni indipendenti da sistemi di home automation.
 Una configurazione totalmente ``passiva" e relegata all'interazione con sistemi di home automation, invece, può essere effettuata
-anche da un utente esperto, vista la semplicità d'uso delle configurazioni di base di esphome e delle interfacce dei sistemi con cui
+anche da un utente esperto, vista la semplicità d'uso delle configurazioni di base di ESPHome e delle interfacce dei sistemi con cui
 si andrà a interfacciare.
 Ancora una volta per l'utente inesperto è necessario fornire un dispositivo già configurato e pronto all'uso, al netto di
 configurazioni della rete WiFi con un meccanismo simile a quello implementato nella modalità API.
@@ -1084,9 +1084,9 @@ Questo avrebbe voluto dire scrivere codice per ogni tipo di componente aggiuntiv
 abilitare solo il necessario in base alla configurazione fisica del dispositivo,
 il tutto in ottica di una possibile integrazione con sistemi di domotica per il raccoglimento e l'elaborazione dei dati dei vari sensori e input.
 
-Questa lista di funzionalità rispecchia molto bene quella di esphome, per cui è stato relegato il funzionamento standalone del solo ago
+Questa lista di funzionalità rispecchia molto bene quella di ESPHome, per cui è stato relegato il funzionamento standalone del solo ago
 con codice scritto su misura alla ``modalità API", mentre per un'integrazione con sistemi di domotica e la gestione di vari input e output
-sempre diversi si è scelto di fare totale affidamento su esphome, che grazie alla sua estensiva documentazione e compatibilità con una
+sempre diversi si è scelto di fare totale affidamento su ESPHome, che grazie alla sua estensiva documentazione e compatibilità con una
 vasta gamma di componenti esterne si presta molto bene all'incarico.
 
 In particolare, la configurazione avviene per mezzo di file YAML in cui è possibile dichiarare proprietà e componenti utilizzati:
@@ -1116,9 +1116,9 @@ wifi_ssid: "IOT_TEST"
 wifi_password: "IOT_TEST"
 \end{lstlisting}
 
-Nell'implementazione tramite esphome permangono le 4 variabili globali già viste nell'implementazione della modalità API:
+Nell'implementazione tramite ESPHome permangono le 4 variabili globali già viste nell'implementazione della modalità API:
 min_value, max_value, min_pwm e max_pwm, per un mapping del valore da rappresentare sullo strumento.
-La differenza sta in min_pwm e max_pwm che invece di seguire un intervallo tra 0 e 1023 sono rappresentate in esphome come una
+La differenza sta in min_pwm e max_pwm che invece di seguire un intervallo tra 0 e 1023 sono rappresentate in ESPHome come una
 percentuale, da 0.00 a 1.00. Segue la dichiarazione delle variabili globali:
 \begin{lstlisting}[language=yaml]
 globals:
