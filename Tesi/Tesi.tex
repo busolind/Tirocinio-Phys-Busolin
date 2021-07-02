@@ -154,7 +154,7 @@ sono l'esempio più comune, hanno molti vantaggi grazie alla loro versatilità t
 maniera dettagliata e modificabile dinamicamente. Tuttavia, è emersa un'area di ricerca che pone la questione di non limitarsi a una
 matrice di pixel per visualizzazione di e interazione con i dati ma sfruttare altri tipi di interazione più naturale per gli esseri umani, come
 è stato illustrato dalla ricerca in Tangible Computing. \cite{hal:dataphys}
-\todo{atrent: in generale van riportati i principali concetti esposti negli articoli/libri che citi}
+%\todo{atrent: in generale van riportati i principali concetti esposti negli articoli/libri che citi}
 
 \section{Esempi di data physicalization e visualization}
 %\todo{atrent: fai anche esempi non miei, prendi quelli che ti piacciono di più, due o tre esempi}
@@ -735,7 +735,7 @@ deve essere particolarmente intuitiva.
 
 \subsection{Use case}
 
-\subsubsection{API/standalone}
+\subsubsection{API/Standalone}
 Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo configurabili di richieste HTTP o HTTPS ad API REST
 e sulla conversione del risultato in una tensione di uscita, avendo in più le funzionalità descritte successivamente nella sezione
 sulla implementazione software.
@@ -746,7 +746,7 @@ mediante le interfacce messe a disposizione sono nelle corde di un utente espert
 fornire un prodotto già pronto; potrebbe giusto configurare la rete WiFi mediante l'access point integrato e il web form e
 selezionare tra fonti di dati o configurazioni diverse mediante interazione con un commutatore fisico.
 
-\subsubsection{MQTT/smart home/passivo}
+\subsubsection{Smart Home/Passivo}
 %\todo{rivedere}
 Questa modalità si basa sulla piattaforma ESPHome ed è considerata ``passiva" in quanto l'idea di base prevede un'integrazione
 e dipendenza con altri oggetti all'interno o all'esterno della rete locale per funzionare a dovere, specialmente per l'interpretazione
@@ -762,8 +762,8 @@ Ancora una volta per l'utente inesperto è necessario fornire un dispositivo gi�
 configurazioni della rete WiFi con un meccanismo simile a quello implementato nella modalità API.
 
 
-\section{Implementazione modalità API...}
-La parte software della modalità standalone è stata realizzata utilizzando il linguaggio di programmazione di Arduino, esteso
+\section{Implementazione modalità API}
+La parte software della modalità API (o standalone) è stata realizzata utilizzando il linguaggio di programmazione di Arduino, esteso
 all'utilizzo con ESP8266, e con l'aiuto di numerose librerie.
 Come IDE è stato usato Visual Studio Code con l'estensione PlatformIO, la quale permette di specificare le dipendenze direttamente
 in file di configurazione e di scaricare automaticamente le librerie necessarie per ogni progetto.
@@ -1069,8 +1069,8 @@ in situazioni di difficile accesso fisico al microcontrollore.
 Il processo di upload usa Digest-MD5 per la verifica dell'integrità, onde evitare di rendere il dispositivo inservibile. È inoltre possibile
 migliorare la sicurezza dell'operazione mediante utilizzo di password e hash firmati. \cite{espota}
 
-\section{Implementazione modalità passiva}
-\todo{atrent: cambiare titolo e riempire, ESPHOME con spiegazione dello yaml}
+\section{Implementazione modalità Smart Home}
+%\todo{atrent: cambiare titolo e riempire, ESPHOME con spiegazione dello yaml}
 Questa modalità era stata inizialmente pensata come complemento della modalità API: condivideva in parte i parametri di configurazione
 e consisteva nel mappare in uscita sullo strumento, al posto di un valore ritornato dalle API, un valore passato tramite messaggio MQTT
 a uno specifico topic (\texttt{<root>/setValue}).
