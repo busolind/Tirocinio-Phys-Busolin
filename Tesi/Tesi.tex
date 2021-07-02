@@ -60,6 +60,21 @@
       {]}{{{\color{delim}{]}}}}{1},
 }
 
+\lstdefinelanguage{cpp}{
+  language=C++,
+  basicstyle=\ttfamily,
+  breaklines=true,
+  keywordstyle=\color{blue}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  commentstyle=\color{green}\ttfamily,
+  morecomment=[l][\color{magenta}]{\#}
+}
+
+\lstdefinelanguage{yaml}{ 
+  basicstyle=\ttfamily,
+   breaklines=true,
+}
+
 
 % Per inserire testo a caso in attesa di realizzare i capitoli
 %\usepackage{lipsum}
@@ -391,17 +406,25 @@ Consentono di collegare e scollegare cavi o sonde allo strumento.
 \subsection{Lampadine}
 Fonte luminosa. Generalmente quelle che si possono trovare nei vecchi apparati sono piccole e a incandescenza. Contengono un filamento
 metallico, generalmente di tungsteno, che scaldandosi emette della luce.
-\subsection{Buzzer/Altoparlanti}
-Consentono di produrre dei suoni, un esempio di applicazione è nei tester di continuità elettrica, che emettono un ``beep" alla rilevazione.
-\todo{atrent: spezzare buzzer da altoparlante}
+\subsection{Altoparlanti}
+Consentono di produrre suoni di varia natura, solitamente composti da una membrana che viene mossa da una bobina per generare onde
+sonore. Richiedono amplificazione.
+\subsection{Buzzer}
+Dispositivi di segnalazione acustica, i più comuni sono di tipo piezoelettrico e producono un fischio generato da un circuito elettrico oscillante.
+Sono spesso impiegati negli strumenti di misura ad esempio per segnalare continuità elettrica.
 \subsection{Termometri}
 Componente in grado di misurare la temperatura ambientale. Negli strumenti di misura possono essere usati per compensare le misurazioni
 di componenti sensibili alle variazioni di temperatura nell'ambiente di utilizzo.
 \subsection{Inclinometri a mercurio}
 Particolari interruttori basati sulla gravità, i più semplici contengono una goccia di mercurio e due contatti elettrici, la cui chiusura dipende dalla
 direzione della forza di gravità a cui è soggetto il componente: se la goccia viene spinta verso i contatti il circuito è chiuso, altrimenti rimane aperto.
-
-\todo{atrent: combinatore telefonico, suoneria}
+%\todo{atrent: combinatore telefonico, suoneria}
+\subsection{Disco combinatore}
+Dispositivo generalmente trovato nei vecchi telefoni a disco che consente di inviare un treno di impulsi il cui numero varia in base all'angolo
+di rotazione a cui viene portato prima del rilascio.
+\subsection{Suonerie}
+Anche queste generalmente trovate nei vecchi telefoni, se alimentate con una corrente alternata con tensione compresa tra i 60 e i
+100V producono un deciso squillo. Sono ottime come segnalatori acustici.
 \todo{busolin: foto}
 
 \chapter{Generalizzazione degli strumenti di misura}
@@ -412,7 +435,15 @@ software e tipi di dato.
 
 \section{Interruttori / Pulsanti}
 Possono essere mappati a valori booleani (true/false). Collegabili da un capo a GND e dall'altro capo a un GPIO del microcontrollore in modalità
-input pullup. Possono essere utilizzati nel codice mediante la funzione digitalRead o come switch component su esphome. Esempio di collegamento
+input pullup. Possono essere utilizzati nel codice mediante la funzione digitalRead o come binary sensor su esphome\cite{esphomeio}:
+\begin{lstlisting}[language=yaml]
+binary_sensor:
+  - platform: gpio
+    pin: D2
+    name: "Living Room Window"
+    device_class: window
+\end{lstlisting}
+\noindent Esempio di collegamento
 in Figura~\ref{fig:switchconnection}
 
 \begin{figure}[h]
@@ -477,8 +508,14 @@ poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dover
 \section{Potenziometri}
 Possono essere mappati a valori aventi intervallo arbitrario, con una precisione limitata dalla risoluzione del convertitore analogico-digitale
 integrato nel microcontrollore. Per poter leggere l'output è necessario collegarli a un GPIO che supporta la lettura di segnali analogici
-e nel codice utilizzare la funzione analogRead. Su esphome è necessario usare sensori di tipo adc.
-Esempio di collegamento in Figura~\ref{fig:potconnection}
+e nel codice utilizzare la funzione analogRead. Su esphome è necessario usare sensori di tipo adc\cite{esphomeio}:
+\begin{lstlisting}[language=yaml]
+sensor:
+  - platform: adc
+    pin: A0
+    name: "Living Room Brightness"
+\end{lstlisting}
+\noindent Esempio di collegamento in Figura~\ref{fig:potconnection}
 
 \begin{figure}[h]
   \centering
@@ -512,19 +549,53 @@ Possono essere utilizzate per rappresentare uno stato binario o comunicare diver
 In genere con i sistemi embedded si adoperano i LED al posto delle lampadine a incandescenza, in quanto possono essere pilotati
 direttamente dai pin del microcontrollore, salvo eventuali resistenze in serie per ridurre il flusso di corrente.
 Nel codice di Arduino un LED può essere pilotato mediante una digitalWrite per funzionamento on/off o una analogWrite per
-intensità variabili mediante PWM (in maniera simile a come si è fatto con l'ago dello strumento per il prototipo). In esphome si può
-utilizzare un componente di tipo light.
+intensità variabili mediante PWM (in maniera simile a come si è fatto con l'ago dello strumento per il prototipo).
+In esphome si può utilizzare un componente di tipo light, il più semplice è quello binario che si collega a un output\cite{esphomeio}:
+\begin{lstlisting}[language=yaml]
+light:
+  - platform: binary
+    name: "Desk Lamp"
+    output: light_output
 
+output:
+  - id: light_output
+    platform: gpio
+    pin: GPIO16
+\end{lstlisting}
 \section{Buzzer/Altoparlanti}
 Possono essere usati per dare indicazioni audio, ad esempio in caso di errore. I buzzer possono solitamente essere pilotati direttamente
 dal microcontrollore, mentre gli altoparlanti spesso richiedono un amplificatore di potenza.
 Il funzionamento dal punto di vista software dipende dal tipo di buzzer utilizzato: un buzzer attivo contiene al suo interno un oscillatore
-e quindi genererà un beep mentre è alimentato. Un buzzer passivo si comporta in maniera simile a un altoparlante in quanto ha bisogno di
-un segnale audio in input. Attraverso esphome è possibile riprodurre delle semplici melodie con buzzer passivi utilizzando il componente rtttl.
+e quindi genererà un beep mentre è alimentato. Un buzzer passivo si comporta in maniera simile a un altoparlante (in effetti ne è un tipo
+particolare) in quanto ha bisogno di un segnale audio in input.
+Attraverso esphome è possibile riprodurre delle semplici melodie con buzzer passivi utilizzando il componente rtttl. Si riporta a seguito
+l'esempio di configurazione di un componente buzzer che riproduce il tema di Mission Impossible\cite{esphomeio}:
+\begin{lstlisting}[language=yaml]
+output:
+  - platform: ledc
+    pin: GPIO22
+    id: rtttl_out
 
+rtttl:
+  output: rtttl_out
+
+on_<event>:
+  then:
+    - rtttl.play: 'MissionImp:d=16,o=6,b=95:32d,32d#,32d,32d#,32d,32d#,32d,32d#,32d,32d,32d#,32e,32f,32f#,32g,g,8p,g,8p,a#,p,c7,p,g,8p,g,8p,f,p,f#,p,g,8p,g,8p,a#,p,c7,p,g,8p,g,8p,f,p,f#,p,a#,g,2d,32p,a#,g,2c#,32p,a#,g,2c,a#5,8c,2p,32p,a#5,g5,2f#,32p,a#5,g5,2f,32p,a#5,g5,2e,d#,8d'
+\end{lstlisting}
 \section{Inclinometri a mercurio}
 Ai fini implementativi hanno un funzionamento al pari degli interruttori/pulsanti. L'unica differenza sta nel principio fisico di funzionamento
 e quindi nel significato che si può dare all'output nel codice.
+
+\subsection{Disco combinatore}
+Come descritto precedentemente, questo tipo di dispositivo produce una sequenza di impulsi che vanno letti e contati. Esphome mette
+a disposizione un componente che consente di eseguire questo tipo di lettura in maniera semplice:
+\begin{lstlisting}[language=yaml]
+sensor:
+  - platform: pulse_counter
+    pin: 12
+    name: "Pulse Counter"
+\end{lstlisting}
 
 \chapter{Guida alla trasformazione degli strumenti vintage}
 %\todo{Sezione guida alla conversione vera e propria che fa riferimenti alla sezione precedente}
@@ -535,7 +606,8 @@ e quindi nel significato che si può dare all'output nel codice.
 %\todo{atrent: tenterei anche una panoramica storica degli strumenti di ``visualizzazione'' (occhi magici, elettrofori, dekatron, oscilloscopi, ...) dando idee su come si potrebbero usare per datafisicalizzare}
 
 \section{Introduzione}
-Una volta appurate le caratteristiche degli strumenti, è opportuno discutere degli interventi fisici necessari alla loro conversione.
+Una volta appurate le caratteristiche degli strumenti e i possibili utilizzi dei componenti che vi si possono trovare, è opportuno discutere
+della loro conversione.
 
 
 \section{Interventi}
@@ -620,14 +692,19 @@ deve essere particolarmente intuitiva.
 Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo configurabili di richieste HTTP o HTTPS ad API REST
 e sulla conversione del risultato in una tensione di uscita, avendo in più le funzionalità descritte successivamente nella sezione
 sulla implementazione software.
+È considerata ``standalone" in quanto fornita una connessione di rete funziona in autonomia.
 Gli interventi al codice richiedono uno sviluppatore, la configurazione della fonte API e la gestione dei multipli file di configurazione
 sono nelle corde di un utente esperto mentre per l'utente inesperto risulta necessario fornire un prodotto già pronto.
 Potrebbe giusto configurare la rete WiFi mediante l'access point integrato e il web form e selezionare tra fonti di dati o configurazioni
 diverse mediante interazione con un commutatore fisico.
 
 \subsubsection{MQTT/smart home/passivo}
-\todo{rivedere}
-
+%\todo{rivedere}
+Questa modalità si basa sulla piattaforma ESPHome ed è considerata ``passiva" in quanto l'idea di base prevede un'integrazione
+e dipendenza con altri oggetti all'interno o all'esterno della rete locale per funzionare a dovere, specialmente per l'interpretazione
+dei dati dei componenti aggiuntivi connessi.
+Esiste il modo di rendere un sistema ESPHome completamente autonomo mediante l'utilizzo di procedure interne ma non verrà
+approfondito in questa sede.
 In questo caso, uno sviluppatore è richiesto per adattare il file di configurazione di esphome ai vari dispositivi collegati,
 specialmente per quanto riguarda automatismi interni indipendenti da sistemi di home automation.
 Una configurazione totalmente ``passiva" e relegata all'interazione con sistemi di home automation, invece, può essere effettuata
@@ -651,15 +728,8 @@ Ciò permette di controllare finemente la posizione dell'ago del voltmetro via s
 Il primo passo verso la fisicalizzazione dei dati è stato quello di ottenerli, mediante richieste ad API REST in locale o su Internet.
 Per questo è stata utilizzata la libreria \texttt{ESP8266HTTPClient}.
 
-\lstset{language=C++,
-                basicstyle=\ttfamily,
-                breaklines=true,
-                keywordstyle=\color{blue}\ttfamily,
-                stringstyle=\color{red}\ttfamily,
-                commentstyle=\color{green}\ttfamily,
-                morecomment=[l][\color{magenta}]{\#}
-}
-\begin{lstlisting}
+
+\begin{lstlisting}[language=cpp]
 bool begin;
 if (use_https) {
   begin = http.begin(ssl_client, apiUrl);
@@ -686,7 +756,7 @@ passare lo stream al parser JSON.
 
 Si riporta la sezione di codice che chiama un metodo di callback che accetta uno stream per argomento. Notare che per una richiesta
 HTTP è utilizzato il metodo getStream messo a disposizione dalla libreria, mentre per HTTPS viene passato direttamente il client.
-\begin{lstlisting}
+\begin{lstlisting}[language=cpp]
 if (httpCode == HTTP_CODE_OK) {
   if (use_https) {
     callback(ssl_client);
@@ -705,7 +775,7 @@ memoria flash dell'ESP per permetterne la persistenza anche a seguito di perdite
 Segue una porzione di codice della callback che evidenzia l'utilizzo di uno stream con buffer da 64 byte ai fini di un miglioramento delle
 performance, la deserializzazione del filtro e la ``pulizia" dello stream nel caso in cui si usi HTTPS ed esso contenga caratteri iniziali
 diversi dalle parentesi.
-\begin{lstlisting}
+\begin{lstlisting}[language=cpp]
 void stream_callback(Stream &stream) {
   ReadBufferingStream rbs(stream, 64);
   StaticJsonDocument<200> filter;
@@ -752,7 +822,7 @@ da stringa a numero presente subito dopo, non avverrebbe alcun crash del program
 indesiderati del microcontrollore a seguito di eccezioni.
 
 Nella seguente porzione di codice è possibile osservare le istruzioni cruciali per l'implementazione del parsing della path:
-\begin{lstlisting}
+\begin{lstlisting}[language=cpp]
 JsonVariant jv = doc.as<JsonVariant>();
 token = strtok(path_buf, "/");
 while (token != NULL) {
@@ -811,6 +881,10 @@ in formato JSON, esempio:
   \item \texttt{mode} indica il codice numerico della modalità di funzionamento da selezionare
 \end{itemize}
 
+Possono esistere allo stesso momento più file di configurazione in memoria flash. Il nome del file da cui leggere la configurazione
+e su cui scrivere le modifiche alla configurazione è salvato sempre in flash all'interno del file \texttt{confselect}.
+
+
 \subsection{Map}
 Una volta ottenuto il valore da rappresentare è necessario trasformarlo in una tensione, ottenuta tramite PWM il cui duty cycle è
 proporzionale a un numero a 10 bit (0 - 1023). Per fare questo è possibile utilizzare la funzione \texttt{map} già presente nella
@@ -833,7 +907,7 @@ decimali. Si è quindi preferito inserire nel codice direttamente la formula mat
 Attività periodiche come le richieste API sono state rese dei task per mezzo della libreria \texttt{TaskScheduler}, che permette di
 impostare un intervallo di tempo tra esecuzioni ripetute di una procedura.
 Segue una piccola selezione dei task presenti nel codice a titolo di esempio della loro dichiarazione e utilizzo.
-\begin{lstlisting}
+\begin{lstlisting}[language=cpp]
 #include <TaskScheduler.h>
 Scheduler ts;
 void mqtt_loop() {
@@ -875,7 +949,8 @@ settati tramite i topic:
 \noindent Sono inoltre presenti alcuni topic di utilità:
 \begin{itemize}
   \item \texttt{<root>/setConfigFile} imposta il nome del file di configurazione da usare dal momento dell'invio in avanti. Tale
-		impostazione viene automaticamente salvata nella memoria flash quindi è persistente al riavvio.
+		impostazione viene automaticamente salvata nella memoria flash quindi è persistente al riavvio, più precisamente
+		all'interno del file \texttt{confselect}, il cui contenuto viene sovrascritto dal payload del messaggio inviato a questo topic.
   \item \texttt{<root>/saveToFlash} Salva le impostazioni correnti in memoria flash, sovrascrivendo (o creando) il file di configurazione
 		in uso.
 \end{itemize}
@@ -966,9 +1041,7 @@ vasta gamma di componenti esterne si presta molto bene all'incarico.
 
 In particolare, la configurazione avviene per mezzo di file YAML in cui è possibile dichiarare proprietà e componenti utilizzati:
 
-\lstset{language= {}}
-
-\begin{lstlisting}
+\begin{lstlisting}[language=yaml]
 esphome:
   name: iotdial-aabbccdd
   platform: ESP8266
@@ -988,7 +1061,7 @@ captive_portal:
 Questa prima parte di configurazione specifica nome e piattaforma, dichiara inoltre una coppia ssid/password per la rete WiFi
 e abilita l'access point di scorta, in maniera simile alla modalità API. Le credenziali della rete sono memorizzate in un file apposito
 denominato secrets.yaml:
-\begin{lstlisting}
+\begin{lstlisting}[language=yaml]
 wifi_ssid: "IOT_TEST"
 wifi_password: "IOT_TEST"
 \end{lstlisting}
@@ -997,7 +1070,7 @@ Nell'implementazione tramite esphome permangono le 4 variabili globali già vist
 min_value, max_value, min_pwm e max_pwm, per un mapping del valore da rappresentare sullo strumento.
 La differenza sta in min_pwm e max_pwm che invece di seguire un intervallo tra 0 e 1023 sono rappresentate in esphome come una
 percentuale, da 0.00 a 1.00. Segue la dichiarazione delle variabili globali:
-\begin{lstlisting}
+\begin{lstlisting}[language=yaml]
 globals:
   - id: min_value
     type: float
@@ -1023,14 +1096,14 @@ La flag restore_value, accoppiata con esp8266_restore_from_flash presente all'in
 lo stato di queste variabili in maniera persistente ai riavvii, in modo che le modifiche non vadano perse.
 
 Per la ricezione di valori e configurazioni tramite MQTT è stato configurato il broker:
-\begin{lstlisting}
+\begin{lstlisting}[language=yaml]
 mqtt:
   broker: mqtt.atrent.it
   topic_prefix: IoTDial/busolin
   discovery: True #homeassistant
 \end{lstlisting}
 La sottoscrizione a topic MQTT viene effettuata mediante dei componenti sensor ``virtuali":
-\begin{lstlisting}
+\begin{lstlisting}[language=yaml]
 sensor:
   - platform: mqtt_subscribe
     name: "Temperatura"
@@ -1058,7 +1131,7 @@ per tutte e quattro le variabili). In caso per qualche motivo l'intervallo dei v
 possibile eseguire questa modifica che grazie alle impostazioni precedentemente prescritte viene mantenuta in memoria flash.
 
 L'output verso il voltmetro è dichiarato nel seguente modo:
-\begin{lstlisting}
+\begin{lstlisting}[language=yaml]
 output:
   - platform: esp8266_pwm
     pin: D2
