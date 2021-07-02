@@ -141,26 +141,27 @@
 % o sections (dipende dal documentclass)
 \chapter{Introduzione}
 \section{Data Physicalization: definizione}
-Una data physicalization (in italiano: fisicalizzazione dei dati) è un artefatto fisico la cui geometria o proprietà materiali codificano dei dati.\cite{dataphysorg:terminology}
+Una data physicalization (in italiano: fisicalizzazione dei dati) è un artefatto fisico la cui geometria o proprietà materiali codificano dei dati.\cite{dataphysorg:terminology}.
 %\todo{atrent: in generale i link web li metterei in footnote, se vuoi lasciarli in bib devi mostrare anche l'url}
 %\todo{atrent: puoi eliminare tutti i doppi backslash, non servono}
 Gli stessi autori della precedente definizione distinguono tra data physicalization come artefatti (per i quali vale quanto scritto sopra),
-data physicalization come il processo di dare forma fisica ai dati e data physicalization come l'area di ricerca che unisce da visualizzazione
+data physicalization come il processo di dare forma fisica ai dati e data physicalization come l'area di ricerca che unisce visualizzazione
 dei dati e interfacce utenti tangibili.
 
 \section{Visualizzazione dei dati}
 Lo scopo della disciplina della visualizzazione dei dati è quello di renderli più comprensibili per gli esseri umani. I display dei computer
-sono l'esempio più classico, hanno molti vantaggi grazie alla loro versatilità tra cui quello di fornire rappresentazioni visuali dei dati in
+sono l'esempio più comune, hanno molti vantaggi grazie alla loro versatilità tra cui quello di fornire rappresentazioni visuali dei dati in
 maniera dettagliata e modificabile dinamicamente. Tuttavia, è emersa un'area di ricerca che pone la questione di non limitarsi a una
 matrice di pixel per visualizzazione di e interazione con i dati ma sfruttare altri tipi di interazione più naturale per gli esseri umani, come
-è stato dimostrato dalla ricerca in Tangible Computing. \cite{hal:dataphys}
+è stato illustrato dalla ricerca in Tangible Computing. \cite{hal:dataphys}
 \todo{atrent: in generale van riportati i principali concetti esposti negli articoli/libri che citi}
 
 \section{Esempi di data physicalization e visualization}
 %\todo{atrent: fai anche esempi non miei, prendi quelli che ti piacciono di più, due o tre esempi}
 
 \subsection{Keyboard Frequency Sculpture}
-Un diagramma a barre 3D appoggiato su una tastiera che mostra la frequenza di ciascuna lettera dell'alfabeto. \cite{physlist}, Figura~\ref{fig:keyboardfreq}
+Un diagramma a barre 3D appoggiato su una tastiera che mostra la frequenza di ciascuna lettera dell'alfabeto.
+\cite{physlist}, Figura~\ref{fig:keyboardfreq}.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.6\textwidth]{keyboardfreq}
@@ -169,8 +170,8 @@ Un diagramma a barre 3D appoggiato su una tastiera che mostra la frequenza di ci
 \end{figure}
 
 \subsection{Living Map: Precipitation Visualized with Moss}
-Mappa "vivente" che mostra il cambiamento nella quantità di precipitazioni nelle varie zone d'Europa a seguito del riscaldamento climatico
-mediante l'erogazione controllata di acqua su un particolare tipo di muschio.  \cite{physlist}, Figura~\ref{fig:livingmap}
+Mappa ``vivente" che mostra il cambiamento nella quantità di precipitazioni nelle varie zone d'Europa a seguito del riscaldamento climatico
+mediante l'erogazione controllata di acqua su un particolare tipo di muschio.  \cite{physlist}, Figura~\ref{fig:livingmap}.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\textwidth]{livingmap}
@@ -179,7 +180,8 @@ mediante l'erogazione controllata di acqua su un particolare tipo di muschio.  \
 \end{figure}
 
 \subsection{Self Knitted Scarf of Train Delays}
-Sciarpa lavorata a maglia da una pendolare di Monaco di Baviera con sezioni di colore diverso in base ai ritardi giornalieri. \cite{physlist}, Figura~\ref{fig:scarfdelays}.
+Sciarpa lavorata a maglia da una pendolare di Monaco di Baviera con sezioni di colore diverso in base all'entità dei ritardi dei treni.
+\cite{physlist}, Figura~\ref{fig:scarfdelays}.
 La grossa sezione rossa è dovuta a un periodo di cantieri ferroviari in cui il treno era sostituito da un autobus.
 
 \begin{figure}[h]
@@ -190,7 +192,7 @@ La grossa sezione rossa è dovuta a un periodo di cantieri ferroviari in cui il 
 \end{figure}
 
 \subsection{Physiradio}
-Una radio vintage che riproduce musica di mood/genere correlato alle condizioni metereologiche. \cite{physiradio}, Figura~\ref{fig:physiradio}
+Una radio vintage che riproduce musica di mood/genere correlato alle condizioni metereologiche. \cite{physiradio}, Figura~\ref{fig:physiradio}.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.8\textwidth]{physiradio}
@@ -200,7 +202,7 @@ Una radio vintage che riproduce musica di mood/genere correlato alle condizioni 
 
 \subsection{BiblioVisualizer}
 Visualizzazione dei dati sul prestito libri nel consorzio Culture Socialità Biblioteche Network Operativo (CSBNO) tramite barra di LED.
-\cite{bibliovisgitlab}, Figura~\ref{fig:bibliovisualizer}
+\cite{bibliovisgitlab}, Figura~\ref{fig:bibliovisualizer}.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.5\textwidth]{bibliovisualizer}
@@ -235,7 +237,7 @@ La conversione di strumenti vintage per utilizzi diversi dall'originale è un'at
 sezione verranno riportati alcuni esempi di esperimenti e prototipi e poi verranno descritte alcune delle piattaforme di sviluppo disponibili
 per ESP8266.
 
-\todo{atrent: aggiungerne qualcuno (ispirazione hackaday, steampunk)}
+%\todo{atrent: aggiungerne qualcuno (ispirazione hackaday, steampunk)}
 
 \subsection{Retrofitting of an old tester from 1955}
 Trasformazione di un vecchio tester in orologio, luce notturna e sveglia utilizzando un Arduino Nano con un ESP8266-01. 
@@ -297,6 +299,18 @@ Un orologio rétro in stile Steampunk basato su valvole Nixie, tubi in rame e le
   \label{fig:nixieclock}
 \end{figure}
 
+\subsection{aPCmeter}
+Progetto in stile vintage che consiste in indicatori basati su voltmetri DC pilotati tramite un Arduino Nano usati per riportare lo stato di
+utilizzo di CPU e RAM del PC. I voltmetri sono illuminati da LED RGB il cui colore cambia in base al valore rappresentato.
+\cite{apcmeter}, Figura~\ref{fig:apcmeter}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{apcmeter}
+  \caption{aPCmeter \cite{apcmeter}}
+  \label{fig:apcmeter}
+\end{figure}
+
 \subsection{Tasmota}
 Tasmota è un firmware open source per dispositivi basati su ESP8266, nato come espansione per il firmware degli interruttori
 wireless Sonoff al fine di arricchirli con funzionalità MQTT. Il suo obiettivo è quello di rendere più configurabili e controllabili i dispositivi
@@ -306,8 +320,8 @@ smart, mediante interfaccia web, MQTT, KNX e integrazioni con i vari sistemi di 
 \subsection{ESPHome}
 ESPHome è un sistema per creare firmware personalizzato per dispositivi ESP8266 e ESP32 tramite semplici file di configurazione e poi controllarli
 da remoto mediante sistemi di Home Automation.
-Supporta una grande quantità di componenti hardware e software il che lo rende particolarmente versatile per una vastissima gamma di utilizzi.
-\cite{esphomeio}
+Supporta una grande quantità di componenti hardware e software il che lo rende particolarmente versatile per una vastissima gamma di utilizzi
+\cite{esphomeio}.
 Per alcune delle feature del prototipo realizzato durante il tirocinio è stato deciso di utilizzare questo sistema.
 
 \section{Steampunk}
@@ -398,14 +412,14 @@ un'utilità ai fini della fisicalizzazione o in generale alla conversione per l'
 \subsection{Interruttori / Pulsanti}
 Formati da un semplice meccanismo che permette di aprire o chiudere un circuito.
 \subsection{Commutatori a n posizioni}
-Sono utilizzati per chiudere uno tra n possibili circuiti attraverso la loro rotazione.
+Sono utilizzati per chiudere uno tra n possibili circuiti attraverso la loro rotazione e il conseguente spostamento di contatti elettrici.
 \subsection{Potenziometri}
 Consentono di variare una differenza di potenziale nel continuo mediante un partitore resistivo ``mobile".
-\subsection{Morsetti / Connettori}
+\subsection{Morsetti/Connettori}
 Consentono di collegare e scollegare cavi o sonde allo strumento.
 \subsection{Lampadine}
 Fonte luminosa. Generalmente quelle che si possono trovare nei vecchi apparati sono piccole e a incandescenza. Contengono un filamento
-metallico, generalmente di tungsteno, che scaldandosi emette della luce.
+metallico, spesso di tungsteno, che scaldandosi emette della luce.
 \subsection{Altoparlanti}
 Consentono di produrre suoni di varia natura, solitamente composti da una membrana che viene mossa da una bobina per generare onde
 sonore. Richiedono amplificazione.
@@ -434,8 +448,9 @@ software e tipi di dato.
 %\todo{atrent: strada giusta! fai anche esempi pratici finali}
 
 \section{Interruttori / Pulsanti}
-Possono essere mappati a valori booleani (true/false). Collegabili da un capo a GND e dall'altro capo a un GPIO del microcontrollore in modalità
-input pullup. Possono essere utilizzati nel codice mediante la funzione digitalRead o come binary sensor su esphome\cite{esphomeio}:
+Possono essere mappati a valori booleani (true/false). Collegabili da un capo a un terminale positivo o GND (in base a come viene letto
+l'input) e dall'altro capo a un GPIO del microcontrollore. 
+Possono essere utilizzati nel codice mediante la funzione digitalRead o come binary sensor su esphome\cite{esphomeio}:
 \begin{lstlisting}[language=yaml]
 binary_sensor:
   - platform: gpio
@@ -443,8 +458,7 @@ binary_sensor:
     name: "Living Room Window"
     device_class: window
 \end{lstlisting}
-\noindent Esempio di collegamento
-in Figura~\ref{fig:switchconnection}
+\noindent Esempio di schema di collegamento in Figura~\ref{fig:switchconnection}.
 
 \begin{figure}[h]
   \centering
@@ -535,7 +549,7 @@ sensor:
 Alcuni strumenti dispongono di più ingressi per le sonde di misura, adatti a connettori a banana o non standard, specifici alle
 diverse modalità di misura e/o i diversi fondoscala tra cui scegliere. Possono essere utilizzati come selettori a livello software in base a
 quali degli ingressi vengono ponticellati, in maniera simile alle connessioni tra utenze telefoniche nei vecchi centralini o agli spinotti per
-gli scambi di lettere presenti sulla macchina Enigma. Si riporta un esempio in Figura~\ref{fig:connettorimultipli}
+gli scambi di lettere presenti sulla macchina Enigma. Si riporta un esempio in Figura~\ref{fig:connettorimultipli}.
 
 \begin{figure}[h]
   \centering
@@ -567,7 +581,7 @@ Possono essere usati per dare indicazioni audio, ad esempio in caso di errore. I
 dal microcontrollore, mentre gli altoparlanti spesso richiedono un amplificatore di potenza.
 Il funzionamento dal punto di vista software dipende dal tipo di buzzer utilizzato: un buzzer attivo contiene al suo interno un oscillatore
 e quindi genererà un beep mentre è alimentato. Un buzzer passivo si comporta in maniera simile a un altoparlante (in effetti ne è un tipo
-particolare) in quanto ha bisogno di un segnale audio in input.
+particolare) in quanto ha bisogno di un segnale audio in ingresso.
 Attraverso esphome è possibile riprodurre delle semplici melodie con buzzer passivi utilizzando il componente rtttl. Si riporta a seguito
 l'esempio di configurazione di un componente buzzer che riproduce il tema di Mission Impossible\cite{esphomeio}:
 \begin{lstlisting}[language=yaml]
@@ -632,24 +646,30 @@ Un metodo più invasivo ma più pulito consiste nel modificare la struttura inte
 strumento interno vero e proprio bypassando selettore di modalità/fondoscala.
 Se non si vuole rimpiazzare la resistenza interna valgono le stesse osservazioni fatte poc'anzi sui fondoscala: è necessario che
 esista una modalità con fondoscala minore o uguale alla tensione di uscita massima del microcontrollore, altrimenti sarà necessario
-utilizzare una resistenza più piccola di quella/e già presente/i. 
+utilizzare una resistenza più piccola di quella/e già presente/i.
+In generale vale la pena di rimuovere la scheda resistenze e utilizzare solamente una resistenza di valore adatto.
 
-Esiste però un caso in cui, nonostante la rimozione delle resistenze di taratura, la sensibilità dello strumento rimane più bassa di quanto
+Una volta aperto lo strumento (ed eventualmente rimosse circuiterie varie non necessarie) si possono incontrare tutta una serie
+di componenti tra cui quelli descritti nel capitolo precedente. Alcuni saranno adattabili all'utilizzo con microcontrollori mentre altri no.
+
+Esiste un caso in cui, nonostante la rimozione delle resistenze di taratura, la sensibilità dello strumento rimane più bassa di quanto
 desiderato e la tensione massima che può emettere il microcontrollore non basta per arrivare a fondoscala. In questo caso le alternative
 sarebbero adoperare un survoltore per raggiungere la tensione necessaria oppure rinunciare e provare con un altro strumento.
 
-Questa operazione consente di integrare (a condizione che ci sia spazio, gli strumenti in Figura~\ref{fig:strumentiago} sono quasi tutti
-adatti) il microcontrollore all'interno dello strumento in modo da ottenere un sistema composto da un solo oggetto.
+Questo livello di modifica consente di integrare (a condizione che ci sia spazio, gli strumenti in Figura~\ref{fig:strumentiago} sono
+quasi tutti adatti) il microcontrollore all'interno dello strumento in modo da ottenere un sistema composto da un solo oggetto.
 Se si ha la facoltà di inserire una batteria diventa anche incredibilmente discreto e di più facile posizionamento, anche dove è
 scomodo portare una fonte di alimentazione.
 
 \subsection{Interventi aggiuntivi}
-Ulteriori possibili modifiche meno banali includono l'aggiunta di elementi decorativi quali delle luci o funzionali quali bottoni o altoparlanti
+Ulteriori possibili modifiche meno banali includono l'aggiunta di elementi decorativi e/o funzionali quali luci, bottoni e altoparlanti
 per ampliare le possibilità di utilizzo. Un'altra possibilità di modifica ove possibile è la sostituzione dell'etichetta dietro all'ago per adattare
 la scala rappresentata alla vera scala dei dati (a condizione che questa rimanga fissa). Adoperando un display e-paper si potrebbe
-adattare dinamicamente la scala rappresentata dallo strumento senza più bisogno di interventi fisici. Esempio di strumento dopo
-modifiche avanzate in Figura~\ref{fig:interventocompleto}: è stato sostituito il terminale sinistro con un connettore USB da pannello
-ai fini di interfacciarsi con il microcontrollore e alimentarlo. Il terminale destro è stato sostituito con un indicatore LED, il commutatore
+adattare dinamicamente la scala rappresentata dallo strumento senza più bisogno di interventi fisici.
+
+Esempio di strumento dopo modifiche avanzate in Figura~\ref{fig:interventocompleto}:
+è stato sostituito il terminale sinistro con un connettore USB da pannello ai fini di interfacciarsi con il microcontrollore e alimentarlo.
+Il terminale destro è stato sostituito con un indicatore LED, il commutatore
 destro con un pulsante e all'interno è stato posizionato un buzzer che consente di riprodurre dei suoni.
 
 \begin{figure}[h]
@@ -693,10 +713,11 @@ Questa modalità di operazione si basa sull'esecuzione ad intervalli di tempo co
 e sulla conversione del risultato in una tensione di uscita, avendo in più le funzionalità descritte successivamente nella sezione
 sulla implementazione software.
 È considerata ``standalone" in quanto fornita una connessione di rete funziona in autonomia.
+
 Gli interventi al codice richiedono uno sviluppatore, la configurazione della fonte API e la gestione dei multipli file di configurazione
-sono nelle corde di un utente esperto mentre per l'utente inesperto risulta necessario fornire un prodotto già pronto.
-Potrebbe giusto configurare la rete WiFi mediante l'access point integrato e il web form e selezionare tra fonti di dati o configurazioni
-diverse mediante interazione con un commutatore fisico.
+mediante le interfacce messe a disposizione sono nelle corde di un utente esperto mentre per l'utente inesperto risulta necessario
+fornire un prodotto già pronto; potrebbe giusto configurare la rete WiFi mediante l'access point integrato e il web form e
+selezionare tra fonti di dati o configurazioni diverse mediante interazione con un commutatore fisico.
 
 \subsubsection{MQTT/smart home/passivo}
 %\todo{rivedere}
@@ -722,7 +743,7 @@ in file di configurazione e di scaricare automaticamente le librerie necessarie 
 
 \subsection{PWM}
 Il principio di base che permette di produrre una tensione variabile da parte di un sistema digitale è la Pulse-Width Modulation.
-Ciò permette di controllare finemente la posizione dell'ago del voltmetro via software.
+Ciò consente di controllare finemente la posizione dell'ago del voltmetro via software.
 
 \subsection{Richieste API}
 Il primo passo verso la fisicalizzazione dei dati è stato quello di ottenerli, mediante richieste ad API REST in locale o su Internet.
@@ -751,11 +772,11 @@ memorizzare per intero, potendo ignorare le parti non necessarie. Questo meccani
 HTTP. Per HTTPS la funzione per estrarre lo stream della risposta, secondo la documentazione della libreria, non è supportata.
 Per questo motivo è stato utilizzato come stream direttamente il BearSSL::WiFiClientSecure referenziato dalla connessione, impostato in
 modalità insicura (senza la verifica della fingerprint), che però non sempre presenta un output  ``pulito" della risposta ma essa potrebbe
-essere preceduta da una linea contentente (presumibilmente) la lunghezza in byte della risposta, che va eliminata prima di poter
+essere preceduta da una linea contenente (presumibilmente) la lunghezza in byte della risposta, che va eliminata prima di poter
 passare lo stream al parser JSON.
 
-Si riporta la sezione di codice che chiama un metodo di callback che accetta uno stream per argomento. Notare che per una richiesta
-HTTP è utilizzato il metodo getStream messo a disposizione dalla libreria, mentre per HTTPS viene passato direttamente il client.
+Si riporta la sezione di codice che chiama un metodo di callback il quale accetta uno stream come argomento. Notare che per una richiesta
+HTTP è utilizzato il metodo getStream messo a disposizione dalla libreria, mentre per HTTPS viene passato direttamente il client WiFi.
 \begin{lstlisting}[language=cpp]
 if (httpCode == HTTP_CODE_OK) {
   if (use_https) {
@@ -872,17 +893,17 @@ in formato JSON, esempio:
   \item \texttt{apiUrl} è l'URL della risorsa (stringa)
   \item \texttt{post_payload} in caso di richiesta POST contiene la stringa da inviare nel body
   \item \texttt{filterJSON} è un documento JSON che contiene \texttt{true} come placeholder del campo che si vuole considerare dalla risposta (stringa/oggetto)
-  \item \texttt{path} è una stringa che contiene il "percorso" del campo che si vuole rappresentare fisicamente (campo: float, path: stringa)
-  \item \texttt{min_value} indica il valore minimo della scala per rappresentare il valore (float)
+  \item \texttt{path} è una stringa che contiene il ``percorso" del campo che si vuole estrarre (campo: float, path: stringa)
+  \item \texttt{min_value} indica il valore minimo della scala del valore estratto (float)
   \item \texttt{max_value} indica il valore massimo (float)
   \item \texttt{min_pwm} indica il valore minimo di uscita della PWM da mappare al valore restituito dalle API (int)
   \item \texttt{max_pwm} indica il valore massimo [su ESP il duty cycle massimo equivale a 1023] (int)
   \item \texttt{request_interval_ms} indica l'intervallo di tempo in millisecondi che intercorre tra le richieste alla risorsa (int)
-  \item \texttt{mode} indica il codice numerico della modalità di funzionamento da selezionare
+  \item \texttt{mode} indica il codice numerico della modalità di funzionamento da selezionare: 0 = modalità API, 1 = modalità MQTT (inutilizzata), 2 = modalità ``Fantozzi" (megllio spiegata nelle conclusioni)
 \end{itemize}
 
-Possono esistere allo stesso momento più file di configurazione in memoria flash. Il nome del file da cui leggere la configurazione
-e su cui scrivere le modifiche alla configurazione è salvato sempre in flash all'interno del file \texttt{confselect}.
+Possono esistere allo stesso momento più file di configurazione in memoria flash. Il nome del file ``attivo" da cui leggere
+la configurazione e su cui scrivere le modifiche alla configurazione è salvato sempre in flash all'interno del file \texttt{confselect}.
 
 
 \subsection{Map}
@@ -906,7 +927,7 @@ decimali. Si è quindi preferito inserire nel codice direttamente la formula mat
 \subsection{Task}
 Attività periodiche come le richieste API sono state rese dei task per mezzo della libreria \texttt{TaskScheduler}, che permette di
 impostare un intervallo di tempo tra esecuzioni ripetute di una procedura.
-Segue una piccola selezione dei task presenti nel codice a titolo di esempio della loro dichiarazione e utilizzo.
+Segue una selezione dei task presenti nel codice a titolo di esempio della loro dichiarazione e utilizzo.
 \begin{lstlisting}[language=cpp]
 #include <TaskScheduler.h>
 Scheduler ts;
@@ -931,7 +952,7 @@ Task ftp_handle_task(10 * TASK_MILLISECOND, TASK_FOREVER, ftp_handle);
 Come modalità di modifica ``a runtime" della configurazione, è stata implementata la possibilità di inviare messaggi MQTT a diversi
 topic, aventi come radice \texttt{IoTDial/<hostname>}, dove l'hostname è formato da \texttt{IoTDial-MACADDR} e MACADDR è
 l'indirizzo MAC della scheda di rete del microcontrollore (univoco al mondo) escludendo i due punti. Esempio: 
-\texttt{IoTDial/IoTDial-483fda781185} (da qui in poi indicato come \texttt{<root>}.
+\texttt{IoTDial/IoTDial-483fda781185} (da qui in poi indicato come \texttt{<root>}).
 A \texttt{<root>/setFromJSON} è possibile inviare un intero JSON di configurazione, altrimenti i campi singoli possono essere
 settati tramite i topic:
 \begin{itemize}
@@ -970,7 +991,7 @@ Figura~\ref{fig:autoconnectap}.
 \end{figure}
 
 Successivamente viene tentata la connessione. Se non ha successo viene ripetuto lo stesso procedimento, altrimenti viene disattivato
-l'Access Point temporaneo, avviene la connesisone e il programma prosegue.
+l'Access Point temporaneo, avviene la connessione e il programma prosegue.
 
 \subsection{Configurazione tramite form web}
 Un'altra forma di modifica della configurazione è stata implementata tramite un web server configurato per mezzo della libreria
@@ -986,11 +1007,10 @@ Nel dettaglio, erano esposti i seguenti endpoint:
   \item /get/running-conf: Restituisce la configurazione attualmente in esecuzione in formato JSON
   \item /get/saved-conf: Restituisce il file di configurazione presente nella memoria flash
   \item /post: permette di inviare un intero JSON di configurazione (anche incompleto, vengono modificati solo i campi specificati) come
-        valore associato alla chiave setFromJSON. È inoltre possibile asssociare alla chiave saveToFlash il valore `true' per copiare
+        valore associato alla chiave setFromJSON. È inoltre possibile associare alla chiave saveToFlash il valore `true' per copiare
         la configurazione in esecuzione nella memoria flash.
 \end{itemize}
-
-Si riporta in Figura~\ref{fig:confwebpage} la pagina di configurazione. 
+\noindent Si riporta in Figura~\ref{fig:confwebpage} la pagina di configurazione. 
 
 \begin{figure}[h]
   \centering
@@ -1027,6 +1047,9 @@ migliorare la sicurezza dell'operazione mediante utilizzo di password e hash fir
 Questa modalità era stata inizialmente pensata come complemento della modalità API: condivideva in parte i parametri di configurazione
 e consisteva nel mappare in uscita sullo strumento, al posto di un valore ritornato dalle API, un valore passato tramite messaggio MQTT
 a uno specifico topic (\texttt{<root>/setValue}).
+Questo perché date le scarse risorse dell' ESP e l'impossibilità di generalizzare ogni forma di ottenimento dati in modalità standalone,
+si è voluto offire la possibilità di effettuare ricerche ed elaborazioni fuori dal microcontrollore e passare un risultato ``già pronto"
+come messaggio.
 
 Andando avanti con le idee di sviluppo era in cantiere un'estensione del programma per l'integrazione nello scambio di messaggi di
 componenti aggiuntive quali switch, commutatori, ecc. già descritte in altre sezioni.
@@ -1034,7 +1057,7 @@ Questo avrebbe voluto dire scrivere codice per ogni tipo di componente aggiuntiv
 abilitare solo il necessario in base alla configurazione fisica del dispositivo,
 il tutto in ottica di una possibile integrazione con sistemi di domotica per il raccoglimento e l'elaborazione dei dati dei vari sensori e input.
 
-Questa lista di funzionalità rispecchia molto bene quella di esphome, per cui è stato relegato il funzionamento stand-alone del solo ago
+Questa lista di funzionalità rispecchia molto bene quella di esphome, per cui è stato relegato il funzionamento standalone del solo ago
 con codice scritto su misura alla ``modalità API", mentre per un'integrazione con sistemi di domotica e la gestione di vari input e output
 sempre diversi si è scelto di fare totale affidamento su esphome, che grazie alla sua estensiva documentazione e compatibilità con una
 vasta gamma di componenti esterne si presta molto bene all'incarico.
@@ -1161,12 +1184,13 @@ ciascuno un intervallo da 1 a 5 di comprensione in una scala da ``Poco" a ``Molt
 Nella sezione finale veniva chiesto sempre in un intervallo da 1 a 5 quanto si potesse ritenere utile avere in casa un oggetto simile a quello
 presentato e un paio di domande aperte relative a suggerimenti sui dati da rappresentare e altri suggerimenti più generali.
 
-Il numero di risposte non è stato altissimo, sicuramente ha influito molto il periodo di presentazione (giugno) in cui gran parte degli
-studenti hanno esami per cui prepararsi.
-Hanno risposto solo uomini rientranti nelle fasce d'età 22-29 e 50-66. Nella prima fascia sono presenti solo studenti mentre nella succesiva
-impiegati e un pensionato. Il livello medio di conoscenza dell'informatica è abbastanza alto mentre quello dell'elettronica è medio-basso.
+Il numero di risposte non è stato altissimo,  poco più di una decina.
+Sicuramente ha influito molto il periodo di presentazione (giugno) in cui gran parte degli studenti hanno esami per cui prepararsi.
+Hanno risposto per il 90\% uomini rientranti nelle fasce d'età 22-29 e 50-66. Nella prima fascia sono presenti solo studenti mentre nella
+successiva impiegati e un pensionato.
+Il livello generale di conoscenza dell'informatica è abbastanza alto mentre quello dell'elettronica è medio-basso.
 
-Le idee di visualizzazione su cui venivano chieste delle opinioni sono:
+\noindent Le idee di visualizzazione su cui venivano chieste delle opinioni sono:
 \begin{itemize}
   \item ``Remotizzare" una misurazione allontanandosi dalla posizione fisica del sensore
   \item Visualizzazione tempo rimanente all'arrivo del bus/tram/treno
@@ -1186,14 +1210,14 @@ Figura~\ref{fig:adeguatezzavis}.
   \label{fig:adeguatezzavis}
 \end{figure}
 
-I principi di funzionamento sono quasi tutti stati afferrati almeno a livello medio dalla totalità dei partecipanti. Nel dettaglio la lista è:
+I principi di funzionamento sono quasi tutti stati afferrati almeno a livello medio dalla quasi totalità dei partecipanti. Nel dettaglio la lista è:
 \begin{itemize}
   \item Utilizzare uno strumento ad ago come visualizzatore di dati
   \item Utilizzare un microcontrollore per pilotare lo strumento mediante una differenza di potenziale variabile
   \item Effettuare richieste ad API su Internet da un dispositivo embedded
   \item Modificare le impostazioni di ottenimento dei dati mediante meccanismi di messaggistica quale MQTT
 \end{itemize}
-C'è stata un po' più di titubanza sull'utilizzo di messaggistica MQTT per l'alterazione della configurazione.
+C'è stata un po' di titubanza sull'utilizzo di messaggistica MQTT per l'alterazione della configurazione.
 I risultati di questa sezione sono consultabili in Figura~\ref{fig:comprensibilita}.
 \begin{figure}[h]
   \centering
@@ -1211,8 +1235,14 @@ uniformi nella scala 2-5. Suggerimenti aggiuntivi su dati che potrebbero essere 
   \item Alba$\div$tramonto
   \item Temperatura frigo o forno
   \item Qualsiasi altro sensore legato al meteo (es: vento)
+  \item Tempo all'arrivo di un taxi o di un autista
+  \item Ping dalla rete locale ad un server esterno
+  \item Numero di email non lette nella propria casella via pop/imap (o messaggi su vari servizi, es telegram)
+  \item Valore di una (cripto)valuta, un titolo azionario o simili tramite API di servizi appositi
+  \item Affollamento attuale di un luogo (ristorante, bar, ufficio postale, ecc) tramite scraping di "orari di punta" di Google
+  \item Giorni rimanenti ad una scadenza (es. esame, consegna progetto, ecc)
 \end{itemize}
-Non sono state inseriti suggerimenti generali nella sezione ``altri suggerimenti".
+Non sono stati inseriti suggerimenti generali nella sezione ``altri suggerimenti".
 
 \section{Reperibilità delle API}
 Durante la ricerca di API rappresentabili mediante Data Physicalization è risultato evidente che molte di quelle più congeniali non
@@ -1227,7 +1257,9 @@ In particolare per ottenere i minuti rimanenti all'arrivo di un mezzo ad una spe
 POST a\\ \url{https://giromilano.atm.it/proxy.ashx} e nel body inserire\\ \texttt{url=tpPortal/geodata/pois/stops/xxxxx}, dove a
 \texttt{xxxxx} va sostituito il numero della fermata, leggibile (a volte) nel mondo reale sulla pensilina o sul cartello o direttamente
 dal sito.\\
-Per ottenere una risposta è inoltre necessario inviare l'header\\ \texttt{Content-Type: application/x-www-form-urlencoded}.
+Per ottenere una risposta è inoltre necessario inviare l'header\\ \texttt{Content-Type: application/x-www-form-urlencoded}
+(proprio a questo fine è stata aggiunta la ``Modalità Fantozzi", che differisce dalla modalità API solamente per l'invio aggiuntivo
+di questo header).
 A questo punto sorgono alcuni problemi:
 \begin{itemize}
   \item Le risposte contengono un po' di tutto e per via degli avvisi comprensivi di tag HTML possono anche essere molto lunghe, anche
