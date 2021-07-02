@@ -413,6 +413,7 @@ un'utilità ai fini della fisicalizzazione o in generale alla conversione per l'
 Formati da un semplice meccanismo che permette di aprire o chiudere un circuito.
 \subsection{Commutatori a n posizioni}
 Sono utilizzati per chiudere uno tra n possibili circuiti attraverso la loro rotazione e il conseguente spostamento di contatti elettrici.
+Esempio in Figura~\ref{fig:commutatoreprimadopo}.
 \subsection{Potenziometri}
 Consentono di variare una differenza di potenziale nel continuo mediante un partitore resistivo ``mobile".
 \subsection{Morsetti/Connettori}
@@ -426,20 +427,46 @@ sonore. Richiedono amplificazione.
 \subsection{Buzzer}
 Dispositivi di segnalazione acustica, i più comuni sono di tipo piezoelettrico e producono un fischio generato da un circuito elettrico oscillante.
 Sono spesso impiegati negli strumenti di misura ad esempio per segnalare continuità elettrica.
+Interno di un buzzer in Figura~\ref{fig:internobuzzer}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{internobuzzer}
+  \caption{Interno di un buzzer \cite{wiki:internobuzzer}}
+  \label{fig:internobuzzer}
+\end{figure}
+
 \subsection{Termometri}
 Componente in grado di misurare la temperatura ambientale. Negli strumenti di misura possono essere usati per compensare le misurazioni
 di componenti sensibili alle variazioni di temperatura nell'ambiente di utilizzo.
 \subsection{Inclinometri a mercurio}
 Particolari interruttori basati sulla gravità, i più semplici contengono una goccia di mercurio e due contatti elettrici, la cui chiusura dipende dalla
 direzione della forza di gravità a cui è soggetto il componente: se la goccia viene spinta verso i contatti il circuito è chiuso, altrimenti rimane aperto.
+Interruttore a mercurio in Figura~\ref{fig:mercuryswitch}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.5\textwidth]{mercuryswitch}
+  \caption{Interruttore a mercurio \cite{wiki:mercuryswitch}}
+  \label{fig:mercuryswitch}
+\end{figure}
+
 %\todo{atrent: combinatore telefonico, suoneria}
 \subsection{Disco combinatore}
-Dispositivo generalmente trovato nei vecchi telefoni a disco che consente di inviare un treno di impulsi il cui numero varia in base all'angolo
-di rotazione a cui viene portato prima del rilascio.
-\subsection{Suonerie}
-Anche queste generalmente trovate nei vecchi telefoni, se alimentate con una corrente alternata con tensione compresa tra i 60 e i
-100V producono un deciso squillo. Sono ottime come segnalatori acustici.
-\todo{busolin: foto}
+Dispositivo generalmente trovato nei vecchi telefoni a disco (esempio in Figura~\ref{fig:siemenss62}) che consente di inviare un
+treno di impulsi il cui numero varia in base all'angolo di rotazione a cui viene portato prima del rilascio.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{siemenss62}
+  \caption{Telefono Siemens S62, detto Bigrigio. Notare il disco combinatore \cite{wiki:siemenss62}}
+  \label{fig:siemenss62}
+\end{figure}
+
+\subsection{Suonerie elettromeccaniche}
+Anche queste generalmente trovate nei vecchi telefoni, se alimentate in corrente alternata con tensione intorno ai 110V
+producono un deciso squillo. Sono ottime come segnalatori acustici.
+%\todo{busolin: foto}
 
 \chapter{Generalizzazione degli strumenti di misura}
 %\todo{Sezione mapping componenti e interventi di modifica possibili}
@@ -1204,8 +1231,7 @@ c'è stata più incertezza e le risposte sono state più distribuite nell'interv
 Figura~\ref{fig:adeguatezzavis}.
 \begin{figure}[h]
   \centering
-  %\includegraphics[width=\textwidth]{}
-  \missingfigure{Risultati sezione 2}
+  \includegraphics[width=\textwidth,height=0.95\textheight,keepaspectratio]{ressez2}
   \caption{Risultati della sezione sull'adeguatezza alla visualizzazione di certi dati}
   \label{fig:adeguatezzavis}
 \end{figure}
@@ -1221,8 +1247,7 @@ C'è stata un po' di titubanza sull'utilizzo di messaggistica MQTT per l'alteraz
 I risultati di questa sezione sono consultabili in Figura~\ref{fig:comprensibilita}.
 \begin{figure}[h]
   \centering
-  %\includegraphics[width=\textwidth]{}
-  \missingfigure{Risultati sezione 3}
+  \includegraphics[width=\textwidth,height=0.95\textheight,keepaspectratio]{ressez3}
   \caption{Risultati della sezione sulla comprensibilità dei principi}
   \label{fig:comprensibilita}
 \end{figure}
