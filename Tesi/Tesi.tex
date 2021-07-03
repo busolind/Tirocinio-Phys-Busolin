@@ -1237,7 +1237,7 @@ sensor:
       then:
         - output.set_level:
             id: dial
-            level: !lambda "return (x - id(min_value)) * (id(max_pwm) - id(min_pwm)) / (id(max_value) - id(min_value)) + id(min_pwm);"
+            level: !lambda "return map(x, id(min_value), id(max_value), id(min_pwm), id(max_pwm))/100.0;"
 
   - platform: mqtt_subscribe
     name: "setMinValue"
