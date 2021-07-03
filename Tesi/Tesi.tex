@@ -514,8 +514,17 @@ binary_sensor:
     device_class: window
 \end{lstlisting}
 \noindent Esempio di schema di collegamento in Figura~\ref{fig:switchconnection}.
+La connessione di un lato dello switch al polo positivo o negativo dell'alimentazione è una scelta architetturale da cui poi dipenderà
+l'implementazione software.
+Utilizzare un collegamento fra GND e il GPIO consente di sfruttare la resistenza interna di pull-up dell'ESP al fine di evitare il fenomeno
+del ``float", per il quale a circuito aperto la rilevazione dello stato del pulsante alterna rapidamente tra ON e OFF a meno che il pin
+di input sia ``tirato su" (o giù a segni invertiti).
+In caso si volesse fare il contrario (fra 3.3V e il GPIO) per evitare floating è necessario aggiungere una resistenza esterna
+di pull-down che collega il GPIO a GND e ``tiene giù" lo stato dell'input a meno che non sia chiuso il circuito.
+Indipendentemente dal tipo di input, è possibile sia nel codice mediante un'inversione booleana sia in ESPHome mediante una flag
+invertire la lettura qualora fosse necessario.
 
-\todo{atrent: spiega la dualità 3.3V/GND}
+%\todo{atrent: spiega la dualità 3.3V/GND}
 
 \begin{figure}[h]
   \centering
@@ -524,6 +533,7 @@ binary_sensor:
    -- (4,4) node[above]{GPIO}
     to[twoport,t={ESP}] (4,0) node[below]{3.3V/GND}
     -- (0,0)
+   
     ;
   \end{circuitikz}
   \caption{Schema collegamento switch all'ESP}
@@ -626,12 +636,13 @@ gli scambi di lettere presenti sulla macchina Enigma. Si riporta un esempio in F
 \end{figure}
 
 \section{Lampadine}
-Possono essere utilizzate per rappresentare uno stato binario o comunicare diverse informazioni mediante dei pattern di lampeggiamento.
+Possono essere utilizzate per rappresentare uno stato in maniera binaria o comunicando mediante dei pattern di lampeggi e in alcuni
+casi anche di colore.
 In genere con i sistemi embedded si adoperano i LED al posto delle lampadine a incandescenza, in quanto possono essere pilotati
 direttamente dai pin del microcontrollore, salvo eventuali resistenze in serie per ridurre il flusso di corrente.
 Nel codice di Arduino un LED può essere pilotato mediante una digitalWrite per funzionamento on/off o una analogWrite per
 intensità variabili mediante PWM (in maniera simile a come si è fatto con l'ago dello strumento per il prototipo).
-In ESPHome si può utilizzare un componente di tipo light, il più semplice è quello binario che si collega a un output\cite{esphomeio}:
+In ESPHome si può utilizzare un componente di tipo light, il più semplice è quello binario\cite{esphomeio}:
 \begin{lstlisting}[language=yaml]
 light:
   - platform: binary
@@ -643,8 +654,10 @@ output:
     platform: gpio
     pin: GPIO16
 \end{lstlisting}
-\todo{atrent: in realtà non solo uno stato binario, se vedi lo status led di esphome c'è un codice lampeggi semantico (come c'è ancora un codice buzz per il BIOS dei PC (mi pare ad esempio 5 beep errore ram, ecc.)}
+%\todo{atrent: in realtà non solo uno stato binario, se vedi lo status led di esphome c'è un codice lampeggi semantico (come c'è ancora un codice buzz per il BIOS dei PC (mi pare ad esempio 5 beep errore ram, ecc.)}
 
+Esistono molti altri tipi di componenti light, tra cui PWM monocromatici ed RGB, sia con apposito circuito integrato di controllo (come
+quello basato su driver WS2801 utilizzato nel prototipo) che a collegamento individuale dei singoli colori.
 
 
 
@@ -992,12 +1005,14 @@ la configurazione e su cui scrivere le modifiche alla configurazione è salvato 
 \subsection{Map}
 Una volta ottenuto il valore da rappresentare è necessario trasformarlo in una tensione, ottenuta tramite PWM il cui duty cycle è
 proporzionale a un numero a 10 bit (0 - 1023). Per fare questo è possibile utilizzare la funzione \texttt{map} già presente nella
-libreria standard di Arduino.
+libreria standard di Arduino, la quale consente di trasferire (o mappare) un valore numerico da un intervallo a un altro, ad esempio:
+\texttt{map(10, 0, 20, 50, 100)} mappa il numero 10 dall'intervallo 0-20 all'intervallo 50-100 (Risultato: 75).
 
-
-\todo{atrent: spiega perché... https://www.arduino.cc/reference/en/language/functions/math/map/ in realtà bastava cambiare range dato che lavora con numeri interi...}
+%\todo{atrent: spiega perché... https://www.arduino.cc/reference/en/language/functions/math/map/ in realtà bastava cambiare range dato che lavora con numeri interi...}
+%busolin: L'avevo implementata così seguendo il consiglio in fondo alla pagina, anche in ottica di non dover considerare casi particolari sugli input
 Durante i test è emerso che tale funzione non si comporta particolarmente bene quando uno dei range è formato da piccoli numeri
-decimali. Si è quindi preferito inserire nel codice direttamente la formula matematica su cui si basa \texttt{map}:
+decimali. Si è quindi preferito inserire nel codice direttamente la formula matematica su cui si basa \texttt{map} in modo da avere la
+maggior flessibilità possibile sull'input e il suo range:
 \[out = \frac{(value - fromLow) \times (toHigh - toLow)}{(fromHigh - fromLow)} + toLow \]
 
 \noindent Dove:\cite{arduinomap}
@@ -1211,6 +1226,7 @@ mqtt:
   discovery: True #homeassistant
 \end{lstlisting}
 La sottoscrizione a topic MQTT viene effettuata mediante dei componenti sensor ``virtuali":
+\todo{busolin: usare map()}
 \begin{lstlisting}[language=yaml]
 sensor:
   - platform: mqtt_subscribe
@@ -1385,14 +1401,23 @@ Non sono stati inseriti suggerimenti generali nella sezione ``altri suggerimenti
 \section{Reperibilità delle API}
 Durante la ricerca di API rappresentabili mediante Data Physicalization è risultato evidente che molte di quelle più congeniali non
 sono pubbliche e spesso sono anche di difficile utilizzo. L'esperienza personale è stata con quelle di ATM per ottenere i minuti rimanenti
-all'arrivo di un mezzo pubblico ma altri si sono scontrati con quelle di Trenitalia \cite{trenitaliashock}
+all'arrivo di un mezzo pubblico ma altri si sono scontrati con quelle di Trenitalia \cite{trenitaliashock}.
 
 \subsection{Dettagli su ATM}
 
-\todo{atrent: metti qualche screenshot almeno...}
+%\todo{atrent: metti qualche screenshot almeno...}
 Le API di ATM sono usate per \href{https://giromilano.atm.it}{Giromilano} e l'unico modo per comprenderne il funzionamento è utilizzare
 gli strumenti del browser per leggere le richieste e le risposte che vengono scambiate tra client e server durante la ricerca di un
-percorso o di informazioni su una fermata specifica.
+percorso o di informazioni su una fermata specifica - Figura~\ref{fig:giromilanoconsolel}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{giromilanoconsole}
+  \caption{Screenshot del sito di Giromilano con aperta la console sviluppatore del browser al fine di analizzare le richieste}
+  \label{fig:giromilanoconsolel}
+\end{figure}
+
+
 In particolare per ottenere i minuti rimanenti all'arrivo di un mezzo ad una specifica fermata, è necessario effettuare una richiesta
 POST a\\ \url{https://giromilano.atm.it/proxy.ashx} e nel body inserire\\ \texttt{url=tpPortal/geodata/pois/stops/xxxxx}, dove a
 \texttt{xxxxx} va sostituito il numero della fermata, leggibile (a volte) nel mondo reale sulla pensilina o sul cartello o direttamente
@@ -1403,10 +1428,25 @@ di questo header).
 A questo punto sorgono alcuni problemi:
 \begin{itemize}
   \item Le risposte contengono un po' di tutto e per via degli avvisi comprensivi di tag HTML possono anche essere molto lunghe, anche
-        decine di kb.
+        decine di kb - Figura~\ref{fig:giromilano-correctreq}.
   \item In caso di richiesta non corretta, ad esempio mancante di header Content-Type, non si avranno in risposta codici HTTP specifici
-        ma sempre 200 (OK) in cui però la risposta è vuota.
+        ma sempre 200 (OK) in cui però la risposta è vuota - Figura~\ref{fig:giromilano-missingheader}.
 \end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{giromilano-correctreq}
+  \caption{Richiesta ben impostata a Giromilano per la fermata 11492 - Cordusio M1. Notare la dimensione di 28KB della risposta}
+  \label{fig:giromilano-correctreq}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{giromilano-missingheader}
+  \caption{Richiesta simile a quella in Figura~\ref{fig:giromilano-correctreq} a meno dell'header mancante. Notare la risposta vuota ma il codice d'errore 200 - OK}
+  \label{fig:giromilano-missingheader}
+\end{figure}
+
 
 A prescindere dalle questioni tecniche il problema è anche legale: non essendo API pubbliche l'utilizzo che se ne può fare all'esterno
 dell'ambito aziendale è molto limitato. Può andare bene per utilizzi sperimentali personali, ma non si possono certamente incorporare
