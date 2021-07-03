@@ -557,6 +557,10 @@ quanto più piccolo possibile, per non influire eccessivamente né sul consumo d
 Una resistenza totale di 10000$\Omega$ a 3.3V, per la legge di Ohm ($V = R \times I$ e quindi $I = V / R$) produrrà un flusso
 costante di corrente di appena 0.33$mA$.
 
+Si parla di resistenze tutte uguali per questioni di semplicità, ma questo non è vitale ai fini del funzionamento del partitore.
+L'inconveniente nell'utilizzo di resistenze diverse è che gli step di tensione sarebbero irregolari e quindi i calcoli da fare lato software
+sarebbero più complessi.
+
 Per la lettura valgono le considerazioni fatte sui potenziometri, bisognerà
 poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dovere nel codice.
 
@@ -588,11 +592,11 @@ poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dover
     (SW.out 4) to[short, -*] (4,0)  node[below]{GND}
   ;
   \end{circuitikz}
-  \caption{Schema collegamento commutatore modificato all'ESP. Le tre resistenze hanno lo stesso valore}
+  \caption{Schema collegamento commutatore modificato all'ESP}
   \label{fig:rotaryconnection}
 \end{figure}
 
-\todo{atrent: a onor del vero le resistenze possono anche essere diverse, ma poi i conti sono meno banali (software intendo)}
+%\todo{atrent: a onor del vero le resistenze possono anche essere diverse, ma poi i conti sono meno banali (software intendo)}
 
 %\todo{atrent: spiega un minimo la scelta delle resistenze, perché 10KOhm, legge di Ohm...}
 
