@@ -1,13 +1,11 @@
 Nel corso dell'attività di tirocinio è stato affrontato il tema della conversione di strumenti vintage per la data physicalization.
-Partendo dalla definizione dei concetti generali, si è passati all’osservazione delle caratteristiche degli strumenti di misura vintage
-e dei loro componenti, i quali sono stati successivamente analizzati singolarmente per trovarvi delle possibili corrispondenze con componenti software.
-Il punto chiave del lavoro svolto è stato analizzare la possibilità di convertire uno strumento di misura vintage ad ago quale un voltmetro al fine
-di utilizzarlo come visualizzatore di dati, realizzando al contempo una guida per la conversione.
-Dal punto di vista software sono stati considerati e sperimentati due approcci differenti: Il primo consiste in una modalità "standalone" nella quale è
-previsto che l’oggetto sia totalmente indipendente dal mondo circostante a meno di una connessione a Internet mediante la quale richiederà i dati da visualizzare.
-Il secondo consiste invece in una modalità "passiva", in cui l’oggetto è inserito nel contesto di un sistema di home automation (domotica) e riceve dei dati
-già pronti da altri oggetti che compongono il sistema. Esso può anche comunicare lo stato di sensori e input di varia natura eventualmente presenti a
-bordo, allo scopo che essi vengano elaborati separatamente.
-In conclusione, è stato affrontato il tema della significatività dei dati da visualizzare e di quanto vada tenuta in considerazione nella scelta,
-viste anche le limitate possibilità che un ago su una scala lineare può offrire. C’è stata inoltre un’attività di raccolta di feedback e suggerimenti
-mediante la presentazione del lavoro svolto ad altri studenti e appassionati.
+
+Partendo dalla definizione dei concetti generali, si è passati all'osservazione delle caratteristiche degli strumenti di misura vintage e dei loro componenti, i quali sono stati successivamente analizzati singolarmente per trovarvi delle possibili corrispondenze con componenti software.
+
+Il punto chiave del lavoro svolto è stato analizzare la possibilità di convertire uno strumento di misura vintage ad ago quale un voltmetro al fine di utilizzarlo come visualizzatore di dati, realizzando al contempo una guida per la conversione.
+
+Dal punto di vista software sono stati considerati e sperimentati due approcci differenti: il primo consiste in una modalità "standalone" nella quale è previsto che l'oggetto sia totalmente indipendente dal mondo circostante a meno di una connessione a Internet mediante la quale richiederà i dati da visualizzare.
+Il secondo consiste invece in una modalità "passiva", in cui l'oggetto è inserito nel contesto di un sistema di home automation (domotica) e riceve dei dati già pronti da altri oggetti che compongono il sistema. Esso può anche comunicare lo stato di sensori e input di varia natura eventualmente presenti a bordo, allo scopo che essi vengano elaborati separatamente.
+
+In conclusione, è stato affrontato il tema della significatività dei dati da visualizzare e di quanto vada tenuta in considerazione nella scelta, viste anche le limitate possibilità che un ago su una scala lineare può offrire.
+C'è stata inoltre un'attività di raccolta di feedback e suggerimenti mediante la presentazione del lavoro svolto ad altri studenti e appassionati.
