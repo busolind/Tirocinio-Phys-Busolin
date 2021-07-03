@@ -768,14 +768,31 @@ e i commutatori devono rimanere nella posizione rappresentata per consentire un 
 
 \subsection{Intervento approfondito}
 Un metodo più invasivo ma più pulito consiste nel modificare la struttura interna dello strumento di misura, collegandosi ai capi dello
-strumento interno vero e proprio bypassando selettore di modalità/fondoscala.
+strumento interno vero e proprio bypassando il selettore di modalità/fondoscala.
 Se non si vuole rimpiazzare la resistenza interna valgono le stesse osservazioni fatte poc'anzi sui fondoscala: è necessario che
 esista una modalità con fondoscala minore o uguale alla tensione di uscita massima del microcontrollore, altrimenti sarà necessario
 utilizzare una resistenza più piccola di quella/e già presente/i.
 In generale vale la pena di rimuovere la scheda resistenze e utilizzare solamente una resistenza di valore adatto.
 
 Una volta aperto lo strumento (ed eventualmente rimosse circuiterie varie non necessarie) si possono incontrare tutta una serie
-di componenti tra cui quelli descritti nel capitolo precedente. Alcuni saranno adattabili all'utilizzo con microcontrollori mentre altri no.
+di componenti come quelli descritti nel capitolo precedente. Alcuni saranno adattabili all'utilizzo con microcontrollori mentre altri no.
+Questo sarebbe ad esempio un ottimo momento per effettuare la conversione dei commutatori e collegare al microcontrollore
+i componenti già presenti. Strumento smontato in Figure \ref{fig:strumentosenzascocca} e \ref{fig:strumentosmontato}.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{strumentosenzascocca}
+  \caption{Strumento a cui è stata rimossa la scocca. Si può notare la posizione della scheda resistenze, i terminali e seppur poco visibili i commutatori}
+  \label{fig:strumentosenzascocca}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{strumentosmontato}
+  \caption{Strumento completamente smontato. In alto sono visibili la scheda resistenze, le manopole dei commutatori e i terminali. In basso si può notare la bobina e il magnete che fanno muovere la lancetta}
+  \label{fig:strumentosmontato}
+\end{figure}
+
 
 Esiste un caso in cui, nonostante la rimozione delle resistenze di taratura, la sensibilità dello strumento rimane più bassa di quanto
 desiderato e la tensione massima che può emettere il microcontrollore non basta per arrivare a fondoscala. In questo caso le alternative
@@ -786,11 +803,12 @@ quasi tutti adatti) il microcontrollore all'interno dello strumento in modo da o
 Se si ha la facoltà di inserire una batteria diventa anche incredibilmente discreto e di più facile posizionamento, anche dove è
 scomodo portare una fonte di alimentazione.
 
-\todo{atrent: qui avrei messo almeno anche la foto della scheda resistenze e mi sarei ricollegato all'uso del commutatore convertito, insomma avrei spiegato un po' più nel dettaglio tutte le operazioni fatte, hai tutte le foto interne a disposizione...}
+%\todo{atrent: qui avrei messo almeno anche la foto della scheda resistenze e mi sarei ricollegato all'uso del commutatore convertito, insomma avrei spiegato un po' più nel dettaglio tutte le operazioni fatte, hai tutte le foto interne a disposizione...}
 
 \subsection{Interventi aggiuntivi}
-Ulteriori possibili modifiche meno banali includono l'aggiunta di elementi decorativi e/o funzionali quali luci, bottoni e altoparlanti
-per ampliare le possibilità di utilizzo. Un'altra possibilità di modifica ove possibile è la sostituzione dell'etichetta dietro all'ago per adattare
+Ulteriori possibili modifiche meno banali includono l'aggiunta o sostituzione di elementi decorativi e/o funzionali quali luci, bottoni e
+altoparlanti per ampliare le possibilità di utilizzo.
+Un'altra possibilità di modifica ove possibile è la sostituzione dell'etichetta dietro all'ago per adattare
 la scala rappresentata alla vera scala dei dati (a condizione che questa rimanga fissa). Adoperando un display e-paper si potrebbe
 adattare dinamicamente la scala rappresentata dallo strumento senza più bisogno di interventi fisici.
 
