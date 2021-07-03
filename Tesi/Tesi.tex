@@ -550,8 +550,8 @@ poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dover
   \begin{circuitikz} \draw
     (0,0) to[twoport,t={ESP},  n=esp] (0,6)
 
-    (1.5,3)  node[rotary switch  -=4 in 90 wiper 15, anchor=in](SW){}
-    (SW.in) -- (esp)
+    (2,3)  node[rotary switch  -=4 in 90 wiper 15, anchor=in](SW){}
+    (SW.in) to[short] (1.2,3) node[above]{Analog} node[below]{IN} to (esp)
    
 
     (4,6) to[R=R1] (4,4) to[R=R2] (4,2) to[R=R3] (4,0) 
@@ -587,7 +587,7 @@ sensor:
     (0,4) to[short] (4,4) node[above]{3.3V}
     to[twoport,t={ESP}, n=esp] (4,0) node[below]{GND}
     -- (0,0)
-    (pot.wiper) -- (esp)
+    (pot.wiper) to[short] (2.5,2) node[above]{Analog} node[below]{IN} to (esp)
   ;
   \end{circuitikz}
   \caption{Schema collegamento potenziometro all'ESP}
