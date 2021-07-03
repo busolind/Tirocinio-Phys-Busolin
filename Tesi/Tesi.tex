@@ -334,14 +334,14 @@ utilizzo di CPU e RAM del PC. I voltmetri sono illuminati da LED RGB il cui colo
 \end{figure}
 
 
-\todo{atrent: questa sotto e le seguenti forse dovevano essere delle section?}
-\subsection{Tasmota}
+%\todo{atrent: questa sotto e le seguenti forse dovevano essere delle section?}
+\section{Tasmota}
 Tasmota è un firmware open source per dispositivi basati su ESP8266, nato come espansione per il firmware degli interruttori
 wireless Sonoff al fine di arricchirli con funzionalità MQTT. Il suo obiettivo è quello di rendere più configurabili e controllabili i dispositivi
 smart, mediante interfaccia web, MQTT, KNX e integrazioni con i vari sistemi di home automation.
 \cite{abouttasmota}.
 
-\subsection{ESPHome}
+\section{ESPHome}
 ESPHome è un sistema per creare firmware personalizzato per dispositivi ESP8266 e ESP32 tramite semplici file di configurazione e poi controllarli
 da remoto mediante sistemi di Home Automation.
 Supporta una grande quantità di componenti hardware e software il che lo rende particolarmente versatile per una vastissima gamma di utilizzi
@@ -493,7 +493,8 @@ treno di impulsi il cui numero varia in base all'angolo di rotazione a cui viene
 \subsection{Suonerie elettromeccaniche}
 Anche queste generalmente trovate nei vecchi telefoni, se alimentate in corrente alternata con tensione intorno ai 110V
 producono un deciso squillo. Sono ottime come segnalatori acustici.
-\todo{atrent: mi sa che la tensione delle suonerie telefoniche è intorno ai 50V (o 12V), fai check}
+%\todo{atrent: mi sa che la tensione delle suonerie telefoniche è intorno ai 50V (o 12V), fai check} %busolin: confermo 110V secondo Wikipedia
+% https://it.wikipedia.org/wiki/Siemens_S62#Funzionamento
 
 \chapter{Generalizzazione degli strumenti di misura}
 %\todo{Sezione mapping componenti e interventi di modifica possibili}
@@ -540,6 +541,12 @@ partitore di tensione mediante l'ausilio di resistenze tutte uguali con valore t
 collegate come da esempio in Figura~\ref{fig:commutatoreprimadopo} e \ref{fig:rotaryconnection},
 ottenendo una sorta di potenziometro che invece di variare nel continuo assume valori in step regolari tra il minimo e il massimo
 dell'ingresso, che possono essere agevolmente distinti e interpretati come valori discreti.
+
+Si considera una resistenza totale di 10k$\Omega$ al fine di mantenere un flusso di corrente tra 3.3V e GND
+quanto più piccolo possibile, per non influire eccessivamente né sul consumo di corrente né sulla temperatura dei componenti.
+Una resistenza totale di 10000$\Omega$ a 3.3V, per la legge di Ohm ($V = R \times I$ e quindi $I = V / R$) produrrà un flusso
+costante di corrente di appena 0.33$mA$.
+
 Per la lettura valgono le considerazioni fatte sui potenziometri, bisognerà
 poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dovere nel codice.
 
@@ -577,7 +584,7 @@ poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dover
 
 \todo{atrent: a onor del vero le resistenze possono anche essere diverse, ma poi i conti sono meno banali (software intendo)}
 
-\todo{atrent: spiega un minimo la scelta delle resistenze, perché 10KOhm, legge di Ohm...}
+%\todo{atrent: spiega un minimo la scelta delle resistenze, perché 10KOhm, legge di Ohm...}
 
 \section{Potenziometri}
 Possono essere mappati a valori aventi intervallo arbitrario, con una precisione limitata dalla risoluzione del convertitore analogico-digitale
@@ -737,12 +744,12 @@ adattare dinamicamente la scala rappresentata dallo strumento senza più bisogno
 Esempio di strumento dopo modifiche avanzate in Figura~\ref{fig:interventocompleto}:
 è stato sostituito il terminale sinistro con un connettore USB da pannello ai fini di interfacciarsi con il microcontrollore e alimentarlo.
 Il terminale destro è stato sostituito con un indicatore LED, il commutatore
-destro con un pulsante e all'interno è stato posizionato un buzzer che consente di riprodurre dei suoni.
+destro con un pulsante e all'interno è stato posizionato un buzzer che consente di riprodurre dei suoni insieme a un LED RGB.
 
 
-\todo{atrent: c'è anche un led RGB (WS2812B)}
+%\todo{atrent: c'è anche un led RGB (WS2812B)}
 
-\todo{atrent: aggiungo screenshot HA}
+%\todo{atrent: aggiungo screenshot HA}
 
 \begin{figure}[h]
   \centering
@@ -767,17 +774,19 @@ e funzionali.
 \subsection{Ruoli}
 Prima di parlare del delle modalità operative di IoTDial è il caso di soffermarsi su chi vi può interagire:
 
-\todo{atrent: diventa una bullet list, meglio}
-\subsubsection*{Sviluppatore}
+%\todo{atrent: diventa una bullet list, meglio}
+\begin{itemize}
+  \item Sviluppatore:
 È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e  modificare funzionalità del programma
 e apportare modifiche dirette ai file di configurazione.
-\subsubsection*{Utente esperto}
+  \item Utente esperto:
 Conosce le API ed è in grado di comprendere il formato dei dati che restituiscono. Gli è sufficiente un'interfaccia anche spartana
 per selezionare la sorgente dei dati e il campo specifico che vuole rappresentato.
-\subsubsection*{Utente inesperto}
+  \item Utente inesperto:
 Non conosce le API né il formato JSON, è possibile che abbia anche una limitata conoscenza del mondo informatico:
 ha bisogno di un prodotto già pronto che richieda la minima configurazione possibile e questa
 deve essere particolarmente intuitiva. 
+\end{itemize}
 %\todo{atrent: questi sono i ruoli, mancano gli use case veri e propri (parlando formalmente, faccio riferimento a UML)}
 
 \subsection{Use case}
@@ -1240,6 +1249,61 @@ output:
 Ai topic figli di topic_prefix verranno automaticamente pubblicati gli stati di ogni sensore fisico e virtuale configurati nello YAML,
 quindi per un'integrazione con sistemi di domotica basta aggiungere un elemento sotto sensors e attivare la sottoscrizione al
 topic che esso genererà.
+
+Altri input e output aggiunti a ESPHome perché presenti sullo strumento a seguito delle modifiche sono il LED RGB interno,
+il commutatore modificato, il pulsante, l'indicatore LED esterno e il buzzer:
+\begin{lstlisting}[language=yaml]
+#LED RGB
+light:
+  - platform: fastled_spi
+    chipset: WS2801
+    data_pin: D3
+    clock_pin: D4
+    num_leds: 1
+    rgb_order: BRG
+    name: "RGB LED"
+
+#Commutatore
+sensor:
+  - platform: adc
+    pin: A0
+    name: "Switch"
+    update_interval: 5s
+    id: switchone
+
+#Pulsante
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: D7
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "Pulsante"
+
+output:
+  #Buzzer
+  - platform: esp8266_pwm
+    pin: D5
+    id: rtttl_out
+
+  #LED Esterno
+  - platform: gpio
+    pin: D0
+    id: led
+
+rtttl:
+  output: rtttl_out
+\end{lstlisting}
+
+ESPHome si integra anche nativamente con Home Assistant: uno dei sistemi di gestione della domotica più diffusi. In
+Figura~\ref{fig:ha-iotdial} è possibile vedere come IoTDial viene riprodotto nel pannello di controllo. \todo{busolin: va bene qui?}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{ha-iotdial}
+  \caption{IoTDial per come si mostra nel pannello di controllo di Home Assistant}
+  \label{fig:ha-iotdial}
+\end{figure}
 
 \chapter{Conclusioni}
 %\todo{atrent: oltre alla presentazione all'hacklab (domani!) proviamo a organizzare una sessione ad hoc almeno con gli studenti del corso SistEmbed (e magari quelli di PROS?)}
