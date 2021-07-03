@@ -254,7 +254,7 @@ ad esempio su una mensola, i quali invece di essere puramente decorativi comunic
   \label{fig:datadash}
 \end{figure}
 
-\section{Stato dell'arte}
+\section{Esempi di riutilizzo di strumenti \textit{vintage}}% atrent cambiato titolo
 La conversione di strumenti vintage per utilizzi diversi dall'originale è un'attività già svolta in passato da diverse persone. In questa
 sezione verranno riportati alcuni esempi di esperimenti e prototipi e poi verranno descritte alcune delle piattaforme di sviluppo disponibili
 per ESP8266.
@@ -333,6 +333,8 @@ utilizzo di CPU e RAM del PC. I voltmetri sono illuminati da LED RGB il cui colo
   \label{fig:apcmeter}
 \end{figure}
 
+
+\todo{atrent: questa sotto e le seguenti forse dovevano essere delle section?}
 \subsection{Tasmota}
 Tasmota è un firmware open source per dispositivi basati su ESP8266, nato come espansione per il firmware degli interruttori
 wireless Sonoff al fine di arricchirli con funzionalità MQTT. Il suo obiettivo è quello di rendere più configurabili e controllabili i dispositivi
@@ -352,6 +354,7 @@ un'anacronistica idea di ``futuro" evoluto dall'epoca vittoriana in cui la tecno
 e i materiali di cui sono composti gli oggetti di uso comune rimangono l'ottone e il cuoio. \cite{focussteampunk}
 Nelle opere di questo genere è molto comune trovare grandi tubi per il vapore e indicatori vari sparsi per ogni tipo di oggetto.
 Esempio di oggetto Steampunk in Figura~\ref{fig:steampunklamp}
+\todo{atrent: minimale, avrei detto qualcosa di più...}
 
 \begin{figure}[h]
   \centering
@@ -429,6 +432,8 @@ visualizzare delle grafiche. Esempio in Figura~\ref{fig:oscilloscopio}.
 In questa sezione si farà una panoramica dei componenti che si possono incontrare a bordo degli strumenti vintage. Alcuni hanno
 un'utilità ai fini della fisicalizzazione o in generale alla conversione per l'utilizzo con microcontrollori, mentre altri non sono convertibili.
 
+\todo{atrent: mettere un po' di foto dei vari componenti!}
+
 %\todo{atrent: dire cosa intendi raccontare in questa sezione e dire che alcuni di questi NON saranno usabili}
 
 \subsection{Interruttori / Pulsanti}
@@ -488,7 +493,7 @@ treno di impulsi il cui numero varia in base all'angolo di rotazione a cui viene
 \subsection{Suonerie elettromeccaniche}
 Anche queste generalmente trovate nei vecchi telefoni, se alimentate in corrente alternata con tensione intorno ai 110V
 producono un deciso squillo. Sono ottime come segnalatori acustici.
-%\todo{busolin: foto}
+\todo{atrent: mi sa che la tensione delle suonerie telefoniche è intorno ai 50V (o 12V), fai check}
 
 \chapter{Generalizzazione degli strumenti di misura}
 %\todo{Sezione mapping componenti e interventi di modifica possibili}
@@ -508,6 +513,8 @@ binary_sensor:
     device_class: window
 \end{lstlisting}
 \noindent Esempio di schema di collegamento in Figura~\ref{fig:switchconnection}.
+
+\todo{atrent: spiega la dualità 3.3V/GND}
 
 \begin{figure}[h]
   \centering
@@ -568,6 +575,10 @@ poi via software fare dei calcoli per riconoscere gli step e utilizzarli a dover
   \label{fig:rotaryconnection}
 \end{figure}
 
+\todo{atrent: a onor del vero le resistenze possono anche essere diverse, ma poi i conti sono meno banali (software intendo)}
+
+\todo{atrent: spiega un minimo la scelta delle resistenze, perché 10KOhm, legge di Ohm...}
+
 \section{Potenziometri}
 Possono essere mappati a valori aventi intervallo arbitrario, con una precisione limitata dalla risoluzione del convertitore analogico-digitale
 integrato nel microcontrollore. Per poter leggere l'output è necessario collegarli a un GPIO che supporta la lettura di segnali analogici
@@ -625,6 +636,11 @@ output:
     platform: gpio
     pin: GPIO16
 \end{lstlisting}
+\todo{atrent: in realtà non solo uno stato binario, se vedi lo status led di esphome c'è un codice lampeggi semantico (come c'è ancora un codice buzz per il BIOS dei PC (mi pare ad esempio 5 beep errore ram, ecc.)}
+
+
+
+
 \section{Buzzer/Altoparlanti}
 Possono essere usati per dare indicazioni audio, ad esempio in caso di errore. I buzzer possono solitamente essere pilotati direttamente
 dal microcontrollore, mentre gli altoparlanti spesso richiedono un amplificatore di potenza.
@@ -650,7 +666,7 @@ on_<event>:
 Ai fini implementativi hanno un funzionamento al pari degli interruttori/pulsanti. L'unica differenza sta nel principio fisico di funzionamento
 e quindi nel significato che si può dare all'output nel codice.
 
-\subsection{Disco combinatore}
+\section{Disco combinatore}
 Come descritto precedentemente, questo tipo di dispositivo produce una sequenza di impulsi che vanno letti e contati. ESPHome mette
 a disposizione un componente che consente di eseguire questo tipo di lettura in maniera semplice:
 \begin{lstlisting}[language=yaml]
@@ -710,6 +726,8 @@ quasi tutti adatti) il microcontrollore all'interno dello strumento in modo da o
 Se si ha la facoltà di inserire una batteria diventa anche incredibilmente discreto e di più facile posizionamento, anche dove è
 scomodo portare una fonte di alimentazione.
 
+\todo{atrent: qui avrei messo almeno anche la foto della scheda resistenze e mi sarei ricollegato all'uso del commutatore convertito, insomma avrei spiegato un po' più nel dettaglio tutte le operazioni fatte, hai tutte le foto interne a disposizione...}
+
 \subsection{Interventi aggiuntivi}
 Ulteriori possibili modifiche meno banali includono l'aggiunta di elementi decorativi e/o funzionali quali luci, bottoni e altoparlanti
 per ampliare le possibilità di utilizzo. Un'altra possibilità di modifica ove possibile è la sostituzione dell'etichetta dietro all'ago per adattare
@@ -720,6 +738,11 @@ Esempio di strumento dopo modifiche avanzate in Figura~\ref{fig:interventocomple
 è stato sostituito il terminale sinistro con un connettore USB da pannello ai fini di interfacciarsi con il microcontrollore e alimentarlo.
 Il terminale destro è stato sostituito con un indicatore LED, il commutatore
 destro con un pulsante e all'interno è stato posizionato un buzzer che consente di riprodurre dei suoni.
+
+
+\todo{atrent: c'è anche un led RGB (WS2812B)}
+
+\todo{atrent: aggiungo screenshot HA}
 
 \begin{figure}[h]
   \centering
@@ -743,6 +766,8 @@ e funzionali.
 \section{Contesti d'uso}
 \subsection{Ruoli}
 Prima di parlare del delle modalità operative di IoTDial è il caso di soffermarsi su chi vi può interagire:
+
+\todo{atrent: diventa una bullet list, meglio}
 \subsubsection*{Sviluppatore}
 È in grado di apportare modifiche al codice sorgente. Può aggiungere, rimuovere e  modificare funzionalità del programma
 e apportare modifiche dirette ai file di configurazione.
@@ -960,6 +985,8 @@ Una volta ottenuto il valore da rappresentare è necessario trasformarlo in una 
 proporzionale a un numero a 10 bit (0 - 1023). Per fare questo è possibile utilizzare la funzione \texttt{map} già presente nella
 libreria standard di Arduino.
 
+
+\todo{atrent: spiega perché... https://www.arduino.cc/reference/en/language/functions/math/map/ in realtà bastava cambiare range dato che lavora con numeri interi...}
 Durante i test è emerso che tale funzione non si comporta particolarmente bene quando uno dei range è formato da piccoli numeri
 decimali. Si è quindi preferito inserire nel codice direttamente la formula matematica su cui si basa \texttt{map}:
 \[out = \frac{(value - fromLow) \times (toHigh - toLow)}{(fromHigh - fromLow)} + toLow \]
@@ -1297,6 +1324,8 @@ sono pubbliche e spesso sono anche di difficile utilizzo. L'esperienza personale
 all'arrivo di un mezzo pubblico ma altri si sono scontrati con quelle di Trenitalia \cite{trenitaliashock}
 
 \subsection{Dettagli su ATM}
+
+\todo{atrent: metti qualche screenshot almeno...}
 Le API di ATM sono usate per \href{https://giromilano.atm.it}{Giromilano} e l'unico modo per comprenderne il funzionamento è utilizzare
 gli strumenti del browser per leggere le richieste e le risposte che vengono scambiate tra client e server durante la ricerca di un
 percorso o di informazioni su una fermata specifica.
