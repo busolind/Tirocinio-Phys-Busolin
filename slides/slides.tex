@@ -54,24 +54,28 @@
 
 \section{Contesto}
 
-\begin{frame}[allowframebreaks]
+\begin{frame}
 \frametitle{Data Physicalization}
 %Una data physicalization (in italiano: fisicalizzazione dei dati) è un artefatto fisico la cui geometria o proprietà materiali codificano dei dati.
 
+\begin{columns}
+\column{0.5\textwidth}
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.6\textwidth]{keyboardfreq}
-  \caption{Keyboard Frequency Sculpture\autocite{physlist}}
+  \includegraphics[width=0.9\textwidth]{keyboardfreq}
+  \caption{Keyboard Frequency Sculpture\footnotemark}
 \end{figure}
 
-\framebreak
+\column{0.5\textwidth}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.5\textwidth]{livingmap}
-  \caption{Living Map: Precipitation Visualized with Moss\autocite{physlist}}
+  \includegraphics[width=0.9\textwidth]{livingmap}
+  \caption{Living Map: Precipitation Visualized with Moss\footnotemark[1]}
 \end{figure}
-\end{frame}\todo{atrent: queste due le metterei in una sola}
+\end{columns}
+\footcitetext{physlist}
+\end{frame} %\todo{atrent: queste due le metterei in una sola}
 
 
 
@@ -83,17 +87,14 @@
 
 \begin{columns}
 \column{0.45\textwidth}
-\onslide<1->{
   \includegraphics[width=0.95\textwidth]{datadash}\footnotemark 
-}%
-\onslide<2->{\column{0.1\textwidth}\centering$\rightarrow$
-  \column{0.45\textwidth}
+\column{0.1\textwidth}\centering$\rightarrow$
+\column{0.45\textwidth}
   \includegraphics[width=\textwidth]{interventominimale}
-}
 \end{columns}
 
 \footcitetext{wiki:datadash}
-\end{frame}\todo{atrent: idem}
+\end{frame}%\todo{atrent: idem}
 
 \section{Obiettivo}
 
@@ -116,22 +117,29 @@ Analizzare e sperimentare una forma di fisicalizzazione dei dati mediante strume
 
 \section{Stato dell'arte}
 
-\begin{frame}[allowframebreaks]
+\begin{frame}
 \frametitle{Esempi di riutilizzo di strumenti \textit{vintage}}
+\begin{columns}
+\begin{column}{0.5\textwidth}
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.6\textwidth]{amperetime}
-  \caption{Ampere Time\autocite{amperetime}}
+  \includegraphics[width=\textwidth]{amperetime}
+  \caption{Ampere Time\footnotemark}
 \end{figure}
+\end{column}
+\footcitetext{amperetime}
 
-\framebreak
+\begin{column}{0.5\textwidth}
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=0.4\textwidth]{voltclock}
-  \caption{ESP8266 WiFi NTP voltmeter clock\autocite{voltclock}}
+  \includegraphics[width=0.7\textwidth]{voltclock}
+  \caption{ESP8266 WiFi NTP voltmeter clock\footnotemark}
 \end{figure}
-\end{frame}\todo{atrent: idem}
+\end{column}
+\footcitetext{voltclock}
+\end{columns}
+\end{frame}%\todo{atrent: idem}
 
 
 \section{Realizzazione}
@@ -170,6 +178,7 @@ binary_sensor:
 \end{columns}
 \footcitetext{wiki:switch}
 \end{frame}\todo{atrent: invece qui metterei qualche esempio in più (avendo risparmiato slide prima), ad esempio il commutatore}
+
 
 \begin{frame}
 \frametitle{Produzione di una guida alla conversione}
